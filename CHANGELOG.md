@@ -7,6 +7,51 @@
 - Duplicate aliases are now disallowed:
   - in http mode a call will be rejected when there are duplicate aliases in the `X-Dynatrace-Tokens` header
   - in both modes server will not start with duplicated aliases (since it will produce validation error)
+- If using interpolation (`${VAR_NAME}`) in the `DT_CONFIG_FILE` variable, the application will not start if that interpolated variable does not exist. Previous functionality passed non-existent values as an empty string
+
+### Fixes
+
+- Fixed `DT_CONFIG_FILE` incorrectly interpolating environment variables
+- Fix https(s) proxy not being applied to all endpoints
+
+### Dependencies
+
+- Telemetry is now disabled by default
+- Removed `DT_MCP_DISABLE_TELEMETRY` environment variable, added `DT_MCP_ENABLE_TELEMETRY` in its place
+
+### Features
+
+- Added plugin packaging so the server can be installed from the Cursor plugin directory and other plugin hosts: `.cursor-plugin/plugin.json` (Cursor manifest, including a `variables` block that prompts for `DT_ENVIRONMENT_CONFIGS` on install), `plugin.json` (portable Agent Plugins v1.0.0 manifest), `mcp.json` (MCP server definition, pinned to the current major) and a `dynatrace-managed` skill
+- Added a [Claude Code plugin](https://code.claude.com/docs/en/plugins), so the server can be installed with `/plugin install dynatrace-managed-mcp@claude-community` instead of hand-written MCP configuration. It prompts on install for either `DT_ENVIRONMENT_CONFIGS` or a `DT_CONFIG_FILE` path, and reuses the existing `skills/` directory. The repository root is the plugin root: `.claude-plugin/plugin.json` holds the manifest and `.mcp.json` declares the `dynatrace-managed` stdio server, which is what lets Claude Code, Agent Plugins hosts and Cursor all read one copy of the skill
+- Added `.claude-plugin/marketplace.json`, which additionally makes this repository a Claude Code plugin marketplace in its own right, for installing an unreleased change with `/plugin marketplace add dynatrace-oss/dynatrace-managed-mcp`
+
+### Fixes
+
+- Fixed `list_events` printing `NaN` in its "Next Steps" section
+- Corrected the `apiEndpointUrl` example in `.cursor-plugin/plugin.json` and the `dynatrace-managed` skill. It showed a `https://dynatrace.example.com/e/<env-id>/api` value, but the server appends `/e/<environmentId>` itself, so pasting that example produced a doubled path and every request failed. `apiEndpointUrl` is the cluster base URL, as the table in [README.md](README.md) already documented
+
+### Changes
+
+- Removed the `dynatraceUrl` configuration parameter. Dynatrace UI links in tool responses are now derived from `apiEndpointUrl`. Configurations that still declare `dynatraceUrl` keep working, the field is ignored
+- Added `npm run version:check`, which asserts that `package.json`, `package-lock.json`, `server.json`, `plugin.json`, `.cursor-plugin/plugin.json` and `.claude-plugin/plugin.json` declare the same version and package name, that `mcp.json` points at the published npm package, and that the Cursor manifest's declared paths and required variables are wired up. It runs on every pull request and gates the release workflow, including a check that the pushed tag matches the manifests
+- `npm run version:check` now derives the required `npx` major pin from `package.json` and fails when `mcp.json` or `.mcp.json` disagrees, so releasing a new major with a stale `@<2` pin is blocked before anything is published
+- `npm run version:check` now also validates the Claude Code plugin's `skills` path and `userConfig` wiring, and every relative plugin `source` in `.claude-plugin/marketplace.json`. The marketplace source check closes a gap in `claude plugin validate`, which passes a source that points at a nonexistent directory
+- Added `npm run plugin:validate`, which runs `claude plugin validate --strict` over the plugin and marketplace manifests. It is a local pre-submission check rather than a CI step, because the Claude Code CLI downloads its native binary from a `postinstall` script and is unusable when installed with `--ignore-scripts`
+
+### Dependencies
+
+| Type     | Name                     | Old    | New    |
+| -------- | ------------------------ | ------ | ------ |
+| deps     | fast-uri                 | 3.1.6  | 3.1.7  |
+| deps     | hono                     | 4.13.4 | 4.13.5 |
+| ci       | docker/setup-qemu-action | 4.2.0  | 4.3.0  |
+| dev-deps | @types/node              | 26.4.0 | 26.4.1 |
+
+### Documentation
+
+- Removed `dynatraceUrl` from the README configuration table, `.env.template` and the `examples/dt-config*` files
+- Documented the version-bearing manifests, the `npx` major pin gate and the `version:check` checks in [RELEASE.md](RELEASE.md), along with what each plugin distribution channel requires per release
+- Documented Claude Code plugin installation in [README.md](README.md) and added [docs/claude-code-plugin.md](docs/claude-code-plugin.md) covering the plugin layout, local development and validation
 
 ## 1.1.1
 

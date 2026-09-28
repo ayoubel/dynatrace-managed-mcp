@@ -93,15 +93,14 @@ Your API token must include the following scopes for full functionality:
 
 #### Configuration parameters
 
-| Parameter      | Required           | Description                                                                                    | Example value                                     |
-| -------------- | ------------------ | ---------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| apiEndpointUrl | Yes                | Base URL for Dynatrace Managed cluster API                                                     | https://<span>dmz123.dynatrace-managed.com</span> |
-| environmentId  | Yes                | ID of the managed environment                                                                  | 01234567-89ab-cdef-abcd-ef0123456789              |
-| alias          | Yes                | Human-friendly name of the environment                                                         | MyEnvironment                                     |
-| apiToken       | Only in stdio mode | API token of the cluster with required scopes created using the instruction above              | dt0s01.ABCDEFGHIJK0123                            |
-| httpProxyUrl   | No                 | URL of proxy server for requests. Do not use with the other proxy parameter                    | http://<span>proxy.company.com:8080</span>        |
-| httpsProxyUrl  | No                 | URL of proxy server for requests. Do not use with the other proxy parameter                    | https:/<span>/proxy.company.com:8080</span>       |
-| dynatraceUrl   | No                 | Deprecated, currently prints itself in tool responses. Defaults to the value of apiEndpointUrl | https://<span>dmz123.dynatrace-managed.com</span> |
+| Parameter      | Required           | Description                                                                       | Example value                                     |
+| -------------- | ------------------ | --------------------------------------------------------------------------------- | ------------------------------------------------- |
+| apiEndpointUrl | Yes                | Base URL for Dynatrace Managed cluster API                                        | https://<span>dmz123.dynatrace-managed.com</span> |
+| environmentId  | Yes                | ID of the managed environment                                                     | 01234567-89ab-cdef-abcd-ef0123456789              |
+| alias          | Yes                | Human-friendly name of the environment                                            | MyEnvironment                                     |
+| apiToken       | Only in stdio mode | API token of the cluster with required scopes created using the instruction above | dt0s01.ABCDEFGHIJK0123                            |
+| httpProxyUrl   | No                 | URL of proxy server for requests. Do not use with the other proxy parameter       | http://<span>proxy.company.com:8080</span>        |
+| httpsProxyUrl  | No                 | URL of proxy server for requests. Do not use with the other proxy parameter       | https:/<span>/proxy.company.com:8080</span>       |
 
 There are **two ways** to configure your Dynatrace Managed environments.
 
@@ -185,6 +184,46 @@ Alternatively, this can also be stored in user settings, and you can define `env
 }
 ```
 
+#### Claude Code
+
+Claude Code can install this server as a [plugin](https://code.claude.com/docs/en/plugins), which
+skips the manual MCP configuration below and adds a skill covering environment selection and entity
+selectors. It is published through Anthropic's community plugin marketplace:
+
+```shell
+/plugin marketplace add anthropics/claude-plugins-community
+/plugin install dynatrace-managed-mcp@claude-community
+```
+
+> [!IMPORTANT]
+> The community marketplace listing is pending review. Until it is approved, the install above
+> reports `Plugin "dynatrace-managed-mcp" not found in marketplace "claude-community"` - use the
+> instructions under _Installing straight from this repository_ below in the meantime.
+
+Claude Code prompts for the cluster configuration during install - either the JSON array for a
+single cluster, or a path to a `dt-config.yaml` / `dt-config.json` file for several. See
+[docs/claude-code-plugin.md](docs/claude-code-plugin.md) for details.
+
+> [!NOTE]
+> Third-party marketplaces do not auto-update by default. Run
+> `/plugin marketplace update claude-community` to pick up a new plugin version.
+
+<details>
+  <summary>Installing straight from this repository instead</summary>
+
+This repository is also a plugin marketplace in its own right, which is how you install the plugin
+before the community listing is approved, try an unreleased change, or pin to a specific branch:
+
+```shell
+/plugin marketplace add dynatrace-oss/dynatrace-managed-mcp
+/plugin install dynatrace-managed-mcp@dynatrace
+```
+
+</details>
+
+To configure the server by hand instead, use the Claude Desktop snippet below - it applies to Claude
+Code's `.mcp.json` as well.
+
 #### Claude Desktop
 
 ```json
@@ -227,7 +266,7 @@ Using `gemini` CLI directly (recommended):
 
 ```bash
 gemini extensions install https://github.com/dynatrace-oss/dynatrace-managed-mcp
-export DT_ENVIRONMENT_CONFIGS="[{\"dynatraceUrl\":\"https://my-dashboard-endpoint.com/\",\"apiEndpointUrl\":\"https://my-api-endpoint.com/\",\"environmentId\":\"my-env-id-1\",\"alias\":\"alias-env\",\"apiToken\":\"my-api-token\"},{\"dynatraceUrl\":\"https://my-dashboard2-endpoint.com/\",\"apiEndpointUrl\":\"https://my-api2-endpoint.com/\",\"environmentId\":\"my-env-id-2\",\"alias\":\"alias-env-2\",\"apiToken\":\"my-api-token-2\"}]"
+export DT_ENVIRONMENT_CONFIGS="[{\"apiEndpointUrl\":\"https://my-api-endpoint.com/\",\"environmentId\":\"my-env-id-1\",\"alias\":\"alias-env\",\"apiToken\":\"my-api-token\"},{\"apiEndpointUrl\":\"https://my-api2-endpoint.com/\",\"environmentId\":\"my-env-id-2\",\"alias\":\"alias-env-2\",\"apiToken\":\"my-api-token-2\"}]"
 ```
 
 and verify that the server is running via
@@ -245,7 +284,7 @@ Or manually in your `~/.gemini/settings.json` or `.gemini/settings.json`:
       "command": "npx",
       "args": ["@dynatrace-oss/dynatrace-managed-mcp-server@latest"],
       "env": {
-        "DT_ENVIRONMENT_CONFIGS": "[{\"dynatraceUrl\":\"https://my-dashboard-endpoint.com/\",\"apiEndpointUrl\":\"https://my-api-endpoint.com/\",\"environmentId\":\"my-env-id-1\",\"alias\":\"alias-env\",\"apiToken\":\"my-api-token\"},{\"dynatraceUrl\":\"https://my-dashboard2-endpoint.com/\",\"apiEndpointUrl\":\"https://my-api2-endpoint.com/\",\"environmentId\":\"my-env-id-2\",\"alias\":\"alias-env-2\",\"apiToken\":\"my-api-token-2\"}]",
+        "DT_ENVIRONMENT_CONFIGS": "[{\"apiEndpointUrl\":\"https://my-api-endpoint.com/\",\"environmentId\":\"my-env-id-1\",\"alias\":\"alias-env\",\"apiToken\":\"my-api-token\"},{\"apiEndpointUrl\":\"https://my-api2-endpoint.com/\",\"environmentId\":\"my-env-id-2\",\"alias\":\"alias-env-2\",\"apiToken\":\"my-api-token-2\"}]",
         "DT_CONFIG_FILE": "dt-config.yaml"
       },
       "timeout": 30000,
@@ -382,23 +421,17 @@ The Dynatrace MCP Server includes sending Telemetry Data via Dynatrace OpenKit t
 
 **Privacy and Opt-out:**
 
-- Telemetry is **enabled by default** but can be disabled by setting `DT_MCP_DISABLE_TELEMETRY=true`
+- Telemetry is **disabled by default** but can be enabled by setting `DT_MCP_ENABLE_TELEMETRY=true`
 - No sensitive data from your Dynatrace environment is tracked
 - Only anonymous usage statistics and error information are collected
 - Usage statistics and error data is transmitted to Dynatrace’s analytics endpoint
 
 **Configuration options:**
 
-- `DT_MCP_DISABLE_TELEMETRY` (boolean, default: `false`) - Disable Telemetry
+- `DT_MCP_ENABLE_TELEMETRY` (boolean, default: `false`) - Enable Telemetry
 - `DT_MCP_TELEMETRY_APPLICATION_ID` (string, default: `dynatrace-managed-mcp`) - Application ID for tracking
 - `DT_MCP_TELEMETRY_ENDPOINT_URL` (string, default: Dynatrace endpoint) - OpenKit endpoint URL
 - `DT_MCP_TELEMETRY_DEVICE_ID` (string, default: auto-generated) - Device identifier for tracking
-
-To disable usage tracking, add this to your configuration:
-
-```bash
-DT_MCP_DISABLE_TELEMETRY=true
-```
 
 ## Additional documentation
 

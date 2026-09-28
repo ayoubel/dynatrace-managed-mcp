@@ -1,6 +1,18 @@
 import { createHash } from 'node:crypto';
 import { logger } from './logger';
 
+export function createTokenHeaderErrorResponse(error: unknown) {
+  const message = error instanceof Error ? error.message : 'Invalid X-Dynatrace-Tokens header';
+  return {
+    status: 400,
+    body: {
+      jsonrpc: '2.0',
+      id: null,
+      error: { code: -32600, message },
+    },
+  };
+}
+
 /**
  * Parse the `X-Dynatrace-Tokens` header into an `alias -> token` map.
  * Format: `alias=token;alias=token`. Parsing is lenient — malformed pairs are skipped

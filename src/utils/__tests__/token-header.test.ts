@@ -1,4 +1,4 @@
-import { parseTokenHeader, deriveUserKey } from '../token-header';
+import { parseTokenHeader, deriveUserKey, createTokenHeaderErrorResponse } from '../token-header';
 
 // Silence + observe logger output
 jest.mock('../logger', () => ({
@@ -78,5 +78,31 @@ describe('deriveUserKey', () => {
 
   it('differs for different token bundles', () => {
     expect(deriveUserKey('prod=AAA')).not.toBe(deriveUserKey('prod=BBB'));
+  });
+});
+
+describe('createTokenHeaderErrorResponse', () => {
+  it('returns a JSON-RPC invalid-request response with the parsing error message', () => {
+    const error = new Error('Duplicate alias "prod" in X-Dynatrace-Tokens header.');
+
+    expect(createTokenHeaderErrorResponse(error)).toEqual({
+      status: 400,
+      body: {
+        jsonrpc: '2.0',
+        id: null,
+        error: { code: -32600, message: error.message },
+      },
+    });
+  });
+
+  it('uses a safe fallback message for non-Error values', () => {
+    expect(createTokenHeaderErrorResponse('unexpected value')).toEqual({
+      status: 400,
+      body: {
+        jsonrpc: '2.0',
+        id: null,
+        error: { code: -32600, message: 'Invalid X-Dynatrace-Tokens header' },
+      },
+    });
   });
 });

@@ -14,7 +14,7 @@ import {
   validateManagedClients,
 } from './authentication/managed-auth-client';
 import { getManagedEnvironmentConfigs, validateEnvironments, buildConfigTokenMap } from './utils/environment';
-import { parseTokenHeader, deriveUserKey } from './utils/token-header';
+import { parseTokenHeader, deriveUserKey, createTokenHeaderErrorResponse } from './utils/token-header';
 import {
   buildAllowedHostnames,
   hasExplicitAllowlist,
@@ -369,16 +369,10 @@ const main = async () => {
       try {
         tokenMap = parseTokenHeader(tokenHeader);
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Invalid X-Dynatrace-Tokens header';
-        logger.warn(`Rejected request with invalid X-Dynatrace-Tokens header: ${message}`);
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({
-            jsonrpc: '2.0',
-            id: null,
-            error: { code: -32600, message },
-          }),
-        );
+        const rejection = createTokenHeaderErrorResponse(error);
+        logger.warn(`Rejected request with invalid X-Dynatrace-Tokens header: ${rejection.body.error.message}`);
+        res.writeHead(rejection.status, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(rejection.body));
         return;
       }
       const userKey = deriveUserKey(Array.isArray(tokenHeader) ? tokenHeader.join(';') : tokenHeader);

@@ -6,9 +6,6 @@ import { logger } from './logger';
  * Format: `alias=token;alias=token`. Parsing is lenient — malformed pairs are skipped
  * (a redacted warning is logged) and a missing token surfaces later as a per-alias error.
  *
- * Duplicate aliases are the one hard failure: silently keeping a single token would bind
- * the request to whichever entry happened to come last, which the caller cannot observe.
- *
  * @throws {Error} when the same alias appears more than once.
  */
 export function parseTokenHeader(headerValue: string | string[] | undefined): Map<string, string> {

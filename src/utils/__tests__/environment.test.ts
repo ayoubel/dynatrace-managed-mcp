@@ -218,7 +218,7 @@ describe('getManagedEnvironmentConfig', () => {
     expect(validated.errors).toHaveLength(2);
   });
 
-  it('does not raise a duplicate error for environments with a missing alias', () => {
+  it('should not raise a duplicate error for environments with a missing alias, but empty or missing error', () => {
     const base = { apiUrl: 'u', dashboardUrl: 'd', environmentId: 'e', apiToken: 't' };
     const validated = validateEnvironments([
       { ...base, alias: '' },
@@ -227,6 +227,7 @@ describe('getManagedEnvironmentConfig', () => {
 
     expect(validated.valid_configs).toEqual([]);
     expect(validated.errors.some((error) => error.includes('Duplicate alias'))).toBe(false);
+    expect(validated.errors.every((error) => error.includes('is empty or missing'))).toBe(true);
   });
 
   it('buildConfigTokenMap maps alias -> token and skips empty tokens', () => {

@@ -4,6 +4,9 @@
 
 ### Breaking changes
 
+- Duplicate aliases are now disallowed:
+  - in http mode a call will be rejected when there are duplicate aliases in the `X-Dynatrace-Tokens` header
+  - in both modes server will not start with duplicated aliases (since it will produce validation error)
 - If using interpolation (`${VAR_NAME}`) in the `DT_CONFIG_FILE` variable, the application will not start if that interpolated variable does not exist. Previous functionality passed non-existent values as an empty string
 
 ### Fixes

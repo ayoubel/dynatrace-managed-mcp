@@ -46,6 +46,7 @@
 | deps     | hono                     | 4.13.4 | 4.13.5 |
 | ci       | docker/setup-qemu-action | 4.2.0  | 4.3.0  |
 | dev-deps | @types/node              | 26.4.0 | 26.4.1 |
+| deps     | axios                    | 1.19.0 | 1.20.0 |
 
 ### Documentation
 

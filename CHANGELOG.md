@@ -6,7 +6,7 @@
 
 - Added Classic dashboard list/read/validate/create/update tools with validation before writes and read-back verification.
 - Added stdio token-file reload, cached scope refresh, execution-time permission checks, and tool-list change notifications.
-- Added reproducible local setup examples, dashboard templates, MCP prompts, and VS Code workflow prompts.
+- Added reproducible local setup examples.
 
 ### Breaking changes
 

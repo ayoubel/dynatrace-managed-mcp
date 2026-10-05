@@ -34,12 +34,11 @@ Run **MCP: List Servers**, select the server, and start it. Trust it when prompt
 
 ```sh
 node scripts/check-mcp.cjs
-node scripts/check-mcp.cjs --alias managed --validate-templates
 ```
 
-The first command lists tools and prompts. The second submits templates to the non-persisting validator; it never POSTs to the dashboard collection or sends PUT. For another launcher, add `--launcher /absolute/path/to/start.sh`. The output depends on your current token; there is no expected fixed tool count.
+The command lists the tools exposed for your current token and does not create or modify dashboards. For another launcher, add `--launcher /absolute/path/to/start.sh`. There is no expected fixed tool count.
 
-Try a read-only agent request: “List up to five open problems from the last hour in environment managed.” Use the workflows described in [dashboard-workflows.md](dashboard-workflows.md) for dashboard design and explicitly requested writes.
+Try a read-only agent request: “List up to five open problems from the last hour in environment managed.” See [dashboard tools](dashboard-tools.md) for explicitly requested dashboard creation and updates.
 
 ## Update the server
 

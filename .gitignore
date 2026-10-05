@@ -1,4 +1,10 @@
 .env
+.poc-runtime/
+poc/.env
+poc/dt-config.yaml
+poc/verification-output.txt
+poc/tool-access-report.json
+poc/codex-config.previous.toml
 dist/*
 node_modules/
 coverage/

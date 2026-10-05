@@ -25,6 +25,13 @@ Different tools call specific endpoints which require specific API Token scope t
 
 #### Unique scopes
 
+| Tool | Endpoint | Scope |
+| --- | --- | --- |
+| `dynatrace_managed_list_dashboards` | `/api/config/v1/dashboards` | `ReadConfig` |
+| `dynatrace_managed_get_dashboard` | `/api/config/v1/dashboards/{id}` | `ReadConfig` |
+| `dynatrace_managed_validate_dashboard` | `/api/config/v1/dashboards/validator` | `WriteConfig` |
+| `dynatrace_managed_create_dashboard` | `/api/config/v1/dashboards` | `WriteConfig` |
+
 1. `entities.read`
 2. `DataExport`
 3. `events.read`

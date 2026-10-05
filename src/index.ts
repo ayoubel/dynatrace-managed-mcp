@@ -6,6 +6,7 @@ import { CallToolResult, ToolAnnotations } from '@modelcontextprotocol/sdk/types
 import { createServer, IncomingMessage, ServerResponse } from 'node:http';
 import { Command } from 'commander';
 import { ZodRawShape } from 'zod';
+import { permittedTool } from './tools/token-tool-access';
 import { getPackageJsonVersion } from './utils/version';
 import {
   ManagedAuthClientManager,
@@ -154,6 +155,18 @@ const main = async () => {
     validAliases = validation.validAliases;
   }
 
+  const filterTokenTools = process.env.DT_MCP_FILTER_TOKEN_TOOLS === 'true';
+  if (filterTokenTools && httpMode) throw new Error('Token tool filtering is supported only in stdio mode');
+  const tokenScopes: string[][] = [];
+  if (filterTokenTools) {
+    if (validClients.length !== allClients.length) throw new Error('Environment validation failed; stopping startup');
+    for (const client of validClients) {
+      const token = startupTokens.get(client.alias);
+      if (!token) throw new Error('Startup token missing');
+      tokenScopes.push(await client.getTokenScopes(token));
+    }
+  }
+
   // Initialize usage tracking
   const telemetry = await createAndInitializeTelemetry();
   await telemetry?.trackMcpServerStart();
@@ -291,6 +304,7 @@ const main = async () => {
       annotations: ToolAnnotations,
       cb: (args: TArgs) => Promise<string>,
     ) => {
+      if (filterTokenTools && !permittedTool(name, annotations.readOnlyHint, tokenScopes)) return;
       registerTool(name, description, paramsSchema, annotations, cb, userKey, server);
     };
 

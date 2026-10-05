@@ -189,8 +189,16 @@ export class ManagedAuthClient {
   }
 
   async postConfiguration<T>(endpoint: string, token: string, body: unknown): Promise<T> {
+    return this.writeConfiguration<T>('post', endpoint, token, body);
+  }
+
+  async putConfiguration<T>(endpoint: string, token: string, body: unknown): Promise<T> {
+    return this.writeConfiguration<T>('put', endpoint, token, body);
+  }
+
+  private async writeConfiguration<T>(method: 'post' | 'put', endpoint: string, token: string, body: unknown): Promise<T> {
     try {
-      const response = await this.httpClient.post<T>(endpoint, body, {
+      const response = await this.httpClient[method]<T>(endpoint, body, {
         proxy: this.proxy ?? undefined, headers: this.authHeader(token),
       });
       return response.data;

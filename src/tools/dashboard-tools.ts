@@ -1,12 +1,14 @@
 import { z } from 'zod';
 import { ToolContext } from './context';
 
-export const dashboardDefinition = z.object({
+const dashboardBase = z.object({
   dashboardMetadata: z.object({ name: z.string().min(1), owner: z.string().min(1) }).passthrough(),
   tiles: z.array(z.object({
     name: z.string(), tileType: z.string(), bounds: z.object({}).passthrough(),
   }).passthrough()).max(100),
-}).passthrough().refine(value => !('id' in value), 'New dashboard must not include an id');
+}).passthrough();
+export const dashboardDefinition = dashboardBase.refine(value => !('id' in value), 'New dashboard must not include an id');
+export const dashboardUpdateDefinition = dashboardBase.extend({ id: z.string().uuid().optional() });
 
 export function registerDashboardTools(ctx: ToolContext): void {
   const environment_alias = z.string().refine(alias => alias !== 'ALL_ENVIRONMENTS' &&
@@ -17,6 +19,37 @@ export function registerDashboardTools(ctx: ToolContext): void {
     if (!client || !token) throw new Error('Environment or token unavailable');
     return { client, token };
   };
+  ctx.tool<{ environment_alias: string; dashboardId: string; dashboard: z.infer<typeof dashboardUpdateDefinition> }>(
+    'dynatrace_managed_update_dashboard',
+    'Replace an existing Classic dashboard definition when explicitly requested. First retrieve the existing dashboard and preserve tiles/settings outside the requested changes. Supply the full definition, not a patch. Validates before PUT and checks read-back. Never retry blindly after a timeout.',
+    { environment_alias, dashboardId: z.string().uuid(), dashboard: dashboardUpdateDefinition },
+    { readOnlyHint: false, destructiveHint: true, idempotentHint: true },
+    async ({ environment_alias: alias, dashboardId, dashboard }) => {
+      if (dashboard.id !== undefined && dashboard.id !== dashboardId) throw new Error('Dashboard body ID must match dashboardId');
+      const { client, token } = selected(alias);
+      const endpoint = `/api/config/v1/dashboards/${encodeURIComponent(dashboardId)}`;
+      // Require the target to exist; never use PUT to accidentally create a new resource.
+      await client.makeRequest(endpoint, token);
+      const definition = { ...dashboard, id: dashboardId };
+      await client.postConfiguration(`${endpoint}/validator`, token, definition);
+      await client.putConfiguration(endpoint, token, definition);
+      const url = `${client.dashboardBaseUrl}/#dashboard;id=${encodeURIComponent(dashboardId)}`;
+      try {
+        const actual = await client.makeRequest<{ dashboardMetadata?: unknown; tiles?: unknown }>(endpoint, token);
+        const equal = (a: unknown, b: unknown): boolean => {
+          if (a === b) return true;
+          if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every((v, i) => equal(v, b[i]));
+          if (a && b && typeof a === 'object' && typeof b === 'object') return Object.entries(a).every(([k, v]) => equal(v, (b as Record<string, unknown>)[k]));
+          return false;
+        };
+        const verified = equal(definition.dashboardMetadata, actual.dashboardMetadata) && equal(definition.tiles, actual.tiles);
+        return JSON.stringify({ id: dashboardId, updated: true, verified, url,
+          ...(!verified ? { warning: 'PUT succeeded but read-back differs; inspect before retrying.' } : {}) });
+      } catch {
+        return JSON.stringify({ id: dashboardId, updated: true, verified: false, url,
+          warning: 'PUT succeeded; read-back failed. Inspect before retrying.' });
+      }
+    });
   ctx.tool<{ environment_alias: string }>('dynatrace_managed_list_dashboards',
     'List Classic dashboards in one environment.', { environment_alias }, { readOnlyHint: true },
     async ({ environment_alias: alias }) => {

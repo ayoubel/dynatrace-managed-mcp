@@ -31,6 +31,9 @@ Different tools call specific endpoints which require specific API Token scope t
 | `dynatrace_managed_get_dashboard` | `/api/config/v1/dashboards/{id}` | `ReadConfig` |
 | `dynatrace_managed_validate_dashboard` | `/api/config/v1/dashboards/validator` | `WriteConfig` |
 | `dynatrace_managed_create_dashboard` | `/api/config/v1/dashboards` | `WriteConfig` |
+| `dynatrace_managed_update_dashboard` | `/api/config/v1/dashboards/{id}` | `WriteConfig` |
+
+Update also reads the target before and after PUT, requiring `ReadConfig`.
 
 1. `entities.read`
 2. `DataExport`

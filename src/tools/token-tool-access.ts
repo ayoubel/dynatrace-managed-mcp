@@ -9,7 +9,7 @@ const groups: Record<string, string[]> = {
   'securityProblems.read': ['list_security_problems', 'get_security_problem_details'],
   'slo.read': ['list_slos', 'get_slo_details'],
   ReadConfig: ['list_dashboards', 'get_dashboard'],
-  WriteConfig: ['validate_dashboard', 'create_dashboard'],
+  WriteConfig: ['validate_dashboard', 'create_dashboard', 'update_dashboard'],
 };
 export const toolScopes = new Map<string, string>(Object.entries(groups).flatMap(([scope, tools]) =>
   tools.map(tool => [`dynatrace_managed_${tool}`, scope] as const)));
@@ -17,7 +17,7 @@ export const toolScopes = new Map<string, string>(Object.entries(groups).flatMap
 export function permittedTool(name: string, readOnly: boolean | undefined, scopes: string[][]): boolean {
   const required = toolScopes.get(name);
   // Multiple environments use the intersection so every exposed tool is usable in each.
-  const supportedWrite = name === 'dynatrace_managed_create_dashboard' && readOnly === false;
+  const supportedWrite = ['dynatrace_managed_create_dashboard', 'dynatrace_managed_update_dashboard'].includes(name) && readOnly === false;
   return (readOnly === true || supportedWrite) && required !== undefined && scopes.length > 0 &&
-    scopes.every(environmentScopes => environmentScopes.includes(required));
+    scopes.every(environmentScopes => environmentScopes.includes(required) && (name !== 'dynatrace_managed_update_dashboard' || environmentScopes.includes('ReadConfig')));
 }

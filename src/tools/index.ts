@@ -7,6 +7,7 @@ import { registerEntitiesTools } from './entities-tools';
 import { registerProblemsTools } from './problems-tools';
 import { registerSecurityTools } from './security-tools';
 import { registerSloTools } from './slo-tools';
+import { registerDashboardTools } from './dashboard-tools';
 
 export { ToolContext } from './context';
 
@@ -22,4 +23,5 @@ export function registerAllTools(ctx: ToolContext): void {
   registerProblemsTools(ctx);
   registerSecurityTools(ctx);
   registerSloTools(ctx);
+  registerDashboardTools(ctx);
 }

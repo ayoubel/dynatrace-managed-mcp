@@ -66,6 +66,22 @@ export class ManagedAuthClient {
     return { Authorization: `Api-Token ${token}` };
   }
 
+  async getTokenScopes(token: string): Promise<string[]> {
+    try {
+      const response = await this.httpClient.post<ApiToken>('/api/v2/apiTokens/lookup', { token }, {
+        headers: this.authHeader(token), proxy: this.proxy ?? undefined,
+      });
+      if (response.data?.enabled !== true || !Array.isArray(response.data.scopes) ||
+          !response.data.scopes.every(scope => typeof scope === 'string')) {
+        throw new Error('Token disabled or invalid scope metadata');
+      }
+      return response.data.scopes;
+    } catch {
+      // Never propagate Axios configuration or token-bearing lookup body.
+      throw new Error(`Token scope lookup failed for environment ${this.alias}; stopping startup`);
+    }
+  }
+
   async validateAPIToken(token: string): Promise<boolean> {
     try {
       const response = await this.httpClient.post<ApiToken>(
@@ -165,6 +181,31 @@ export class ManagedAuthClient {
       headers: this.authHeader(token),
     });
     return response.data;
+  }
+
+  async postConfiguration<T>(endpoint: string, token: string, body: unknown): Promise<T> {
+    return this.writeConfiguration<T>('post', endpoint, token, body);
+  }
+
+  async putConfiguration<T>(endpoint: string, token: string, body: unknown): Promise<T> {
+    return this.writeConfiguration<T>('put', endpoint, token, body);
+  }
+
+  private async writeConfiguration<T>(method: 'post' | 'put', endpoint: string, token: string, body: unknown): Promise<T> {
+    try {
+      const response = await this.httpClient[method]<T>(endpoint, body, {
+        proxy: this.proxy ?? undefined, headers: this.authHeader(token),
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const detail = error.response?.data?.error;
+        const safe = JSON.stringify({ status: error.response?.status, message: detail?.message,
+          constraintViolations: detail?.constraintViolations }).split(token).join('[REDACTED]');
+        throw new Error(`Dashboard API request failed: ${safe}`);
+      }
+      throw error;
+    }
   }
 
   async isConfigured(token: string): Promise<boolean> {

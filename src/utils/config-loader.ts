@@ -26,11 +26,15 @@ const ENV_VAR_PATTERN = /\$\{([A-Za-z_]\w*)}/g;
  * Load configuration from a file (JSON or YAML)
  * Returns JSONObject[] for compatibility with existing parsing logic
  */
-export function loadFromFile(filePath: string, requireToken = true): JSONObject[] {
+export function loadFromFile(
+  filePath: string,
+  requireToken = true,
+  environment: NodeJS.ProcessEnv = process.env,
+): JSONObject[] {
   logger.debug(`Loading configuration from file: ${filePath}`);
 
   // Resolve path (handle ~, relative, absolute, env vars)
-  const resolvedPath = resolvePath(filePath);
+  const resolvedPath = resolvePath(filePath, environment);
   logger.debug(`Resolved path: ${resolvedPath}`);
 
   // Check file exists
@@ -48,7 +52,7 @@ export function loadFromFile(filePath: string, requireToken = true): JSONObject[
 
   // INTERPOLATE ENVIRONMENT VARIABLES BEFORE PARSING
   // Supports: ${VAR_NAME} syntax
-  fileContent = interpolateEnvVars(fileContent);
+  fileContent = interpolateEnvVars(fileContent, environment);
 
   // Detect format and parse
   const ext = path.extname(resolvedPath).toLowerCase();
@@ -92,10 +96,10 @@ export function loadFromFile(filePath: string, requireToken = true): JSONObject[
  * Interpolate environment variables in file content
  * Supports: ${VAR_NAME} syntax
  */
-function interpolateEnvVars(content: string): string {
+function interpolateEnvVars(content: string, environment: NodeJS.ProcessEnv): string {
   // Replace ${VAR_NAME} with env var value
   return content.replace(ENV_VAR_PATTERN, (match, varName) => {
-    const value = process.env[varName];
+    const value = environment[varName];
 
     if (value === undefined) {
       throw new Error(
@@ -113,10 +117,10 @@ function interpolateEnvVars(content: string): string {
 /**
  * Resolve path with cross-platform support
  */
-function resolvePath(filePath: string): string {
+export function resolvePath(filePath: string, environment: NodeJS.ProcessEnv = process.env): string {
   // Expand environment variables in path (e.g., ${HOME}/config.json)
   let resolved = filePath.replace(ENV_VAR_PATTERN, (match, varName) => {
-    const value = process.env[varName];
+    const value = environment[varName];
     if (value === undefined) {
       throw new Error(
         `Environment variable not found: ${varName}\n` +
@@ -129,7 +133,7 @@ function resolvePath(filePath: string): string {
 
   // Expand ~ to home directory
   if (resolved.startsWith('~')) {
-    const homeDir = process.env.HOME || process.env.USERPROFILE || '';
+    const homeDir = environment.HOME || environment.USERPROFILE || '';
     if (!homeDir) {
       throw new Error('Cannot expand ~: HOME/USERPROFILE environment variable not set');
     }

@@ -20,7 +20,7 @@ export function registerEnvironmentTools(ctx: ToolContext): void {
         for (const authClient of ctx.authClientManager.rawClients) {
           resp += `- Environment Alias: ${authClient.alias}\n`;
           resp += `- API URL: ${authClient.apiBaseUrl}\n`;
-          resp += stdioModeVersionResponse(authClient);
+          resp += stdioModeVersionResponse(authClient, ctx.tokenScopesFor?.(authClient.alias));
         }
         return resp;
       }
@@ -58,7 +58,7 @@ function errorMessageForResponse(error: unknown, environmentAlias: string) {
   return resp;
 }
 
-function stdioModeVersionResponse(authClient: ManagedAuthClient) {
+function stdioModeVersionResponse(authClient: ManagedAuthClient, tokenScopes?: string[]) {
   let resp: string = '';
   if (!authClient.isValid) {
     resp += `- Valid Environment: No\n`;
@@ -70,7 +70,9 @@ function stdioModeVersionResponse(authClient: ManagedAuthClient) {
     resp += `- Version: ${authClient.clusterVersion}\n`;
     resp += `- Minimum Version Check: PASSED\n`;
   }
-  resp += `- Available API Scopes: ${MANAGED_API_SCOPES.join(', ')}\n\n\n`;
+  resp += tokenScopes
+    ? `- Current token API scopes: ${tokenScopes.join(', ')}\n\n\n`
+    : `- API scope reference (not verified token grants): ${MANAGED_API_SCOPES.join(', ')}\n\n\n`;
   return resp;
 }
 
@@ -82,7 +84,7 @@ async function httpModeVersionResponse(authClient: ManagedAuthClient, ctx: ToolC
     resp += `- Valid Environment: Yes\n`;
     resp += `- Version: ${clusterVersion.version}\n`;
     resp += `- Minimum Version Check: ${isValidVersion ? 'PASSED' : 'WARNING - Version may not be fully compatible and may not support all features'}\n`;
-    resp += `- Available API Scopes: ${MANAGED_API_SCOPES.join(', ')}\n\n\n`;
+    resp += `- API scope reference (not verified token grants): ${MANAGED_API_SCOPES.join(', ')}\n\n\n`;
   } catch (error) {
     resp += errorMessageForResponse(error, authClient.alias);
   }

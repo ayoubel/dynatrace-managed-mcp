@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "dynatrace-managed": {
+      "type": "stdio",
+      "command": "/bin/sh",
+      "args": ["${workspaceFolder}/scripts/start-local.sh"]
+    }
+  }
+}

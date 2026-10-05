@@ -13,11 +13,12 @@ type ToolsListHandler = (req: unknown) => Promise<{ tools: Array<Record<string, 
  * Both properties are optional per JSON Schema spec; removing them does not affect
  * schema validity or tool behaviour for any other client.
  */
-export function patchToolsListSchema(server: McpServer): void {
+export function patchToolsListSchema(server: McpServer, beforeList?: () => Promise<void>): void {
   const innerServer = (server as unknown as { server: { _requestHandlers: Map<string, ToolsListHandler> } }).server;
   const originalToolsListHandler = innerServer._requestHandlers?.get('tools/list');
   if (originalToolsListHandler) {
     innerServer._requestHandlers.set('tools/list', async (req: unknown) => {
+      await beforeList?.();
       const result = await originalToolsListHandler(req);
       for (const tool of result.tools) {
         const schema = tool['inputSchema'] as Record<string, unknown> | undefined;

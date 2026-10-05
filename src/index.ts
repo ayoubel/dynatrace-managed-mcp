@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import { McpServer, ToolCallback } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer, ToolCallback, RegisteredTool } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { CallToolResult, ToolAnnotations } from '@modelcontextprotocol/sdk/types.js';
 import { createServer, IncomingMessage, ServerResponse } from 'node:http';
 import { Command } from 'commander';
 import { ZodRawShape } from 'zod';
-import { permittedTool } from './tools/token-tool-access';
+import { TokenToolPolicy } from './authentication/token-tool-policy';
+import { createLocalTokenSource } from './authentication/local-token-source';
 import { getPackageJsonVersion } from './utils/version';
 import {
   ManagedAuthClientManager,
@@ -36,6 +37,7 @@ import { RateLimiter } from './utils/rate-limit';
 import { buildServerInstructions } from './server-instructions';
 import { patchToolsListSchema } from './utils/mcp-compat';
 import { registerAllTools, ToolContext } from './tools';
+import { registerDashboardWorkflows } from './dashboard-workflows';
 
 // Import logger after environment is loaded
 import { logger, flushLogger, logErrorObject } from './utils/logger';
@@ -136,6 +138,8 @@ const main = async () => {
   const httpMode = options.http || options.server;
   const httpPort = Number(options.port);
   const host = options.host || '127.0.0.1';
+  const filterTokenTools = process.env.DT_MCP_FILTER_TOKEN_TOOLS === 'true';
+  if (filterTokenTools && httpMode) throw new Error('Token tool filtering is supported only in stdio mode');
 
   // Read Managed environment configuration. In HTTP mode tokens are supplied per request
   // (X-Dynatrace-Tokens header), so apiToken is not required in the config.
@@ -174,20 +178,37 @@ const main = async () => {
   } else {
     // stdio: tokens come from the local config/env vars; validate connections at startup.
     startupTokens = buildConfigTokenMap(initConfigs);
-    const validation = await validateManagedClients(allClients, startupTokens);
-    validClients = validation.validClients;
-    validAliases = validation.validAliases;
+    if (filterTokenTools) {
+      // Token lookup below verifies connectivity and credentials without requiring unrelated API scopes.
+      validClients = allClients;
+      validAliases = ['ALL_ENVIRONMENTS', ...allClients.map((client) => client.alias)];
+    } else {
+      const validation = await validateManagedClients(allClients, startupTokens);
+      validClients = validation.validClients;
+      validAliases = validation.validAliases;
+    }
   }
 
-  const filterTokenTools = process.env.DT_MCP_FILTER_TOKEN_TOOLS === 'true';
-  if (filterTokenTools && httpMode) throw new Error('Token tool filtering is supported only in stdio mode');
-  const tokenScopes: string[][] = [];
+  let tokenPolicy: TokenToolPolicy | undefined;
   if (filterTokenTools) {
     if (validClients.length !== allClients.length) throw new Error('Environment validation failed; stopping startup');
+    const ttl = Number(process.env.DT_MCP_SCOPE_REFRESH_MS ?? 60_000);
+    if (!Number.isFinite(ttl) || ttl < 1_000) throw new Error('DT_MCP_SCOPE_REFRESH_MS must be at least 1000');
+    tokenPolicy = new TokenToolPolicy(
+      validClients,
+      createLocalTokenSource(initConfigs, process.env.DT_CONFIG_FILE, process.env.DT_MCP_TOKEN_ENV_FILE),
+      startupTokens,
+      ttl,
+    );
+    await tokenPolicy.refresh();
     for (const client of validClients) {
-      const token = startupTokens.get(client.alias);
-      if (!token) throw new Error('Startup token missing');
-      tokenScopes.push(await client.getTokenScopes(token));
+      client.isValid = true;
+      if (tokenPolicy.scopesFor(client.alias)?.includes('DataExport')) {
+        const version = await client.getClusterVersion(startupTokens.get(client.alias)!);
+        if (!client.validateMinimumVersion(version))
+          throw new Error('Configured environment does not meet the minimum supported version');
+        client.clusterVersion = version.version;
+      }
     }
   }
 
@@ -238,7 +259,9 @@ const main = async () => {
 
       try {
         logger.debug(`Executing tool: ${name}; args: ${JSON.stringify(args)}`);
-        const response = await cb(args);
+        const response = tokenPolicy
+          ? await tokenPolicy.execute(name, annotations.readOnlyHint, () => cb(args))
+          : await cb(args);
         toolCallSuccessful = true;
         logger.debug(
           `Executed tool: ${name}; args: ${JSON.stringify(args)}; response length ${response.length} chars; ${response}`,
@@ -267,7 +290,7 @@ const main = async () => {
       }
     };
 
-    server.registerTool(
+    return server.registerTool(
       name,
       {
         description,
@@ -299,7 +322,7 @@ const main = async () => {
       },
       {
         capabilities: {
-          tools: {},
+          tools: { listChanged: true },
         },
         instructions: buildServerInstructions(authClientManager.MINIMUM_VERSION),
       },
@@ -321,6 +344,7 @@ const main = async () => {
       return true;
     };
 
+    const registeredTools: Array<{ name: string; readOnly: boolean | undefined; handle: RegisteredTool }> = [];
     const tool = <TArgs = undefined>(
       name: string,
       description: string,
@@ -328,8 +352,9 @@ const main = async () => {
       annotations: ToolAnnotations,
       cb: (args: TArgs) => Promise<string>,
     ) => {
-      if (filterTokenTools && !permittedTool(name, annotations.readOnlyHint, tokenScopes)) return;
-      registerTool(name, description, paramsSchema, annotations, cb, userKey, server);
+      const handle = registerTool(name, description, paramsSchema, annotations, cb, userKey, server);
+      registeredTools.push({ name, readOnly: annotations.readOnlyHint, handle });
+      if (tokenPolicy && !tokenPolicy.permitted(name, annotations.readOnlyHint)) handle.disable();
     };
 
     // Assemble the per-request context and register all tools (grouped by capability in src/tools/*).
@@ -346,11 +371,34 @@ const main = async () => {
       envAliasValidate,
       initErrors,
       httpMode,
+      tokenScopesFor: tokenPolicy ? (alias) => tokenPolicy.scopesFor(alias) : undefined,
     };
     registerAllTools(toolContext);
+    registerDashboardWorkflows(server);
+
+    tokenPolicy?.onChange(() => {
+      for (const { name, readOnly, handle } of registeredTools) {
+        const enabled = tokenPolicy!.permitted(name, readOnly);
+        if (enabled !== handle.enabled) {
+          if (enabled) handle.enable();
+          else handle.disable();
+        }
+      }
+    });
 
     // Strip schema properties that break some MCP clients (e.g. Copilot CLI). See helper for details.
-    patchToolsListSchema(server);
+    patchToolsListSchema(
+      server,
+      tokenPolicy
+        ? async () => {
+            try {
+              await tokenPolicy!.refresh();
+            } catch {
+              /* Return the now-disabled inventory. */
+            }
+          }
+        : undefined,
+    );
 
     return server;
   }; // end createConfiguredMcpServer
@@ -507,6 +555,7 @@ const main = async () => {
 
     logger.info('Connecting server to transport...');
     await server.connect(transport);
+    tokenPolicy?.start(5_000, () => logger.warn('Credential refresh failed; waiting for valid local credentials'));
 
     logger.info('Dynatrace Managed MCP Server running on stdio');
     console.error('Dynatrace Managed MCP Server running on stdio');
@@ -514,11 +563,17 @@ const main = async () => {
     // Handle graceful shutdown for stdio mode
     process.on(
       'SIGINT',
-      shutdownHandler(async () => await telemetry?.shutdown()),
+      shutdownHandler(
+        () => tokenPolicy?.stop(),
+        async () => await telemetry?.shutdown(),
+      ),
     );
     process.on(
       'SIGTERM',
-      shutdownHandler(async () => await telemetry?.shutdown()),
+      shutdownHandler(
+        () => tokenPolicy?.stop(),
+        async () => await telemetry?.shutdown(),
+      ),
     );
   }
 };

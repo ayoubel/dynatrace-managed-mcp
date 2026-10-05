@@ -66,6 +66,8 @@ This MCP server supports **two modes**:
 
 ## Quickstart in stdio (local) mode
 
+For this fork's built source, token-aware discovery, and Classic dashboard creation/update, see [local setup](docs/local-setup.md), [token refresh](docs/token-refresh.md), and [dashboard workflows](docs/dashboard-workflows.md).
+
 You can add this MCP server to your AI Assistant, such as VSCode, Claude, Cursor, Kiro, Windsurf, ChatGPT, or GitHub Copilot.
 
 To run this MCP server, you to have to configure four things:

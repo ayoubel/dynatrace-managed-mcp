@@ -27,11 +27,14 @@ Be careful of which MCP to use. If it is unclear, ask the user which they want t
 - **Entity Exploration**: Discover and analyze monitored entities, including relationship mapping
 - **Metrics Analysis**: Query observability metrics via the Dynatrace Metrics V2 API
 - **SLO Management**: Service Level Objective monitoring, error budget analysis, and SLO evaluation tracking
+- **Classic Dashboards**: Read, validate, create, and update dashboards using currently exposed tools. Updates require retrieving the full existing definition and preserving unrelated settings before PUT.
+- **Dashboard Workflows**: Reusable service-health, infrastructure-health, incident-investigation, and dashboard-update prompts.
 
 **Best Practices:**
-- Must start by calling the tool get_environments_info. It will return a list of the available environments, including
+- If get_environments_info is exposed, start by calling it. It will return a list of the available environments, including
   details of connection errors and configuration errors.
    - **CRITICAL: must report issues with environment configurations and connections to the user before any other requests**.
+- Tool availability depends on current token permissions. If environment discovery is unavailable, use the requested or configured environment alias and ask only if ambiguous. Never assume a tool is available from a prior inventory.
 - On every subsequent request, an "environment_alias" must be passed.
    - If the user wants information of all available environments, "environment_alias" MUST be "ALL_ENVIRONMENTS"
 - Use specific time ranges (1-2 hours) rather than large historical queries for better performance

@@ -1,0 +1,50 @@
+{
+  "dashboardMetadata": {
+    "name": "Incident investigation",
+    "owner": "REPLACE_WITH_OWNER",
+    "shared": false,
+    "dashboardFilter": {
+      "timeframe": "-1h to now"
+    }
+  },
+  "tiles": [
+    {
+      "name": "Context and runbook",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 0,
+        "left": 0,
+        "width": 608,
+        "height": 152
+      },
+      "markdown": "## Incident investigation\nDefine the audience, entity scope, and runbook link. Add verified metric charts using the corresponding workflow prompt."
+    },
+    {
+      "name": "Open problems",
+      "tileType": "OPEN_PROBLEMS",
+      "configured": true,
+      "bounds": {
+        "top": 152,
+        "left": 0,
+        "width": 304,
+        "height": 304
+      },
+      "problemSelector": "status(\"open\")",
+      "entitySelector": "type(\"SERVICE\")",
+      "useBackgroundColor": true
+    },
+    {
+      "name": "Incident evidence",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 152,
+        "left": 304,
+        "width": 608,
+        "height": 304
+      },
+      "markdown": "## Incident timeline\nPopulate with observed timestamps, entity IDs, problem links, and investigation findings. Distinguish evidence from hypotheses."
+    }
+  ]
+}

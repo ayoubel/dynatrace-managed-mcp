@@ -43,6 +43,7 @@ function registerAndCapture(
   rawClients: ManagedAuthClient[],
   suppliedTokens: Map<string, string>,
   httpMode: boolean,
+  tokenScopesFor?: (alias: string) => string[] | undefined,
 ): EnvInfoCallback {
   let callback: EnvInfoCallback | undefined;
 
@@ -59,6 +60,7 @@ function registerAndCapture(
     },
     authClientManager,
     httpMode,
+    tokenScopesFor,
     initErrors: [],
   } as unknown as ToolContext;
 
@@ -136,6 +138,15 @@ describe('get_environments_info (HTTP mode)', () => {
     expect(result).not.toContain('super-secret-prod');
     expect(hidden.validateAPIToken).not.toHaveBeenCalled();
   });
+});
+
+test('stdio reports current validated scopes rather than static reference scopes', async () => {
+  const run = registerAndCapture([mockClient('local', { isValid: true })], new Map([['local', 'fake']]), false, () => [
+    'ReadConfig',
+    'DataExport',
+  ]);
+  expect(await run()).toContain('Current token API scopes: ReadConfig, DataExport');
+  expect(await run()).not.toContain('securityProblems.read');
 });
 
 describe('get_environments_info (stdio mode)', () => {

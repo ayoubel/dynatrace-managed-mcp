@@ -1,0 +1,61 @@
+{
+  "dashboardMetadata": {
+    "name": "Infrastructure health",
+    "owner": "REPLACE_WITH_OWNER",
+    "shared": false,
+    "dashboardFilter": {
+      "timeframe": "-1h to now"
+    }
+  },
+  "tiles": [
+    {
+      "name": "Context and runbook",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 0,
+        "left": 0,
+        "width": 608,
+        "height": 152
+      },
+      "markdown": "## Infrastructure health\nDefine the audience, entity scope, and runbook link. Add verified metric charts using the corresponding workflow prompt."
+    },
+    {
+      "name": "Open problems",
+      "tileType": "OPEN_PROBLEMS",
+      "configured": true,
+      "bounds": {
+        "top": 152,
+        "left": 0,
+        "width": 304,
+        "height": 304
+      },
+      "problemSelector": "status(\"open\")",
+      "entitySelector": "type(\"HOST\")",
+      "useBackgroundColor": true
+    },
+    {
+      "name": "Infrastructure health",
+      "tileType": "HOSTS",
+      "configured": true,
+      "bounds": {
+        "top": 152,
+        "left": 304,
+        "width": 304,
+        "height": 304
+      },
+      "chartVisible": false,
+      "filterConfig": {
+        "type": "HOST",
+        "filtersPerEntityType": {},
+        "defaultName": "Infrastructure health",
+        "chartConfig": {
+          "type": "TIMESERIES",
+          "series": [],
+          "legendShown": true,
+          "resultMetadata": {}
+        }
+      }
+    }
+  ]
+}

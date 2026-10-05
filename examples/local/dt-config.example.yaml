@@ -1,0 +1,4 @@
+- apiEndpointUrl: https://dynatrace.example.com
+  environmentId: replace-with-environment-id
+  alias: managed
+  apiToken: ${DT_MANAGED_TOKEN}

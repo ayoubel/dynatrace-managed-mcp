@@ -28,6 +28,7 @@ Be careful of which MCP to use. If it is unclear, ask the user which they want t
 - **Metrics Analysis**: Query observability metrics via the Dynatrace Metrics V2 API
 - **SLO Management**: Service Level Objective monitoring, error budget analysis, and SLO evaluation tracking
 - **Classic Dashboards**: Read, validate, create, and update dashboards using currently exposed tools. Updates require retrieving the full existing definition and preserving unrelated settings before PUT.
+- **Dashboard Workflows**: Reusable service-health, infrastructure-health, incident-investigation, and dashboard-update prompts.
 
 **Best Practices:**
 - If get_environments_info is exposed, start by calling it. It will return a list of the available environments, including

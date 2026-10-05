@@ -37,6 +37,7 @@ import { RateLimiter } from './utils/rate-limit';
 import { buildServerInstructions } from './server-instructions';
 import { patchToolsListSchema } from './utils/mcp-compat';
 import { registerAllTools, ToolContext } from './tools';
+import { registerDashboardWorkflows } from './dashboard-workflows';
 
 // Import logger after environment is loaded
 import { logger, flushLogger, logErrorObject } from './utils/logger';
@@ -373,6 +374,7 @@ const main = async () => {
       tokenScopesFor: tokenPolicy ? (alias) => tokenPolicy.scopesFor(alias) : undefined,
     };
     registerAllTools(toolContext);
+    registerDashboardWorkflows(server);
 
     tokenPolicy?.onChange(() => {
       for (const { name, readOnly, handle } of registeredTools) {

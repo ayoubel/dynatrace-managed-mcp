@@ -260,6 +260,13 @@ function softwareInventory(entity) {
       name: entity.displayName,
       observedAt: entity.details?.lastSeenTms || null,
       observationClockOffsetMs: responseClockOffset(entity.details?.responseTiming),
+      observationResponseTiming: entity.details?.responseTiming
+        ? {
+            requestedAt: entity.details.responseTiming.requestedAt,
+            receivedAt: entity.details.responseTiming.receivedAt,
+            serverAt: entity.details.responseTiming.serverAt,
+          }
+        : null,
       logsNotStored,
     });
   if (['HOST', 'KUBERNETES_NODE'].includes(entity.type)) {
@@ -417,8 +424,10 @@ const auditPolicy = Object.freeze({
   referenceDays: 90,
 });
 
-// HTTP Date may come from a reverse proxy. Bounded response evidence adjusts
-// observation freshness only; lifecycle calendar dates keep the audit clock.
+// Compare lastSeen to the clock of the response that carried it, not to a
+// tolerated magnitude of drift. HTTP Date may come from a reverse proxy:
+// it is evidence for freshness only; lifecycle calendar dates keep the audit clock.
+// Preserve this provenance so combined audits cannot trust an arbitrary offset.
 function responseClockOffset(timing) {
   if (
     !timing ||
@@ -429,10 +438,24 @@ function responseClockOffset(timing) {
     return 0;
   const duration = timing.receivedAt - timing.requestedAt;
   const offset = timing.serverAt - timing.receivedAt;
-  return duration >= 0 && duration <= 30000 && Math.abs(offset) <= 3600000 ? offset : 0;
+  return duration >= 0 && duration <= 30000 &&
+    [timing.requestedAt, timing.receivedAt, timing.serverAt].every((t) => Number.isFinite(new Date(t).getTime()))
+    ? offset : 0;
 }
 function observationNow(row, now) {
   const offset = row.observationClockOffsetMs;
+  const timing = row.observationResponseTiming;
+  if (timing) {
+    const verified = responseClockOffset(timing);
+    // Calibration belongs to this collection. Reject replayed or inconsistent
+    // provenance and a local clock jump since the response was received.
+    if (!Number.isFinite(offset) || offset !== verified ||
+      Math.abs(now - timing.receivedAt) > 300000)
+      return now;
+    return now + verified;
+  }
+  // Historical reports did not carry response timing. Retain only their bounded
+  // compatibility behavior; a large offset always requires source provenance.
   return now + (Number.isFinite(offset) && Math.abs(offset) <= 3600000 ? offset : 0);
 }
 
@@ -469,7 +492,7 @@ function lifecycleAssessment(rows, inventories, { scopeComplete = true } = {}) {
     clockSkew,
     responseClockOffsetsMinutes,
     clockNotice: responseClockOffsetsMinutes.length
-      ? `Horloge de réponse HTTP Dynatrace : ${responseClockOffsetsMinutes.map((n) => (n > 0 ? '+' : '') + n + ' min').join(', ')}. Fraîcheur évaluée avec cette horloge ; synchronisation à vérifier.`
+      ? `Horloge de réponse HTTP Dynatrace : ${responseClockOffsetsMinutes.map((n) => (n > 0 ? '+' : '') + n + ' min').join(', ')}. Fraîcheur évaluée par rapport à la réponse Dynatrace ; dates de support évaluées avec l’horloge locale. Synchronisation à vérifier.`
       : null,
     reason: !eligible.length
       ? 'Aucun composant observé'

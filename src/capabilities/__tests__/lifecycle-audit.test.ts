@@ -204,7 +204,7 @@ test('freshness follows bounded API response timing without refreshing stale obs
   expect(buildLifecycleReport([withClock], inventories, { now }).rows[0].qualification).toBe('observation_stale');
   withClock.details.lastSeenTms = now + 2 * 3600000;
   withClock.details.responseTiming.serverAt = now + 2 * 3600000;
-  expect(buildLifecycleReport([withClock], inventories, { now }).rows[0].qualification).toBe('clock_skew');
+  expect(buildLifecycleReport([withClock], inventories, { now }).rows[0].status).toBe('action');
 });
 
 test('runtime evidence uses matching JVM field, preserves raw versions and does not substitute release, image, module or agent versions', () => {
@@ -393,4 +393,47 @@ test('combination recalculates verdicts instead of trusting caller scores and re
   const forged = { ...base, rows: base.rows.map((r: any) => ({ ...r, status: 'ok' })), assessment: { score: 100 } };
   expect(combineLifecycleReports([forged], now).assessment.score).toBe(0);
   expect(() => combineLifecycleReports([base], now + 300001)).toThrow(/stale/);
+});
+
+
+test.each([280, -280])('OS freshness uses evidenced response clock drift of %i minutes without changing support calendar', (minutes) => {
+  const offset = minutes * 60000;
+  const host = {
+    entityId: 'HOST-A', type: 'HOST', environmentId: 'env-a',
+    details: {
+      lastSeenTms: now + offset - 60000,
+      properties: { osVersion: 'Ubuntu 22.04.5 LTS' },
+      responseTiming: { requestedAt: now - 100, receivedAt: now, serverAt: now + offset },
+    },
+  };
+  const inventories = [{ available: true, complete: true }];
+  const report = buildLifecycleReport([host], inventories, { now, category: 'os' });
+  expect(report.assessment).toMatchObject({ score: 100, coverage: 100, clockSkew: 0, responseClockOffsetsMinutes: [minutes] });
+  expect(combineLifecycleReports([report], now + 60000).assessment.score).toBe(100);
+  const local = buildLifecycleReport([{ ...host, details: { ...host.details, lastSeenTms: now, responseTiming: undefined } }], inventories, { now, category: 'os' });
+  expect(report.rows[0].daysToEnd).toBe(local.rows[0].daysToEnd);
+  host.details.lastSeenTms = now + offset - 25 * 3600000;
+  expect(buildLifecycleReport([host], inventories, { now, category: 'os' }).rows[0].qualification).toBe('observation_stale');
+});
+
+test('large clock adjustments require recent valid provenance and cannot hide independently future observations', () => {
+  const offset = 280 * 60000;
+  const entity = instance({ softwareTechnologies: [{ type: 'PHP', version: '8.1.20' }] });
+  const inventories = [{ available: true, complete: true }];
+  const details = { ...entity.details, lastSeenTms: now + offset,
+    responseTiming: { requestedAt: now - 100, receivedAt: now, serverAt: now + offset } };
+  for (const responseTiming of [
+    { ...details.responseTiming, serverAt: null },
+    { ...details.responseTiming, requestedAt: now - 31000 },
+    { ...details.responseTiming, requestedAt: now + 100 },
+    { requestedAt: now - 600100, receivedAt: now - 600000, serverAt: now - 600000 + offset },
+  ]) {
+    const report = buildLifecycleReport([{ ...entity, details: { ...details, responseTiming } }], inventories, { now });
+    expect(report.rows[0].qualification).toBe('clock_skew');
+  }
+  const future = buildLifecycleReport([{ ...entity, details: { ...details, lastSeenTms: now + offset + 6 * 60000 } }], inventories, { now });
+  expect(future.rows[0].qualification).toBe('clock_skew');
+  const valid = buildLifecycleReport([{ ...entity, details }], inventories, { now });
+  const forged = { ...valid, rows: valid.rows.map((r: any) => ({ ...r, observationResponseTiming: null })) };
+  expect(combineLifecycleReports([forged], now).rows[0].qualification).toBe('clock_skew');
 });

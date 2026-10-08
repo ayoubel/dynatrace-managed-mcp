@@ -25,6 +25,33 @@ test('future observations retain version evidence and expose clock discrepancy s
   expect(combined.rows[0].qualification).toBe('clock_skew');
 });
 
+test('freshness follows bounded API response timing without refreshing stale observations', () => {
+  const entity = instance({ softwareTechnologies: [{ type: 'PHP', version: '8.1.20' }] });
+  const offset = 12 * 60000;
+  const withClock = {
+    ...entity,
+    details: {
+      ...entity.details,
+      lastSeenTms: now + offset,
+      responseTiming: { requestedAt: now - 100, receivedAt: now, serverAt: now + offset },
+    },
+  };
+  const inventories = [{ available: true, complete: true }];
+  const report = buildLifecycleReport([withClock], inventories, { now, category: 'runtime' });
+  expect(report.rows[0]).toMatchObject({
+    status: 'action',
+    observedAt: now + offset,
+    observationClockOffsetMs: offset,
+  });
+  expect(report.assessment).toMatchObject({ score: 0, clockSkew: 0, responseClockOffsetsMinutes: [12] });
+  expect(combineLifecycleReports([report], now).assessment.score).toBe(0);
+  withClock.details.lastSeenTms = now + offset - 25 * 3600000;
+  expect(buildLifecycleReport([withClock], inventories, { now }).rows[0].qualification).toBe('observation_stale');
+  withClock.details.lastSeenTms = now + 2 * 3600000;
+  withClock.details.responseTiming.serverAt = now + 2 * 3600000;
+  expect(buildLifecycleReport([withClock], inventories, { now }).rows[0].qualification).toBe('clock_skew');
+});
+
 test('runtime evidence uses matching JVM field, preserves raw versions and does not substitute release, image, module or agent versions', () => {
   const rows = softwareInventory(
     instance({
@@ -135,6 +162,7 @@ test('collector follows pagination, retrieves group evidence and never attribute
   );
   const report = await auditManagedLifecycle({ getRuntimeInventory }, [env], { category: 'runtime', now });
   expect(getRuntimeInventory).toHaveBeenCalledTimes(3);
+  expect(getRuntimeInventory.mock.calls[0].slice(4)).toEqual(['now-24h', 'now']);
   expect(report.inventories.every((i: any) => i.complete)).toBe(true);
   const python = report.rows.find((r: any) => r.product === 'Python');
   expect(python?.version).toBeNull();

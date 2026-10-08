@@ -239,6 +239,7 @@ function softwareInventory(entity) {
       environmentId: entity.environmentId,
       name: entity.displayName,
       observedAt: entity.details?.lastSeenTms || null,
+      observationClockOffsetMs: responseClockOffset(entity.details?.responseTiming),
     });
   if (['HOST', 'KUBERNETES_NODE'].includes(entity.type)) {
     // Managed nodes expose kernel version in osVersion and distribution in osInfo.
@@ -330,6 +331,25 @@ const auditPolicy = Object.freeze({
   referenceDays: 90,
 });
 
+// HTTP Date may come from a reverse proxy. Bounded response evidence adjusts
+// observation freshness only; lifecycle calendar dates keep the audit clock.
+function responseClockOffset(timing) {
+  if (
+    !timing ||
+    !Number.isFinite(timing.serverAt) ||
+    !Number.isFinite(timing.receivedAt) ||
+    !Number.isFinite(timing.requestedAt)
+  )
+    return 0;
+  const duration = timing.receivedAt - timing.requestedAt;
+  const offset = timing.serverAt - timing.receivedAt;
+  return duration >= 0 && duration <= 30000 && Math.abs(offset) <= 3600000 ? offset : 0;
+}
+function observationNow(row, now) {
+  const offset = row.observationClockOffsetMs;
+  return now + (Number.isFinite(offset) && Math.abs(offset) <= 3600000 ? offset : 0);
+}
+
 // A unit is one component/version/edition on one entity in one environment.
 function lifecycleAssessment(rows, inventories, { scopeComplete = true } = {}) {
   const eligible = rows.filter((r) => r.category !== 'monitoring');
@@ -338,6 +358,11 @@ function lifecycleAssessment(rows, inventories, { scopeComplete = true } = {}) {
   const coverage = eligible.length ? Math.round((100 * evaluated.length) / eligible.length) : 0;
   const assessedScore = evaluated.length ? Math.round((100 * conforming.length) / evaluated.length) : null;
   const clockSkew = eligible.filter((r) => r.qualification === 'clock_skew').length;
+  const responseClockOffsetsMinutes = [
+    ...new Set(
+      eligible.map((r) => Math.round((r.observationClockOffsetMs || 0) / 60000)).filter((n) => Math.abs(n) > 5),
+    ),
+  ];
   const inventoryComplete =
     scopeComplete && inventories.length > 0 && inventories.every((i) => i.available && i.complete);
   const publish =
@@ -355,6 +380,10 @@ function lifecycleAssessment(rows, inventories, { scopeComplete = true } = {}) {
     score: publish ? assessedScore : null,
     inventoryComplete,
     clockSkew,
+    responseClockOffsetsMinutes,
+    clockNotice: responseClockOffsetsMinutes.length
+      ? `Horloge de réponse HTTP Dynatrace : ${responseClockOffsetsMinutes.map((n) => (n > 0 ? '+' : '') + n + ' min').join(', ')}. Fraîcheur évaluée avec cette horloge ; synchronisation à vérifier.`
+      : null,
     reason: !eligible.length
       ? 'Aucun composant observé'
       : !inventoryComplete
@@ -386,16 +415,23 @@ function buildLifecycleReport(
     .map((r) => {
       const entity = entityLookup.get(r.environmentId + '\0' + r.entityId);
       const observed = Number(r.observedAt);
+      const sourceNow = observationNow(r, now);
       const fresh =
-        observed > 0 && observed <= now + 300000 && now - observed <= auditPolicy.observationHours * 3600000;
+        observed > 0 &&
+        observed <= sourceNow + 300000 &&
+        sourceNow - observed <= auditPolicy.observationHours * 3600000;
       const evaluated = !fresh
         ? {
             ...r,
             status: 'unknown',
             qualification:
-              observed > now + 300000 ? 'clock_skew' : entity?.details ? 'observation_stale' : 'collection_incomplete',
+              observed > sourceNow + 300000
+                ? 'clock_skew'
+                : entity?.details
+                  ? 'observation_stale'
+                  : 'collection_incomplete',
             reason:
-              observed > now + 300000
+              observed > sourceNow + 300000
                 ? 'Observation Dynatrace dans le futur : vérifier les horloges du poste et de Managed, puis relancer'
                 : 'Observation absente ou ancienne',
           }
@@ -466,13 +502,14 @@ function combineLifecycleReports(reports, now = Date.now()) {
     .flatMap((r) => r.rows)
     .map((r) => {
       const observed = Number(r.observedAt);
-      if (!observed || observed > now + 300000 || now - observed > auditPolicy.observationHours * 3600000)
+      const sourceNow = observationNow(r, now);
+      if (!observed || observed > sourceNow + 300000 || sourceNow - observed > auditPolicy.observationHours * 3600000)
         return {
           ...r,
           status: 'unknown',
-          qualification: observed > now + 300000 ? 'clock_skew' : 'observation_stale',
+          qualification: observed > sourceNow + 300000 ? 'clock_skew' : 'observation_stale',
           reason:
-            observed > now + 300000
+            observed > sourceNow + 300000
               ? 'Observation Dynatrace dans le futur : vérifier les horloges du poste et de Managed, puis relancer'
               : 'Observation absente ou ancienne',
         };

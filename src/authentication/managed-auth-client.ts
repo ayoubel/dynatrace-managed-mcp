@@ -183,10 +183,19 @@ export class ManagedAuthClient {
     params: Record<string, string | number | boolean | undefined> = {},
   ): Promise<T> {
     const url = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    const requestedAt = Date.now();
     const response = await this.httpClient.get(url, {
       params,
       headers: this.authHeader(token),
     });
+    if (url === '/api/v2/entities' && response.data && typeof response.data === 'object') {
+      const receivedAt = Date.now();
+      const serverAt = Date.parse(String(response.headers?.date || ''));
+      return {
+        ...response.data,
+        responseTiming: { requestedAt, receivedAt, serverAt: Number.isFinite(serverAt) ? serverAt : null },
+      } as T;
+    }
     return response.data;
   }
 

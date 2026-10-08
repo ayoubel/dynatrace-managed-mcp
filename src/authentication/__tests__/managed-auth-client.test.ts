@@ -71,6 +71,25 @@ describe('ManagedAuthClient', () => {
   });
 
   describe('makeRequest', () => {
+    it('retains only safe HTTP clock evidence on entity pages', async () => {
+      const serverAt = Date.now() + 12 * 60000;
+      const mockGet = jest
+        .fn()
+        .mockResolvedValue({
+          data: { entities: [] },
+          headers: { date: new Date(serverAt).toUTCString(), authorization: 'private' },
+        });
+      mockCreate.mockReturnValue({ get: mockGet });
+      const clockClient = new ManagedAuthClient({
+        apiBaseUrl: 'https://managed.test.com',
+        alias: 'test',
+        minimum_version: '1.328.0',
+      });
+      const data = await clockClient.makeRequest<any>('/api/v2/entities', 'test-token');
+      expect(data.responseTiming.serverAt).toBe(Math.floor(serverAt / 1000) * 1000);
+      expect(data.responseTiming.receivedAt).toBeGreaterThanOrEqual(data.responseTiming.requestedAt);
+      expect(JSON.stringify(data)).not.toMatch(/private|test-token|authorization/);
+    });
     it('sets a per-call Authorization header from the supplied token', async () => {
       const mockGet = jest.fn().mockResolvedValue({ data: { ok: true } });
       mockCreate.mockReturnValue({ get: mockGet });

@@ -25,6 +25,7 @@ export interface ListEntityTypesResponse {
 }
 
 export interface ListEntitiesResponse {
+  responseTiming?: { requestedAt: number; receivedAt: number; serverAt: number | null };
   entities?: Entity[];
   totalCount?: number;
   pageSize?: number;
@@ -126,6 +127,7 @@ export class EntitiesApiClient {
             type: entity.type || entity.entityType || type,
             displayName: entity.displayName,
             lastSeenTms: entity.lastSeenTms,
+            responseTiming: page.responseTiming,
             properties: Object.fromEntries(
               fields
                 .filter((key) => entity.properties?.[key] !== undefined)

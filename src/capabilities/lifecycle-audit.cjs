@@ -12,7 +12,6 @@ async function auditManagedLifecycle(
   environments,
   { category = 'all', anticipationDays = 180, now: fixedNow = undefined } = {},
 ) {
-  const now = fixedNow ?? Date.now();
   const start = performance.now(),
     entities = [],
     inventories = [],
@@ -75,13 +74,14 @@ async function auditManagedLifecycle(
             type,
             100,
             cursor,
-            new Date(now - 86400000).toISOString(),
-            new Date(now).toISOString(),
+            'now-24h',
+            'now',
           );
           const page = result.get(env.alias);
           inventory.pages++;
           if (!Array.isArray(page?.entities)) throw Error('Inventory page unavailable');
           entry.status = 'ok';
+          entry.responseTiming = page.responseTiming || null;
           entry.returned = page.entities.length;
           if (Number.isInteger(page.totalCount)) inventory.total = page.totalCount;
           for (const e of page.entities) {

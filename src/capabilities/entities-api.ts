@@ -116,6 +116,7 @@ export class EntitiesApiClient {
       'kubeletVersion',
       'agentVersion',
       'installerVersion',
+      'logSourceState',
     ];
     return new Map(
       [...responses].map(([alias, page]) => [
@@ -131,7 +132,17 @@ export class EntitiesApiClient {
             properties: Object.fromEntries(
               fields
                 .filter((key) => entity.properties?.[key] !== undefined)
-                .map((key) => [key, entity.properties![key]]),
+                .map((key) => [key, entity.properties![key]])
+                .concat(
+                  Array.isArray(entity.properties?.metadata)
+                    ? [
+                        [
+                          'metadata',
+                          entity.properties.metadata.filter((m: any) => ['EXE_PATH', 'EXE_NAME'].includes(m.key)),
+                        ],
+                      ]
+                    : [],
+                ),
             ),
             fromRelationships: entity.fromRelationships,
             toRelationships: entity.toRelationships,

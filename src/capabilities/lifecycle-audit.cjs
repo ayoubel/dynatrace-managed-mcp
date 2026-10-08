@@ -33,7 +33,11 @@ async function auditManagedLifecycle(
       u.password = '';
       u.search = '';
       u.hash = '';
-      return u.href.replace(/\/$/, '') + '/ui/entity/' + encodeURIComponent(id);
+      return (
+        u.href.replace(/\/$/, '') +
+        (/^PROCESS_GROUP_INSTANCE-/.test(id) ? '/#processdetails;id=' : '/ui/entity/') +
+        encodeURIComponent(id)
+      );
     } catch {
       return '';
     }
@@ -69,14 +73,7 @@ async function auditManagedLifecycle(
         trace.push(entry);
         const callStart = performance.now();
         try {
-          const result = await client.getRuntimeInventory(
-            env.alias,
-            type,
-            100,
-            cursor,
-            'now-24h',
-            'now',
-          );
+          const result = await client.getRuntimeInventory(env.alias, type, 100, cursor, 'now-24h', 'now');
           const page = result.get(env.alias);
           inventory.pages++;
           if (!Array.isArray(page?.entities)) throw Error('Inventory page unavailable');

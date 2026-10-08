@@ -23,6 +23,50 @@ describe('LogsApiClient', () => {
   });
 
   describe('queryLogs', () => {
+    it.each([
+      ['containerd', 'dt.entity.host="HOST-D4CB688F84F77084" AND content="containerd"'],
+      ['', 'dt.entity.host="HOST-D4CB688F84F77084"'],
+    ])('restricts %s to an exact Host', async (query, expected) => {
+      mockAuthManager.makeRequests.mockResolvedValue(new Map());
+      await client.queryLogs(
+        { query, hostId: 'HOST-D4CB688F84F77084', from: 'now-24h', to: 'now', limit: 10 },
+        'testAlias',
+      );
+      expect(mockAuthManager.makeRequests).toHaveBeenCalledWith(
+        '/api/v2/logs/search',
+        expect.objectContaining({ query: expected, limit: 10 }),
+        'testAlias',
+      );
+    });
+
+    it.each(['containerd" OR content="error', 'containerd\\', 'containerd\nOR error'])(
+      'rejects scoped query expressions without issuing a request',
+      async (query) => {
+        await expect(
+          client.queryLogs({ query, hostId: 'HOST-D4CB688F84F77084', from: 'now-24h', to: 'now' }, 'testAlias'),
+        ).rejects.toThrow('simple text phrase');
+        expect(mockAuthManager.makeRequests).not.toHaveBeenCalled();
+      },
+    );
+
+    it('rejects invalid Host IDs without issuing a request', async () => {
+      await expect(
+        client.queryLogs({ query: 'containerd', hostId: 'HOST-*', from: 'now-24h', to: 'now' }, 'testAlias'),
+      ).rejects.toThrow('Invalid Host');
+      expect(mockAuthManager.makeRequests).not.toHaveBeenCalled();
+    });
+
+    it('does not retry an unsuccessful scoped search without its Host constraint', async () => {
+      mockAuthManager.makeRequests.mockRejectedValue(new Error('Log search unavailable'));
+      await expect(
+        client.queryLogs(
+          { query: 'containerd', hostId: 'HOST-D4CB688F84F77084', from: 'now-24h', to: 'now' },
+          'testAlias',
+        ),
+      ).rejects.toThrow('unavailable');
+      expect(mockAuthManager.makeRequests).toHaveBeenCalledTimes(1);
+    });
+
     it('should query logs with all parameters', async () => {
       const mockResponse = new Map<string, ListLogsResponse>([['testAlias', {}]]);
       mockAuthManager.makeRequests.mockResolvedValue(mockResponse);

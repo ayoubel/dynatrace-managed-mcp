@@ -8,6 +8,7 @@ export interface LogQueryParams {
   to: string;
   limit?: number;
   sort?: string;
+  hostId?: string;
 }
 
 export interface ListLogsResponse {
@@ -34,8 +35,18 @@ export class LogsApiClient {
   constructor(private readonly authManager: ManagedAuthClientManager) {}
 
   async queryLogs(params: LogQueryParams, environment_aliases: string): Promise<Map<string, ListLogsResponse>> {
+    let query = params.query || '';
+    if (params.hostId !== undefined) {
+      if (!/^HOST-[0-9A-F]{16}$/.test(params.hostId)) throw new Error('Invalid Host entity ID');
+      // Scoped searches accept literal phrases only. Never permit an expression
+      // supplied by the caller to escape the exact Host constraint.
+      if (!/^[a-zA-Z0-9 ._-]*$/.test(query)) {
+        throw new Error('Host-scoped log searches require a simple text phrase (letters, digits, spaces, . _ -)');
+      }
+      query = `dt.entity.host="${params.hostId}"` + (query.trim() ? ` AND content="${query.trim()}"` : '');
+    }
     const queryParams = {
-      query: params.query || '',
+      query,
       from: params.from,
       to: params.to,
       limit: Math.min(params.limit || LogsApiClient.DEFAULT_PAGE_SIZE, LogsApiClient.API_PAGE_SIZE),

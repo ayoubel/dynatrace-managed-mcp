@@ -8,14 +8,21 @@ export function registerLogsTools(ctx: ToolContext): void {
   ctx.tool<QueryLogsArgs>(
     'dynatrace_managed_query_logs',
     `Search logs using simple text queries. Results include event types, expanded metadata fields
-    (up to 8 fields), and enhanced error detection. Managed clusters support basic text search but
-    not structured syntax like "content:" or "loglevel:".`,
+    (up to 8 fields), and enhanced error detection. Supply hostId to restrict a Classic log
+    search to one exact Host. With hostId, query is a literal phrase, not a query expression.`,
     {
       query: z.string().describe(
         `Simple text to search for in log content (e.g., "error", "exception", "timeout").
           Do NOT use structured syntax like "content:error" - just use "error".`,
       ),
       from: z.string().describe('Start time (ISO format or relative like "now-1h")'),
+      hostId: z
+        .string()
+        .regex(/^HOST-[0-9A-F]{16}$/)
+        .optional()
+        .describe(
+          'Exact Dynatrace Host entity ID. Restricts the search to this Host; no unscoped fallback. With this filter, query accepts letters, digits, spaces, . _ - only; empty query lists Host logs.',
+        ),
       to: z.string().describe('End time (ISO format or relative like "now")'),
       limit: z
         .number()
@@ -39,7 +46,7 @@ export function registerLogsTools(ctx: ToolContext): void {
     {
       readOnlyHint: true,
     },
-    async ({ query, from, to, limit, sort, environment_alias }) => {
+    async ({ query, from, to, limit, sort, hostId, environment_alias }) => {
       const responses = await ctx.logsClient.queryLogs(
         {
           query: query,
@@ -47,6 +54,7 @@ export function registerLogsTools(ctx: ToolContext): void {
           to: to,
           limit: limit,
           sort: sort,
+          hostId,
         },
         environment_alias,
       );

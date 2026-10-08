@@ -34,12 +34,128 @@ test('entity profiles expose sibling technologies without attributing Nginx vers
   expect(report.campaigns.find((c: any) => c.product === 'containerd')).toMatchObject({
     assets: 1,
     auditGroup: 'runtimes',
-    entityLabel: 'instances de processus',
+    entityLabel: 'Process',
   });
   const combined = combineLifecycleReports([report], now);
   expect(combined.entityProfiles[0].technologies).toHaveLength(3);
   expect(combined.campaigns.find((c: any) => c.product === 'NGINX').auditGroup).toBe('technologies');
   expect(combined.campaigns.find((c: any) => c.product === 'containerd').auditGroup).toBe('runtimes');
+});
+
+test('ActiveGate Java uses explicit JVM evidence despite a non-Java primary process type', () => {
+  const rows = softwareInventory(
+    instance({
+      processType: 'APMNG',
+      jvmClrVersion: '17.0.19',
+      jvmVendor: 'Eclipse Adoptium',
+      softwareTechnologies: [{ type: 'JAVA' }, { type: 'CONTAINERD' }],
+    }),
+  );
+  expect(rows.find((r: any) => r.product === 'Java')).toMatchObject({ version: '17.0.19', field: 'jvmClrVersion' });
+  expect(rows.find((r: any) => r.product === 'containerd').version).toBeNull();
+  const mixed = softwareInventory(
+    instance({
+      processType: 'DOTNET',
+      jvmClrVersion: '8.0.1',
+      softwareTechnologies: [{ type: 'JAVA' }, { type: 'DOTNET' }],
+    }),
+  );
+  expect(mixed.find((r: any) => r.product === 'Java').version).toBeNull();
+});
+
+test('integrated HTTP components use same-Process JDK support without inflating compliance and survive combining', () => {
+  const report = buildLifecycleReport(
+    [
+      instance({
+        softwareTechnologies: [
+          { type: 'JAVA', edition: 'Eclipse Adoptium', version: '21.0.10' },
+          { type: 'JAVA_HTTPURLCONNETION' },
+          { type: 'JDK_HTTP_CLIENT' },
+          { type: 'AMQP' },
+        ],
+      }),
+    ],
+    [{ available: true, complete: true }],
+    { now },
+  );
+  expect(report.assessment).toMatchObject({ total: 1, contextual: 3 });
+  expect(report.rows.find((r: any) => r.product === 'JDK_HTTP_CLIENT')).toMatchObject({
+    version: '21.0.10',
+    supportDependency: 'Java',
+    versionKind: 'inherited',
+  });
+  expect(
+    report.entityProfiles[0].technologies.find((r: any) => r.product === 'JDK_HTTP_CLIENT').supportDependency,
+  ).toBe('Java');
+  const combined = combineLifecycleReports([report], now);
+  expect(combined.assessment).toMatchObject({ total: 1, contextual: 3, score: report.assessment.score });
+  expect(combined.rows.find((r: any) => r.product === 'AMQP').qualification).toBe('product_unidentified');
+});
+
+test('ambiguous Java versions do not give integrated components a fabricated version', () => {
+  const report = buildLifecycleReport(
+    [
+      instance({
+        softwareTechnologies: [
+          { type: 'JAVA', version: '17.0.1' },
+          { type: 'JAVA', version: '21.0.1' },
+          { type: 'JDK_HTTP_CLIENT' },
+        ],
+      }),
+    ],
+    [],
+    { now },
+  );
+  expect(report.rows.find((r: any) => r.product === 'JDK_HTTP_CLIENT')).toMatchObject({
+    version: null,
+    qualification: 'integrated_context',
+  });
+});
+
+test('metadata identifies MariaDB and preserves ERTS hints without a fabricated OTP version or support verdict', () => {
+  const maria = softwareInventory(
+    instance({
+      softwareTechnologies: [{ type: 'MYSQL' }],
+      metadata: [{ key: 'EXE_PATH', value: '/opt/bitnami/mariadb/sbin/mariadbd' }],
+    }),
+  );
+  expect(maria[0]).toMatchObject({ product: 'MariaDB', version: null });
+  const erlang = buildLifecycleReport(
+    [
+      instance({
+        softwareTechnologies: [{ type: 'ERLANG' }],
+        metadata: [{ key: 'EXE_PATH', value: '/opt/erlang/erts-14.2.5/bin/epmd' }],
+      }),
+    ],
+    [],
+    { now },
+  );
+  expect(erlang.rows[0]).toMatchObject({
+    product: 'ERLANG',
+    version: null,
+    versionHint: '14.2.5',
+    hintProduct: 'ERTS',
+    status: 'unknown',
+    qualification: 'version_hint',
+  });
+  expect(combineLifecycleReports([erlang], now).rows[0].qualification).toBe('version_hint');
+});
+
+test('missing versions distinguish logs not stored without issuing log queries', () => {
+  const report = buildLifecycleReport(
+    [
+      instance({
+        softwareTechnologies: [{ type: 'GO' }],
+        logSourceState: [
+          { key: 'Container Output', value: { storageStatus: 'LOG_STORAGE_CONFIGURATION_STATUS_NOT_SEND_TO_STORAGE' } },
+        ],
+      }),
+    ],
+    [],
+    { now },
+  );
+  expect(report.rows[0]).toMatchObject({ version: null, qualification: 'logs_not_stored' });
+  expect(combineLifecycleReports([report], now).rows[0].qualification).toBe('logs_not_stored');
 });
 
 test('process verdict preserves a known obsolete technology alongside unknown siblings', () => {

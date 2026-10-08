@@ -222,11 +222,15 @@ function runtimeProduct(raw) {
 }
 const runtimeEdition = (product, edition) =>
   product === 'Java' && /^(?:Eclipse )?Adoptium$/i.test(edition || '') ? 'Eclipse Adoptium' : edition || null;
+const integratedJavaProducts = new Set(['JAVA_HTTPURLCONNETION', 'JDK_HTTP_CLIENT']);
+const diagnosticProducts = new Set(['Runtime', 'LINUX_SYSTEM', 'AMQP']);
+const scoreEligible = (r) =>
+  r.category !== 'monitoring' && !integratedJavaProducts.has(r.product) && !diagnosticProducts.has(r.product);
 // Presentation groups share the same inventory and assessment; they are not entity types.
 const auditGroup = (product, category) =>
   category !== 'runtime'
     ? category
-    : product === 'Runtime'
+    : diagnosticProducts.has(product)
       ? 'unclassified'
       : ['Java', '.NET', 'Node.js', 'Python', 'PHP', 'Go', 'containerd'].includes(product)
         ? 'runtimes'
@@ -234,6 +238,12 @@ const auditGroup = (product, category) =>
 function softwareInventory(entity) {
   const p = entity.details?.properties || {},
     rows = [];
+  const metadata = Array.isArray(p.metadata) ? p.metadata : [];
+  const exePath = metadata.find((m) => m.key === 'EXE_PATH')?.value || '';
+  const logsNotStored =
+    Array.isArray(p.logSourceState) &&
+    p.logSourceState.length > 0 &&
+    p.logSourceState.every((s) => s.value?.storageStatus === 'LOG_STORAGE_CONFIGURATION_STATUS_NOT_SEND_TO_STORAGE');
   const add = (product, version, field, category = 'runtime', edition = null, evidence = []) =>
     rows.push({
       product,
@@ -250,6 +260,7 @@ function softwareInventory(entity) {
       name: entity.displayName,
       observedAt: entity.details?.lastSeenTms || null,
       observationClockOffsetMs: responseClockOffset(entity.details?.responseTiming),
+      logsNotStored,
     });
   if (['HOST', 'KUBERNETES_NODE'].includes(entity.type)) {
     // Managed nodes expose kernel version in osVersion and distribution in osInfo.
@@ -272,10 +283,13 @@ function softwareInventory(entity) {
   if (entity.type === 'KUBERNETES_NODE') add('Kubernetes', p.kubeletVersion, 'kubeletVersion', 'platform');
   for (const tech of Array.isArray(p.softwareTechnologies) ? p.softwareTechnologies : []) {
     const raw = String(tech.type || tech.name || '');
-    const product = runtimeProduct(raw);
+    const product =
+      /^MYSQL$/i.test(raw) && /(?:^|\/)mariadbd$|\/mariadb\//i.test(exePath) ? 'MariaDB' : runtimeProduct(raw);
     const primary = runtimeProduct(p.processType);
     const fallbackField =
-      product === primary && ['Java', '.NET'].includes(product) && p.jvmClrVersion
+      ['Java', '.NET'].includes(product) &&
+      p.jvmClrVersion &&
+      (product === primary || (product === 'Java' && /^JAVA$/i.test(raw) && primary !== '.NET'))
         ? 'jvmClrVersion'
         : product === primary &&
             ['NGINX', 'PHP', 'Node.js', 'Python'].includes(product) &&
@@ -290,6 +304,17 @@ function softwareInventory(entity) {
       product === 'Kubernetes' ? 'platform' : /^DYNATRACE$/i.test(product) ? 'monitoring' : 'runtime',
       tech.edition || (product === 'Java' ? p.jvmVendor : null) || null,
     );
+    if (product === 'MariaDB')
+      rows.at(-1).evidence = [{ field: 'metadata.EXE_PATH', value: exePath, kind: 'product_identity' }];
+    if (product === 'ERLANG' && !version) {
+      const hint = String(exePath).match(/\/erts-(\d+\.\d+(?:\.\d+)*)(?:\/|$)/)?.[1];
+      if (hint)
+        Object.assign(rows.at(-1), {
+          versionHint: hint,
+          hintProduct: 'ERTS',
+          evidence: [{ field: 'metadata.EXE_PATH', value: exePath, kind: 'version_hint' }],
+        });
+    }
   }
   if (['PROCESS_GROUP', 'PROCESS_GROUP_INSTANCE'].includes(entity.type) && !rows.length) {
     const product = runtimeProduct(p.processType);
@@ -313,19 +338,70 @@ function softwareInventory(entity) {
 }
 function auditInventory(entities, now = Date.now(), anticipationDays = 180) {
   const observedEntities = new Map(entities.map((e) => [e.environmentId + '\0' + e.entityId, e]));
-  const rows = entities.flatMap(softwareInventory).map((r) => ({
-    ...r,
-    ...(r.version
-      ? classifyLifecycle(r.product, r.version, now, anticipationDays, r.edition)
-      : {
-          status: 'unknown',
-          qualification: observedEntities.get(r.environmentId + '\0' + r.entityId)?.details
-            ? 'version_missing'
-            : 'collection_incomplete',
-          reason: 'Version absente des champs Dynatrace consultés',
-          reference: null,
-        }),
-  }));
+  const inventoryRows = entities.flatMap(softwareInventory);
+  const rows = inventoryRows.map((r) => {
+    if (integratedJavaProducts.has(r.product)) {
+      const java = inventoryRows.filter(
+        (j) => j.product === 'Java' && j.version && j.entityId === r.entityId && j.environmentId === r.environmentId,
+      );
+      const versions = new Set(java.map((j) => j.version + '\0' + (j.edition || '')));
+      if (versions.size === 1) {
+        const j = java[0];
+        return {
+          ...r,
+          version: j.version,
+          rawVersion: j.rawVersion,
+          edition: j.edition,
+          field: j.field,
+          ...classifyLifecycle('Java', j.version, now, anticipationDays, j.edition),
+          supportDependency: 'Java',
+          versionKind: 'inherited',
+          reason: 'Support lié au JDK Java de ce Process ; aucune version indépendante attribuée',
+          evidence: [{ field: j.field, value: j.rawVersion, kind: 'same_process_jdk' }],
+        };
+      }
+      return {
+        ...r,
+        status: 'unknown',
+        qualification: 'integrated_context',
+        supportDependency: 'Java',
+        reference: null,
+        reason: 'Composant intégré au JDK ; version Java de ce Process absente ou ambiguë',
+      };
+    }
+    if (diagnosticProducts.has(r.product))
+      return {
+        ...r,
+        status: 'unknown',
+        qualification: 'product_unidentified',
+        reference: null,
+        reason:
+          r.product === 'AMQP'
+            ? 'Protocole détecté ; support à évaluer sur le produit associé'
+            : 'Libellé générique ; produit à identifier avant évaluation',
+      };
+    return {
+      ...r,
+      ...(r.version
+        ? classifyLifecycle(r.product, r.version, now, anticipationDays, r.edition)
+        : {
+            status: 'unknown',
+            qualification: observedEntities.get(r.environmentId + '\0' + r.entityId)?.details
+              ? r.versionHint
+                ? 'version_hint'
+                : r.logsNotStored
+                  ? 'logs_not_stored'
+                  : 'version_missing'
+              : 'collection_incomplete',
+            reason: r.versionHint
+              ? 'Indice de version ERTS dans le chemin ; version Erlang/OTP à confirmer'
+              : r.logsNotStored
+                ? 'Version non exposée ; sources de logs détectées non envoyées au stockage Dynatrace'
+                : 'Version non exposée dans les champs Dynatrace consultés',
+            reference: null,
+          }),
+    };
+  });
   rows.sort(
     (a, b) =>
       ['action', 'watch', 'unknown', 'ok'].indexOf(a.status) - ['action', 'watch', 'unknown', 'ok'].indexOf(b.status),
@@ -362,7 +438,7 @@ function observationNow(row, now) {
 
 // A unit is one component/version/edition on one entity in one environment.
 function lifecycleAssessment(rows, inventories, { scopeComplete = true } = {}) {
-  const eligible = rows.filter((r) => r.category !== 'monitoring');
+  const eligible = rows.filter(scoreEligible);
   const evaluated = eligible.filter((r) => ['ok', 'watch', 'action'].includes(r.status));
   const conforming = evaluated.filter((r) => r.status === 'ok' || (r.status === 'watch' && r.daysToEnd > 0));
   const coverage = eligible.length ? Math.round((100 * evaluated.length) / eligible.length) : 0;
@@ -382,6 +458,7 @@ function lifecycleAssessment(rows, inventories, { scopeComplete = true } = {}) {
     evaluated.length > 0;
   return {
     total: eligible.length,
+    contextual: rows.length - eligible.length,
     evaluated: evaluated.length,
     conforming: conforming.length,
     unknown: eligible.length - evaluated.length,
@@ -530,11 +607,25 @@ function combineLifecycleReports(reports, now = Date.now()) {
         return {
           ...r,
           status: 'unknown',
-          qualification: 'version_missing',
-          reason: 'Version absente des champs Dynatrace consultés',
+          qualification: diagnosticProducts.has(r.product)
+            ? 'product_unidentified'
+            : integratedJavaProducts.has(r.product)
+              ? 'integrated_context'
+              : r.versionHint
+                ? 'version_hint'
+                : r.logsNotStored
+                  ? 'logs_not_stored'
+                  : 'version_missing',
+          reason: r.reason || 'Version non exposée dans les champs Dynatrace consultés',
           reference: null,
         };
-      const verdict = classifyLifecycle(r.product, r.version, now, reports[0].anticipationDays, r.edition);
+      const verdict = classifyLifecycle(
+        integratedJavaProducts.has(r.product) ? 'Java' : r.product,
+        r.version,
+        now,
+        reports[0].anticipationDays,
+        r.edition,
+      );
       if (verdict.reference?.precision === 'month' && verdict.status === 'watch' && verdict.daysToEnd <= 0)
         return {
           ...r,
@@ -602,6 +693,11 @@ function softwareProfiles(rows, entities = new Map()) {
       observedAt,
       traceId,
       policySource,
+      supportDependency,
+      versionKind,
+      versionHint,
+      hintProduct,
+      evidence,
     } = row;
     profiles.get(key).technologies.push({
       product,
@@ -618,6 +714,11 @@ function softwareProfiles(rows, entities = new Map()) {
       observedAt,
       traceId,
       policySource,
+      supportDependency,
+      versionKind,
+      versionHint,
+      hintProduct,
+      evidence,
     });
   }
   return [...profiles.values()].map((profile) => {
@@ -669,6 +770,8 @@ function maintenanceCampaigns(rows, assessment) {
         environmentId: row.environmentId,
         environmentName: row.environmentName,
         product: row.product,
+        supportDependency: row.supportDependency,
+        versionKind: row.versionKind,
         cycle: row.cycle || null,
         category: row.category,
         auditGroup: auditGroup(row.product, row.category),
@@ -685,20 +788,24 @@ function maintenanceCampaigns(rows, assessment) {
       ...c,
       assets: new Set(c.rows.map((r) => r.entityId)).size,
       entityLabel: c.rows.every((r) => r.entityType === 'PROCESS_GROUP_INSTANCE')
-        ? 'instances de processus'
+        ? 'Process'
         : c.rows.every((r) => r.entityType === 'HOST')
-          ? 'hosts'
+          ? 'Hosts'
           : c.rows.every((r) => r.entityType === 'KUBERNETES_NODE')
-            ? 'nodes Kubernetes'
-            : 'entités',
+            ? 'Kubernetes nodes'
+            : c.rows.every((r) => r.entityType === 'PROCESS_GROUP')
+              ? 'Process groups'
+              : 'entités',
       versions: [...new Set(c.rows.map((r) => r.version).filter(Boolean))],
       end: c.rows[0].reference?.end
         ? (c.rows[0].reference.endKind === 'minimum_availability' ? 'Au moins ' : '') + c.rows[0].reference.end
         : null,
       gainPoints:
-        c.status === 'action' && assessment.evaluated ? Math.round((100 * c.rows.length) / assessment.evaluated) : null,
+        c.status === 'action' && scoreEligible(c.rows[0]) && assessment.evaluated
+          ? Math.round((100 * c.rows.length) / assessment.evaluated)
+          : null,
       projectedScore:
-        c.status === 'action' && assessment.evaluated
+        c.status === 'action' && scoreEligible(c.rows[0]) && assessment.evaluated
           ? Math.round(
               (100 * (assessment.conforming + c.rows.filter((r) => r.status === 'action').length)) /
                 assessment.evaluated,
@@ -714,13 +821,21 @@ function maintenanceCampaigns(rows, assessment) {
             : c.status === 'unknown'
               ? c.qualification === 'clock_skew'
                 ? 'Vérifier les horloges du poste et de Managed, puis relancer l’audit'
-                : c.qualification === 'version_missing'
-                  ? 'Vérifier les preuves du groupe et les champs de version exposés'
-                  : c.qualification === 'reference_missing'
-                    ? 'Ajouter une référence de support pour cette version'
-                    : c.qualification === 'support_context'
-                      ? 'Préciser la politique éditeur, édition ou distribution'
-                      : 'Compléter ou actualiser la collecte'
+                : c.qualification === 'logs_not_stored'
+                  ? 'Vérifier la collecte des logs détectés dans Dynatrace'
+                  : c.qualification === 'version_hint'
+                    ? 'Confirmer la version du produit à partir de l’indice observé'
+                    : c.qualification === 'product_unidentified'
+                      ? 'Identifier le produit associé à cette détection'
+                      : c.qualification === 'integrated_context'
+                        ? 'Préciser le JDK de ce Process'
+                        : c.qualification === 'version_missing'
+                          ? 'Vérifier les preuves du Process group et les champs de version exposés'
+                          : c.qualification === 'reference_missing'
+                            ? 'Ajouter une référence de support pour cette version'
+                            : c.qualification === 'support_context'
+                              ? 'Préciser la politique éditeur, édition ou distribution'
+                              : 'Compléter ou actualiser la collecte'
               : 'Conserver cette version sous surveillance',
     }))
     .sort(

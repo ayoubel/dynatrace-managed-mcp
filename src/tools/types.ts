@@ -25,6 +25,7 @@ export interface GetMetricDetailsArgs extends EnvironmentScopedArgs {
 }
 
 export interface QueryLogsArgs extends EnvironmentScopedArgs {
+  hostId?: string;
   query: string;
   from: string;
   to: string;

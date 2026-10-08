@@ -479,7 +479,10 @@ describe('structured runtime inventory', () => {
                   softwareTechnologies: [{ type: 'NGINX', version: 'nginx/1.24.0' }],
                   jvmClrVersion: '21.0.5',
                   versionedModules: [{ name: 'library', version: '1.2' }],
-                  metadata: [{ key: 'COMMAND_LINE_ARGS', value: 'secret' }],
+                  metadata: [
+                    { key: 'COMMAND_LINE_ARGS', value: 'secret' },
+                    { key: 'EXE_PATH', value: '/opt/erlang/erts-14.2.5/bin/beam.smp' },
+                  ],
                 },
               },
             ],
@@ -501,6 +504,7 @@ describe('structured runtime inventory', () => {
       softwareTechnologies: [{ type: 'NGINX', version: 'nginx/1.24.0' }],
       jvmClrVersion: '21.0.5',
       versionedModules: [{ name: 'library', version: '1.2' }],
+      metadata: [{ key: 'EXE_PATH', value: '/opt/erlang/erts-14.2.5/bin/beam.smp' }],
     });
     expect(JSON.stringify(result.get('prod'))).not.toContain('secret');
   });

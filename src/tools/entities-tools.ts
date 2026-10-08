@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { createHash } from 'node:crypto';
 import { ToolContext } from './context';
 import {
   DiscoverEntitiesArgs,
@@ -9,8 +10,112 @@ import {
 } from './types';
 import { EntitiesApiClient } from '../capabilities/entities-api';
 import { MAX_ENTITIES_LIMIT } from './limits';
+import { auditManagedLifecycle } from '../capabilities/lifecycle-audit.cjs';
+import { combineLifecycleReports } from '../capabilities/lifecycle.cjs';
 
 export function registerEntitiesTools(ctx: ToolContext): void {
+  const categorySchema = z.enum(['all', 'os', 'runtime', 'platform']);
+  ctx.tool<{
+    environment_alias: string;
+    category?: string;
+    anticipationDays?: number;
+    environment_ids?: Record<string, string>;
+  }>(
+    'dynatrace_managed_audit_obsolescence',
+    'Collect live Managed software evidence with pagination, classify lifecycle support and calculate compliance/coverage plus maintenance campaigns. All intelligence runs inside MCP. No SaaS, Grail or writes. Unknown data remains unknown; this is not a regulatory certificate.',
+    {
+      environment_alias: z
+        .string()
+        .refine((alias) => ctx.envAliasValidate(alias), { message: 'Invalid environment alias' }),
+      category: categorySchema.optional(),
+      anticipationDays: z.union([z.literal(90), z.literal(180), z.literal(365)]).optional(),
+      environment_ids: z.record(z.string(), z.string().regex(/^[a-f0-9]{24}$/)).optional(),
+    },
+    { readOnlyHint: true },
+    async ({ environment_alias, category = 'all', anticipationDays = 180, environment_ids = {} }) => {
+      const aliases =
+        environment_alias === 'ALL_ENVIRONMENTS'
+          ? ctx.authClientManager.validAliases
+          : environment_alias.split(',').map((a) => a.trim());
+      if (!aliases.length || aliases.length > 5 || aliases.some((a) => !ctx.authClientManager.validAliases.includes(a)))
+        throw Error('One to five valid environments are required');
+      const environments = [...new Set(aliases)].map((alias) => ({
+        alias,
+        id:
+          environment_ids[alias] ||
+          createHash('sha256')
+            .update(ctx.authClientManager.getBaseUrl(alias) + '\0' + alias)
+            .digest('hex')
+            .slice(0, 24),
+        url: ctx.authClientManager.getBaseUrl(alias),
+      }));
+      return JSON.stringify(
+        await auditManagedLifecycle(ctx.entitiesClient, environments, { category, anticipationDays }),
+      );
+    },
+  );
+  ctx.tool<{ reports: any[] }>(
+    'dynatrace_managed_combine_obsolescence_audits',
+    'Combine caller-supplied MCP audit reports across servers and recalculate compliance in MCP without re-reading Managed. Evidence must come from live audit_obsolescence reports with matching policies. Does not independently attest caller-supplied evidence.',
+    {
+      reports: z
+        .array(
+          z
+            .object({
+              version: z.literal(3),
+              category: categorySchema,
+              anticipationDays: z.union([z.literal(90), z.literal(180), z.literal(365)]),
+              evaluatedAt: z.string(),
+              rows: z.array(z.record(z.string(), z.unknown())).max(10000),
+              inventories: z.array(z.record(z.string(), z.unknown())).max(100),
+              referenceVerifiedAt: z.string(),
+              limitations: z.array(z.string()),
+            })
+            .passthrough(),
+        )
+        .min(1)
+        .max(5),
+    },
+    { readOnlyHint: true },
+    async ({ reports }) => JSON.stringify(combineLifecycleReports(reports)),
+  );
+  ctx.tool<{
+    environment_alias: string;
+    type?: 'PROCESS_GROUP_INSTANCE' | 'PROCESS_GROUP' | 'HOST' | 'KUBERNETES_NODE';
+    pageSize?: number;
+    nextPageKey?: string;
+    from?: string;
+    to?: string;
+  }>(
+    'dynatrace_managed_get_runtime_inventory',
+    'Read one structured page of Managed runtime evidence, retaining nested technology type/edition/version and version-specific properties. Follow nextPageKey for complete inventory. A group version is not proof of every instance version. No release/image/agent versions are substituted for runtime versions.',
+    {
+      environment_alias: z
+        .string()
+        .refine((alias) => ctx.envAliasValidate(alias) && ctx.authClientManager.validAliases.includes(alias), {
+          message: 'One valid environment alias is required',
+        }),
+      type: z.enum(['PROCESS_GROUP_INSTANCE', 'PROCESS_GROUP', 'HOST', 'KUBERNETES_NODE']).optional(),
+      pageSize: z.number().int().min(1).max(100).optional(),
+      nextPageKey: z.string().min(1).max(4096).optional(),
+      from: z.string().optional(),
+      to: z.string().optional(),
+    },
+    { readOnlyHint: true },
+    async ({ environment_alias, type = 'PROCESS_GROUP_INSTANCE', pageSize, nextPageKey, from, to }) => {
+      const pages = await ctx.entitiesClient.getRuntimeInventory(
+        environment_alias,
+        type,
+        pageSize,
+        nextPageKey,
+        from,
+        to,
+      );
+      const page = pages.get(environment_alias);
+      if (!page) throw new Error('Runtime inventory response unavailable');
+      return JSON.stringify({ environment: environment_alias, type, ...page });
+    },
+  );
   ctx.tool<EnvironmentScopedArgs>(
     'dynatrace_managed_list_entity_types',
     'List all available entity types in the Managed cluster to understand what types of entities can be monitored.',

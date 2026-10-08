@@ -459,3 +459,54 @@ describe('EntitiesApiClient', () => {
     });
   });
 });
+
+describe('structured runtime inventory', () => {
+  const request = jest.fn();
+  const manager = { makeRequests: request } as unknown as ManagedAuthClientManager;
+  beforeEach(() => request.mockReset());
+  it('requests all properties and preserves technology editions, versions, legacy fields and modules without command metadata', async () => {
+    request.mockResolvedValue(
+      new Map([
+        [
+          'prod',
+          {
+            totalCount: 2,
+            nextPageKey: 'cursor',
+            entities: [
+              {
+                entityId: 'PROCESS_GROUP_INSTANCE-A',
+                properties: {
+                  softwareTechnologies: [{ type: 'NGINX', version: 'nginx/1.24.0' }],
+                  jvmClrVersion: '21.0.5',
+                  versionedModules: [{ name: 'library', version: '1.2' }],
+                  metadata: [{ key: 'COMMAND_LINE_ARGS', value: 'secret' }],
+                },
+              },
+            ],
+          },
+        ],
+      ]),
+    );
+    const result = await new EntitiesApiClient(manager).getRuntimeInventory('prod', 'PROCESS_GROUP_INSTANCE');
+    expect(request).toHaveBeenCalledWith(
+      '/api/v2/entities',
+      expect.objectContaining({
+        fields: '+properties,+lastSeenTms,+fromRelationships,+toRelationships',
+        pageSize: 100,
+      }),
+      'prod',
+    );
+    expect(result.get('prod')?.nextPageKey).toBe('cursor');
+    expect(result.get('prod')?.entities?.[0].properties).toEqual({
+      softwareTechnologies: [{ type: 'NGINX', version: 'nginx/1.24.0' }],
+      jvmClrVersion: '21.0.5',
+      versionedModules: [{ name: 'library', version: '1.2' }],
+    });
+    expect(JSON.stringify(result.get('prod'))).not.toContain('secret');
+  });
+  it('continuation sends only the opaque API cursor, without changing the original query', async () => {
+    request.mockResolvedValue(new Map([['prod', { entities: [] }]]));
+    await new EntitiesApiClient(manager).getRuntimeInventory('prod', 'PROCESS_GROUP', 100, 'cursor');
+    expect(request).toHaveBeenCalledWith('/api/v2/entities', { nextPageKey: 'cursor' }, 'prod');
+  });
+});

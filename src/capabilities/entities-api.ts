@@ -47,7 +47,7 @@ export interface Entity {
   firstSeenTms?: number;
   lastSeenTms?: number;
   tags?: Tag[];
-  properties?: Record<string, number | string>;
+  properties?: Record<string, unknown>;
   fromRelationships?: Relationships;
   toRelationships?: Relationships;
   managementZones?: ManagementZone[];
@@ -79,6 +79,65 @@ export class EntitiesApiClient {
   static readonly MAX_MANAGEMENT_ZONES_DISPLAY = 11;
 
   constructor(private readonly authManager: ManagedAuthClientManager) {}
+
+  // Audit pages preserve nested technology versions; the conversational listing is intentionally abbreviated.
+  async getRuntimeInventory(
+    environment: string,
+    type: 'PROCESS_GROUP_INSTANCE' | 'PROCESS_GROUP' | 'HOST' | 'KUBERNETES_NODE',
+    pageSize = 100,
+    nextPageKey?: string,
+    from = 'now-24h',
+    to = 'now',
+  ): Promise<Map<string, ListEntitiesResponse>> {
+    const responses = await this.authManager.makeRequests<ListEntitiesResponse>(
+      '/api/v2/entities',
+      nextPageKey
+        ? { nextPageKey }
+        : {
+            entitySelector: `type("${type}")`,
+            pageSize,
+            from,
+            to,
+            fields: '+properties,+lastSeenTms,+fromRelationships,+toRelationships',
+          },
+      environment,
+    );
+    const fields = [
+      'softwareTechnologies',
+      'appVersion',
+      'jvmClrVersion',
+      'jvmVendor',
+      'processType',
+      'versionedModules',
+      'osVersion',
+      'osInfo',
+      'osType',
+      'kubeletVersion',
+      'agentVersion',
+      'installerVersion',
+    ];
+    return new Map(
+      [...responses].map(([alias, page]) => [
+        alias,
+        {
+          ...page,
+          entities: (page.entities || []).map((entity) => ({
+            entityId: entity.entityId,
+            type: entity.type || entity.entityType || type,
+            displayName: entity.displayName,
+            lastSeenTms: entity.lastSeenTms,
+            properties: Object.fromEntries(
+              fields
+                .filter((key) => entity.properties?.[key] !== undefined)
+                .map((key) => [key, entity.properties![key]]),
+            ),
+            fromRelationships: entity.fromRelationships,
+            toRelationships: entity.toRelationships,
+          })),
+        },
+      ]),
+    );
+  }
 
   async listEntityTypes(environment_aliases: string): Promise<Map<string, ListEntityTypesResponse>> {
     // Deliberately large page size; will format this concisely rather than returning all json in tool response.

@@ -22,16 +22,24 @@ test('entity profiles expose sibling technologies without attributing Nginx vers
   const report = buildLifecycleReport([entity], [{ available: true, complete: true }], { now, category: 'runtime' });
   expect(report.assessment.total).toBe(3);
   expect(report.entityProfiles).toHaveLength(1);
-  expect(report.entityProfiles[0].assessment).toMatchObject({ status: 'unknown', evaluated: 0, total: 3, versionsKnown: 2 });
+  expect(report.entityProfiles[0].assessment).toMatchObject({
+    status: 'unknown',
+    evaluated: 0,
+    total: 3,
+    versionsKnown: 2,
+  });
   expect(report.entityProfiles[0]).toMatchObject({ entityType: 'PROCESS_GROUP_INSTANCE', primaryTechnology: 'NGINX' });
   expect(report.entityProfiles[0].technologies.find((t: any) => t.product === 'NGINX').version).toBe('1.24.0');
   expect(report.entityProfiles[0].technologies.find((t: any) => t.product === 'containerd').version).toBeNull();
   expect(report.campaigns.find((c: any) => c.product === 'containerd')).toMatchObject({
     assets: 1,
+    auditGroup: 'runtimes',
     entityLabel: 'instances de processus',
   });
   const combined = combineLifecycleReports([report], now);
   expect(combined.entityProfiles[0].technologies).toHaveLength(3);
+  expect(combined.campaigns.find((c: any) => c.product === 'NGINX').auditGroup).toBe('technologies');
+  expect(combined.campaigns.find((c: any) => c.product === 'containerd').auditGroup).toBe('runtimes');
 });
 
 test('process verdict preserves a known obsolete technology alongside unknown siblings', () => {

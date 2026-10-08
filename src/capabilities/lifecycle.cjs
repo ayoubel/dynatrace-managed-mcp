@@ -222,6 +222,15 @@ function runtimeProduct(raw) {
 }
 const runtimeEdition = (product, edition) =>
   product === 'Java' && /^(?:Eclipse )?Adoptium$/i.test(edition || '') ? 'Eclipse Adoptium' : edition || null;
+// Presentation groups share the same inventory and assessment; they are not entity types.
+const auditGroup = (product, category) =>
+  category !== 'runtime'
+    ? category
+    : product === 'Runtime'
+      ? 'unclassified'
+      : ['Java', '.NET', 'Node.js', 'Python', 'PHP', 'Go', 'containerd'].includes(product)
+        ? 'runtimes'
+        : 'technologies';
 function softwareInventory(entity) {
   const p = entity.details?.properties || {},
     rows = [];
@@ -233,6 +242,7 @@ function softwareInventory(entity) {
       evidence,
       field,
       category,
+      auditGroup: auditGroup(product, category),
       edition: runtimeEdition(product, edition),
       entityType: entity.type,
       entityId: entity.entityId,
@@ -595,6 +605,7 @@ function softwareProfiles(rows, entities = new Map()) {
     } = row;
     profiles.get(key).technologies.push({
       product,
+      auditGroup: auditGroup(product, category),
       version,
       rawVersion,
       edition,
@@ -660,6 +671,7 @@ function maintenanceCampaigns(rows, assessment) {
         product: row.product,
         cycle: row.cycle || null,
         category: row.category,
+        auditGroup: auditGroup(row.product, row.category),
         edition: row.edition,
         status: row.status,
         qualification: row.qualification || null,

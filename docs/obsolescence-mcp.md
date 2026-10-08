@@ -44,3 +44,7 @@ Primary references:
 - [NGINX releases](https://nginx.org/en/download.html) (release classification is context, not a universal package EOL rule)
 
 On the tested environment: runtime inventory 252/252 instances and 106/106 groups, 124 versioned component observations. Five Managed API calls; full MCP round trip around 1.7 seconds, collection/scoring around 0.6 seconds and scoring around 29 ms. These are measurements on one environment, not a latency guarantee. A complete inventory still has low evaluation coverage because many versions or applicable support policies are absent; the global score remains suppressed below 60% coverage.
+
+### Familles de présentation (8 octobre 2026)
+
+`auditGroup` est fourni sur les observations, technologies des profils et campagnes. Les familles `runtimes`, `technologies`, `unclassified`, `os` et `platform` servent à naviguer dans une collecte commune. Elles ne changent ni les unités du score ni les types d’entités Dynatrace. Les technologies génériques non identifiées (`Runtime`) restent `unclassified`. Les profils recombinés et campagnes recombinées conservent cette classification. L’interface ne déduit aucun verdict à partir de ces familles.

@@ -163,7 +163,7 @@ function classifyLifecycle(product, version, now = Date.now(), anticipationDays 
         {
           'Java': 'https://adoptium.net/support/',
           'NGINX': 'https://nginx.org/en/download.html',
-          'LIBC': 'https://www.gnu.org/software/libc/',
+          'LIBC': /musl/i.test(edition || '') ? 'https://musl.libc.org/' : 'https://www.gnu.org/software/libc/',
           '.NET': 'https://dotnet.microsoft.com/en-us/platform/support/policy',
         }[product] || null,
     };
@@ -404,9 +404,9 @@ function buildLifecycleReport(
 ) {
   const seen = new Set();
   const entityLookup = new Map(entities.map((e) => [e.environmentId + '\0' + e.entityId, e]));
-  const rows = auditInventory(entities, now, anticipationDays)
+  const softwareRows = auditInventory(entities, now, anticipationDays)
     .filter((r) => {
-      if (r.category === 'monitoring' || (category !== 'all' && r.category !== category)) return false;
+      if (r.category === 'monitoring') return false;
       const key = JSON.stringify([r.environmentId, r.entityId, r.product, r.version, r.edition]);
       if (seen.has(key)) return false;
       seen.add(key);
@@ -468,6 +468,8 @@ function buildLifecycleReport(
         modulesAvailable: entity?.details?.properties?.versionedModules?.length || 0,
       };
     });
+  const rows = softwareRows.filter((r) => category === 'all' || r.category === category);
+  const entityProfiles = softwareProfiles(softwareRows, entityLookup);
   const assessment = lifecycleAssessment(rows, inventories, { scopeComplete });
   const campaigns = maintenanceCampaigns(rows, assessment);
   return {
@@ -476,6 +478,7 @@ function buildLifecycleReport(
     category,
     anticipationDays,
     rows,
+    entityProfiles,
     inventories,
     assessment,
     campaigns,
@@ -548,11 +551,94 @@ function combineLifecycleReports(reports, now = Date.now()) {
     rows,
     inventories,
     assessment,
+    entityProfiles: softwareProfiles(rows),
     campaigns: maintenanceCampaigns(rows, assessment),
     referenceVerifiedAt: reports[0].referenceVerifiedAt,
     limitations: [...new Set(reports.flatMap((r) => r.limitations || []))],
     provenance: 'caller_supplied_audits',
   };
+}
+function softwareProfiles(rows, entities = new Map()) {
+  const profiles = new Map();
+  for (const row of rows) {
+    const key = row.environmentId + '\0' + row.entityId;
+    if (!profiles.has(key)) {
+      const entity = entities.get(key);
+      const links = Object.values(entity?.details?.fromRelationships || {})
+        .flat()
+        .filter((link) => ['HOST', 'PROCESS_GROUP', 'CONTAINER_GROUP_INSTANCE', 'KUBERNETES_NODE'].includes(link.type));
+      profiles.set(key, {
+        environmentId: row.environmentId,
+        entityId: row.entityId,
+        entityType: row.entityType,
+        name: row.name,
+        url: row.url,
+        primaryTechnology: entity ? runtimeProduct(entity.details?.properties?.processType) : null,
+        relationships: links.map((link) => ({ entityId: link.id, entityType: link.type })),
+        technologies: [],
+      });
+    }
+    const {
+      product,
+      version,
+      rawVersion,
+      edition,
+      category,
+      status,
+      qualification,
+      reason,
+      reference,
+      field,
+      observedAt,
+      traceId,
+      policySource,
+    } = row;
+    profiles.get(key).technologies.push({
+      product,
+      version,
+      rawVersion,
+      edition,
+      category,
+      status,
+      qualification,
+      reason,
+      reference,
+      field,
+      observedAt,
+      traceId,
+      policySource,
+    });
+  }
+  return [...profiles.values()].map((profile) => {
+    const technologies = profile.technologies;
+    const evaluated = technologies.filter((t) => ['ok', 'watch', 'action'].includes(t.status)).length;
+    const unknown = technologies.length - evaluated;
+    const status = technologies.some((t) => t.status === 'action')
+      ? 'action'
+      : unknown
+        ? 'unknown'
+        : technologies.some((t) => t.status === 'watch')
+          ? 'watch'
+          : 'ok';
+    return {
+      ...profile,
+      assessment: {
+        status,
+        evaluated,
+        total: technologies.length,
+        unknown,
+        versionsKnown: technologies.filter((t) => t.version).length,
+        reason:
+          status === 'action'
+            ? 'Au moins une technologie hors support de référence'
+            : status === 'unknown'
+              ? 'Versions ou politiques de support à compléter'
+              : status === 'watch'
+                ? 'Au moins une échéance à anticiper'
+                : 'Technologies évaluées sous support de référence',
+      },
+    };
+  });
 }
 function maintenanceCampaigns(rows, assessment) {
   const grouped = new Map();
@@ -586,6 +672,13 @@ function maintenanceCampaigns(rows, assessment) {
     .map((c) => ({
       ...c,
       assets: new Set(c.rows.map((r) => r.entityId)).size,
+      entityLabel: c.rows.every((r) => r.entityType === 'PROCESS_GROUP_INSTANCE')
+        ? 'instances de processus'
+        : c.rows.every((r) => r.entityType === 'HOST')
+          ? 'hosts'
+          : c.rows.every((r) => r.entityType === 'KUBERNETES_NODE')
+            ? 'nodes Kubernetes'
+            : 'entités',
       versions: [...new Set(c.rows.map((r) => r.version).filter(Boolean))],
       end: c.rows[0].reference?.end
         ? (c.rows[0].reference.endKind === 'minimum_availability' ? 'Au moins ' : '') + c.rows[0].reference.end

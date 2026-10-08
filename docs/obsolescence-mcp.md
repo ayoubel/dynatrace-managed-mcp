@@ -26,6 +26,12 @@ Follow-up diagnosis: at 13:35 local, the endpoint HTTP Date was about 12 minutes
 
 Clock fix validation: 336 MCP unit tests, 117 app tests; real OS audit 13/13 evaluated, score 100%, runtime 30/520 evaluated, with +12 minute response-clock notice.
 
+## Per-entity software evidence
+
+Audit responses now contain `entityProfiles`, built in MCP from the same collected entity evidence. Each profile holds entity identity/type, related host/group/container identifiers, technology versions with independent verdicts and proofs, and a conservative entity summary. An unsupported technology takes priority; unknown siblings remain explicit. An entity is supported only when every technology in the profile is evaluable and supported; no entity score is fabricated for incomplete coverage. Support policy gaps remain distinct from missing version data.
+
+Campaign counts identify the entity type: runtime campaigns count process instances, while process groups provide context and are not scored twice. The UI says `containerd : version non exposée` and allows expanding the other technologies on that process. On the user's Nginx/Prometheus example: NGINX 1.24.0 and musl 1.2.3 are present, containerd's version is missing; applicable Nginx/musl support policies remain to qualify. Musl evidence links to musl rather than glibc. Profiles add no API requests and do not duplicate score units. Live runtime: 252 profiles, 520 observations, five API calls, about 650 ms backend/48 ms scoring in one measurement. Validation: 338 MCP unit tests, 118 app tests, 35 live audit/export checks.
+
 Validation: TypeScript build, 334 MCP unit tests, 117 Daybreak tests and 35 live HTTP audit/export checks passed. Runtime: 520 component observations, 124 versions, 30 evaluated (20 conforming, 10 outside the support reference); 396 missing versions, 68 missing references, 26 support-context qualifications. Runtime global score is withheld at 6% coverage. OS: 13/13 evaluated, reference score 100%; Kubernetes: 8/8 evaluated, upstream reference score 0%.
 
 Primary references:

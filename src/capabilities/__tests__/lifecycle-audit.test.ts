@@ -10,6 +10,37 @@ const instance = (properties: Record<string, unknown>, id = 'PROCESS_GROUP_INSTA
   details: { entityId: id, lastSeenTms: now, properties },
 });
 
+test('entity profiles expose sibling technologies without attributing Nginx version to containerd or inflating assessment', () => {
+  const entity = instance({
+    processType: 'NGINX',
+    softwareTechnologies: [
+      { type: 'NGINX', version: 'nginx/1.24.0' },
+      { type: 'LIBC', edition: 'musl', version: '1.2.3' },
+      { type: 'CONTAINERD' },
+    ],
+  });
+  const report = buildLifecycleReport([entity], [{ available: true, complete: true }], { now, category: 'runtime' });
+  expect(report.assessment.total).toBe(3);
+  expect(report.entityProfiles).toHaveLength(1);
+  expect(report.entityProfiles[0].assessment).toMatchObject({ status: 'unknown', evaluated: 0, total: 3, versionsKnown: 2 });
+  expect(report.entityProfiles[0]).toMatchObject({ entityType: 'PROCESS_GROUP_INSTANCE', primaryTechnology: 'NGINX' });
+  expect(report.entityProfiles[0].technologies.find((t: any) => t.product === 'NGINX').version).toBe('1.24.0');
+  expect(report.entityProfiles[0].technologies.find((t: any) => t.product === 'containerd').version).toBeNull();
+  expect(report.campaigns.find((c: any) => c.product === 'containerd')).toMatchObject({
+    assets: 1,
+    entityLabel: 'instances de processus',
+  });
+  const combined = combineLifecycleReports([report], now);
+  expect(combined.entityProfiles[0].technologies).toHaveLength(3);
+});
+
+test('process verdict preserves a known obsolete technology alongside unknown siblings', () => {
+  const entity = instance({ softwareTechnologies: [{ type: 'GO', version: '1.20.6' }, { type: 'CONTAINERD' }] });
+  const report = buildLifecycleReport([entity], [], { now, category: 'runtime' });
+  expect(report.entityProfiles[0].assessment).toMatchObject({ status: 'action', evaluated: 1, total: 2, unknown: 1 });
+  expect(report.entityProfiles[0].technologies.find((t: any) => t.product === 'containerd').status).toBe('unknown');
+});
+
 test('future observations retain version evidence and expose clock discrepancy separately from missing versions', () => {
   const entity = instance({ softwareTechnologies: [{ type: 'PHP', version: '8.1.20' }] });
   entity.details.lastSeenTms = now + 26 * 60000;

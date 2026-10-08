@@ -194,6 +194,19 @@ export class ManagedAuthClient {
     return this.writeConfiguration<T>('post', endpoint, token, body);
   }
 
+  /** Classic SLO creation returns its identifier in Location, not in a JSON body. */
+  async createSlo(token: string, body: unknown): Promise<{ id?: string }> {
+    try {
+      const response = await this.httpClient.post('/api/v2/slo', body, { headers: this.authHeader(token) });
+      const location = String(response.headers.location || '');
+      const id = location.match(/\/slo\/([\da-f-]{36})(?:[?#]|$)/i)?.[1];
+      return id ? { id } : {};
+    } catch {
+      // Never propagate token-bearing Axios configuration. No retries for creation.
+      throw new Error('SLO creation failed or response uncertain; inspect Dynatrace before retrying');
+    }
+  }
+
   async putConfiguration<T>(endpoint: string, token: string, body: unknown): Promise<T> {
     return this.writeConfiguration<T>('put', endpoint, token, body);
   }

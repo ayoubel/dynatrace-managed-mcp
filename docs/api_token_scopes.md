@@ -23,15 +23,20 @@ Different tools call specific endpoints which require specific API Token scope t
 | `dynatrace_managed_list_slos`                    | `/api/v2/slo`                   | `slo.read`              |
 | `dynatrace_managed_get_slo_details`              | `/api/v2/slo/{id}`              | `slo.read`              |
 
+| `dynatrace_managed_preview_slo` | `/api/v2/metrics/query` | `metrics.read` |
+| `dynatrace_managed_create_slo` | `/api/v2/slo` | `slo.write` |
+
+Creation also requires `metrics.read` for historical preflight and `slo.read` for read-back.
+
 #### Unique scopes
 
-| Tool | Endpoint | Scope |
-| --- | --- | --- |
-| `dynatrace_managed_list_dashboards` | `/api/config/v1/dashboards` | `ReadConfig` |
-| `dynatrace_managed_get_dashboard` | `/api/config/v1/dashboards/{id}` | `ReadConfig` |
+| Tool                                   | Endpoint                              | Scope         |
+| -------------------------------------- | ------------------------------------- | ------------- |
+| `dynatrace_managed_list_dashboards`    | `/api/config/v1/dashboards`           | `ReadConfig`  |
+| `dynatrace_managed_get_dashboard`      | `/api/config/v1/dashboards/{id}`      | `ReadConfig`  |
 | `dynatrace_managed_validate_dashboard` | `/api/config/v1/dashboards/validator` | `WriteConfig` |
-| `dynatrace_managed_create_dashboard` | `/api/config/v1/dashboards` | `WriteConfig` |
-| `dynatrace_managed_update_dashboard` | `/api/config/v1/dashboards/{id}` | `WriteConfig` |
+| `dynatrace_managed_create_dashboard`   | `/api/config/v1/dashboards`           | `WriteConfig` |
+| `dynatrace_managed_update_dashboard`   | `/api/config/v1/dashboards/{id}`      | `WriteConfig` |
 
 Update also reads the target before and after PUT, requiring `ReadConfig`.
 
@@ -43,3 +48,11 @@ Update also reads the target before and after PUT, requiring `ReadConfig`.
 6. `problems.read`
 7. `securityProblems.read`
 8. `slo.read`
+
+## Classic SLO creation
+
+`dynatrace_managed_preview_slo` checks a strict definition and queries its metric expression over the proposed period. It returns a historical estimate; it is not a native SLO evaluation or configuration validator. Missing, multiple or invalid percentage values block creation.
+
+`dynatrace_managed_create_slo` requires the intersection of `slo.write`, `slo.read` and `metrics.read` before being exposed. It repeats the read-only check, sends one POST, extracts the created ID from the Location header and reads the definition back. An accepted creation without successful read-back is marked unverified. Never repeat blindly after a timeout or an unverified result; inspect the SLO list first. Explicit user approval of the proposed definition is required by the client before calling this tool.
+
+Supported creation definitions: enabled Classic SLO, AGGREGATE evaluation, target between 0 and 100 exclusive, warning from target through 100, one configured environment, period 1/7/30 days. Existing SLO read tools retain their current behavior.

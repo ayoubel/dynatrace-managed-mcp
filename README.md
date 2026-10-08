@@ -1,5 +1,7 @@
 # Dynatrace Managed MCP Server
 
+> **Reprise du développement in-house (Daybreak)** : lire [HANDOFF.md](HANDOFF.md). Version 2 intégrée localement dans `main` le 8 octobre 2026, commit de code `abcb678` ; 353 tests unitaires et build validés. Les instructions et badges amont ci-dessous décrivent le projet upstream ; ils ne prouvent pas que cette version locale est publiée.
+
 <h4>
   <a href="https://github.com/dynatrace-oss/dynatrace-managed-mcp/releases">
     <img src="https://img.shields.io/github/release/dynatrace-oss/dynatrace-managed-mcp?color=c05240" alt="Latest Dynatrace Managed MCP Server releases"/>

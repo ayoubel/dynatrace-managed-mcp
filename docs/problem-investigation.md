@@ -27,3 +27,7 @@ Validation locale : 128 tests Daybreak, 362 tests MCP et compilation TypeScript 
 Chaque gate Morning check conserve une action visible icône + Investiguer. La gate Problèmes ouvre tous ses problèmes ouverts du bilan : identifiant, entité, environnement et durée. Chaque ligne lance un seul outil MCP avec son problemId. Le backend refuse les cibles absentes ou hors périmètre. Aucun regroupement par titre, Host ou proximité temporelle. Aucune détection de cause commune ajoutée : les rapports restent indépendants. La liste utilise le dernier bilan ; le MCP relit le problème à son lancement. Validation UI live : 32 lignes, choix du cinquième problème, un seul rapport.
 
 Validation session live : deux continuations (Tendance puis question « examiner les logs »), identifiant de fiche inchangé, constats initiaux conservés, deux réponses restaurées depuis l’historique. Les continuations utilisent uniquement `continue_investigation` pour le problème et son contexte MCP.
+
+## État Git après enregistrement et publication
+
+Fonctionnalité commitée : Daybreak `69d3401`, MCP `c7f2043`. Branche MCP `feature/problem-investigation-mcp` publiée sur le fork origin ; Daybreak sans remote, push en attente de destination. Des commits documentaires suivent. Aucun merge ni écriture Dynatrace.

@@ -1,5 +1,7 @@
 # Reprise — serveur MCP Dynatrace Managed in-house
 
+> État courant de publication : voir la dernière section « Publication de la branche ». Les états précédents sont historiques.
+
 État du 8 octobre 2026 : version 2 fusionnée localement dans `main`, commit de code **`abcb678`**, branche `feature/obsolescence-compliance-v2` conservée. Pas de push effectué pour cette intégration. Des commits de documentation peuvent suivre. Vérifier `git status`, `git log` et l’objectif du nouveau prompt avant de changer du code.
 
 ## Point d’entrée
@@ -69,3 +71,7 @@ Daybreak conserve désormais une fiche et un job uniques pour les continuations 
 ### Enregistrement Git local de la fonctionnalité
 
 À la demande du propriétaire, les évolutions refresh/investigation/session et leurs guides sont enregistrées par commits ciblés sur `feature/problem-investigation-mcp`. Les mentions antérieures « non commités » décrivent les étapes précédentes ; consulter `git log` pour les nouveaux HEAD. Les fichiers locaux préexistants (instructions, configs, certificats, copies ` 2`) restent exclus. Validation avant commits : 129 tests Daybreak, 362 tests MCP, build TypeScript réussi ; aucun nouveau contrôle Dynatrace live. Aucun push ni merge.
+
+### Publication de la branche
+
+Commit de fonctionnalité MCP `c7f2043` ; branche `feature/problem-investigation-mcp` poussée et suivie sur `origin` (`https://github.com/ayoubel/dynatrace-managed-mcp.git`). Des commits documentaires suivent ; vérifier le HEAD via Git. Pas de push vers `upstream`, pas de merge ni PR créée. Daybreak `69d3401` reste local, sans remote : URL attendue du propriétaire. Les mentions « aucun push » précédentes décrivent les étapes historiques.

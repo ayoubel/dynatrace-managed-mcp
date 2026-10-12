@@ -57,3 +57,15 @@ Secrets et CA restent locaux. Ne pas afficher les tokens, ne pas désactiver TLS
 - Daybreak `docs/prochaines-versions.md` : validations restantes et options non engagées.
 
 Les mesures live et anciens comptes de tests dans ces documents sont des **résultats datés**, pas des garanties de couverture/performance actuelles. Aucun SLO ni dashboard créé lors de la dernière revue d’intégration. Les créations/modifications doivent suivre le parcours d’aperçu et confirmation, sur un périmètre explicitement choisi.
+
+## Investigation portable — 9 octobre 2026
+
+Travail local non fusionné sur `feature/problem-investigation-mcp`, baseline `dca74aa`. Deux outils de lecture et prompt `continue_investigation` ; moteur déterministe dans `src/capabilities/problem-investigation.ts`, enregistrement `src/tools/investigation-tools.ts`. Voir `docs/problem-investigation.md` pour contrat, limites, seuils et sessions. Validation actuelle : 362 tests MCP, compilation TypeScript réussie ; Daybreak 127 tests. Live en lecture : problèmes disque, continuation et découverte du prompt validés. Redémarrage Daybreak 4318 pour reconnexion ; pas de changement aperçu 4319, push, merge ou écriture Dynatrace.
+
+Évolution Daybreak du même jour : sélection individuelle obligatoire ; plus de lot implicite de trois problèmes. Contrat MCP inchangé, rapports indépendants, aucune cause commune déduite automatiquement. Daybreak : 128 tests.
+
+Daybreak conserve désormais une fiche et un job uniques pour les continuations MCP. Fil de session persistant borné à dix tours, contexte et constats initiaux conservés ; le serveur MCP reste propriétaire de l’analyse et de sa session de 30 minutes. Validation Daybreak : 129 tests. Aucun changement moteur MCP pour cette évolution.
+
+### Enregistrement Git local de la fonctionnalité
+
+À la demande du propriétaire, les évolutions refresh/investigation/session et leurs guides sont enregistrées par commits ciblés sur `feature/problem-investigation-mcp`. Les mentions antérieures « non commités » décrivent les étapes précédentes ; consulter `git log` pour les nouveaux HEAD. Les fichiers locaux préexistants (instructions, configs, certificats, copies ` 2`) restent exclus. Validation avant commits : 129 tests Daybreak, 362 tests MCP, build TypeScript réussi ; aucun nouveau contrôle Dynatrace live. Aucun push ni merge.

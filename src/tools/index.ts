@@ -1,3 +1,4 @@
+import { registerInvestigationTools } from './investigation-tools';
 import { registerSloWriteTools } from './slo-write-tools';
 import { ToolContext } from './context';
 import { registerEnvironmentTools } from './environment-tools';
@@ -22,6 +23,7 @@ export function registerAllTools(ctx: ToolContext): void {
   registerEventsTools(ctx);
   registerEntitiesTools(ctx);
   registerProblemsTools(ctx);
+  registerInvestigationTools(ctx);
   registerSecurityTools(ctx);
   registerSloTools(ctx);
   registerSloWriteTools(ctx);

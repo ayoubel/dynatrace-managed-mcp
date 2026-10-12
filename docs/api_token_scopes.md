@@ -59,3 +59,12 @@ Update also reads the target before and after PUT, requiring `ReadConfig`.
 `dynatrace_managed_create_slo` requires the intersection of `slo.write`, `slo.read` and `metrics.read` before being exposed. It repeats the read-only check, sends one POST, extracts the created ID from the Location header and reads the definition back. An accepted creation without successful read-back is marked unverified. Never repeat blindly after a timeout or an unverified result; inspect the SLO list first. Explicit user approval of the proposed definition is required by the client before calling this tool.
 
 Supported creation definitions: enabled Classic SLO, AGGREGATE evaluation, target between 0 and 100 exclusive, warning from target through 100, one configured environment, period 1/7/30 days. Existing SLO read tools retain their current behavior.
+
+### Investigation Managed in-house
+
+| Outil | Lecture | Scope d’exposition |
+| --- | --- | --- |
+| `dynatrace_managed_investigate_problem` | `read-only` | `problems.read` |
+| `dynatrace_managed_continue_investigation` | `read-only` | `problems.read` |
+
+Les sous-lectures vérifient séparément `events.read`, `entities.read`, `metrics.read`, `logs.read` et `settings.read`. Un scope absent donne une preuve indisponible, sans élargir la recherche. `settings.read` sert uniquement à relire l’objet de configuration référencé par l’événement ; aucun PUT/POST. Le prompt `continue_investigation` prépare l’appel de continuation sans lire ni publier de télémétrie.

@@ -38,5 +38,6 @@ export interface ToolContext {
   envAliasValidate: (alias: string) => boolean;
   initErrors: string[];
   httpMode: boolean;
+  investigationOwner?: string;
   tokenScopesFor?: (alias: string) => string[] | undefined;
 }

@@ -15,7 +15,7 @@ const groups: Record<string, string[]> = {
   'logs.read': ['query_logs'],
   'metrics.read': ['list_available_metrics', 'query_metrics_data', 'get_metric_details', 'preview_slo'],
   'slo.write': ['create_slo'],
-  'problems.read': ['list_problems', 'get_problem_details'],
+  'problems.read': ['list_problems', 'get_problem_details', 'investigate_problem', 'continue_investigation'],
   'securityProblems.read': ['list_security_problems', 'get_security_problem_details'],
   'slo.read': ['list_slos', 'get_slo_details'],
   'ReadConfig': ['list_dashboards', 'get_dashboard'],

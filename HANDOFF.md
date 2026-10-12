@@ -75,3 +75,7 @@ Daybreak conserve désormais une fiche et un job uniques pour les continuations 
 ### Publication de la branche
 
 Commit de fonctionnalité MCP `c7f2043` ; branche `feature/problem-investigation-mcp` poussée et suivie sur `origin` (`https://github.com/ayoubel/dynatrace-managed-mcp.git`). Des commits documentaires suivent ; vérifier le HEAD via Git. Pas de push vers `upstream`, pas de merge ni PR créée. Daybreak `69d3401` reste local, sans remote : URL attendue du propriétaire. Les mentions « aucun push » précédentes décrivent les étapes historiques.
+
+### Publication Daybreak confirmée
+
+Dépôt GitHub privé créé à la demande du propriétaire : `https://github.com/ayoubel/daybreak`. Remote Daybreak `origin` configuré ; branche `feature/problem-investigation-mcp` poussée et suivie. MCP publié sur son origin `https://github.com/ayoubel/dynatrace-managed-mcp`, même branche. Les mentions précédentes « Daybreak sans remote » sont historiques. Aucun merge, aucune PR créée ; configurations et fichiers locaux préexistants toujours exclus.

@@ -1,3 +1,4 @@
+import type { ExecutionProfile } from '../core/execution-policy';
 import { ZodRawShape } from 'zod';
 import { ToolAnnotations } from '@modelcontextprotocol/sdk/types.js';
 import { ManagedAuthClientManager } from '../authentication/managed-auth-client';
@@ -34,6 +35,7 @@ export interface ConversationTool {
   invoke: (args: any) => Promise<string>;
 }
 export interface ToolContext {
+  executionProfile?: ExecutionProfile;
   conversationTools?: () => ConversationTool[];
   tool: ToolRegistrar;
   authClientManager: ManagedAuthClientManager;

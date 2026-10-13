@@ -165,7 +165,7 @@ describe('ManagedAuthClient', () => {
   });
 
   describe('getClusterVersion', () => {
-    it('returns the minimum version when clusterversion is forbidden', async () => {
+    it('marks the legacy minimum fallback as unobserved when clusterversion is forbidden', async () => {
       const rej = buildAxiosError(403);
       const mockGet = jest.fn().mockRejectedValueOnce(rej);
       mockCreate.mockReturnValue({ get: mockGet });
@@ -177,7 +177,7 @@ describe('ManagedAuthClient', () => {
 
       const result = await client.getClusterVersion('test-token');
 
-      expect(result).toEqual({ version: '1.328.0' });
+      expect(result).toEqual({ version: '1.328.0', observed: false });
       expect(mockGet).toHaveBeenCalledWith('/api/v1/config/clusterversion', {
         headers: { Authorization: 'Api-Token test-token' },
       });

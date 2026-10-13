@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { executionProfile, permitsTool, assertToolPermitted } from './core/execution-policy';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { McpServer, ToolCallback, RegisteredTool } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -139,6 +140,8 @@ const main = async () => {
   const httpMode = options.http || options.server;
   const httpPort = Number(options.port);
   const host = options.host || '127.0.0.1';
+  const profile = executionProfile();
+  if (profile === 'incident-intelligence') process.env.DT_MCP_OLLAMA_ENABLED = 'false';
   const filterTokenTools = process.env.DT_MCP_FILTER_TOKEN_TOOLS === 'true';
   if (filterTokenTools && httpMode) throw new Error('Token tool filtering is supported only in stdio mode');
 
@@ -200,6 +203,8 @@ const main = async () => {
       createLocalTokenSource(initConfigs, process.env.DT_CONFIG_FILE, process.env.DT_MCP_TOKEN_ENV_FILE),
       startupTokens,
       ttl,
+      Date.now,
+      profile,
     );
     await tokenPolicy.refresh();
     for (const client of validClients) {
@@ -208,13 +213,13 @@ const main = async () => {
         const version = await client.getClusterVersion(startupTokens.get(client.alias)!);
         if (!client.validateMinimumVersion(version))
           throw new Error('Configured environment does not meet the minimum supported version');
-        client.clusterVersion = version.version;
+        client.clusterVersion = version.observed === false ? '' : version.version;
       }
     }
   }
 
   // Initialize usage tracking
-  const telemetry = await createAndInitializeTelemetry();
+  const telemetry = profile === 'incident-intelligence' ? undefined : await createAndInitializeTelemetry();
   await telemetry?.trackMcpServerStart();
 
   // Create a shutdown handler that takes shutdown operations as parameters
@@ -244,7 +249,7 @@ const main = async () => {
 
       // Per-user (per-token) rate limiting. userKey identifies the caller for this request.
       if (!rateLimiter.tryAcquire(userKey)) {
-        logger.debug(`Rate-limiting tool execution: ${name}; args: ${JSON.stringify(args)}`);
+        logger.debug(`Rate-limiting tool execution: ${name}`);
         return {
           content: [
             {
@@ -259,7 +264,8 @@ const main = async () => {
       let toolCallSuccessful = false;
 
       try {
-        logger.debug(`Executing tool: ${name}; args: ${JSON.stringify(args)}`);
+        assertToolPermitted(profile, name, annotations.readOnlyHint);
+        logger.debug(`Executing tool: ${name}`);
         const orchestration = [
           'dynatrace_managed_converse_investigation',
           'dynatrace_managed_start_conversation',
@@ -278,7 +284,7 @@ const main = async () => {
             : await cb(args);
         toolCallSuccessful = true;
         logger.debug(
-          `Executed tool: ${name}; args: ${JSON.stringify(args)}; response length ${response.length} chars; ${response}`,
+          `Executed tool: ${name}; response length ${response.length} chars`,
         );
         return {
           content: [{ type: 'text', text: response }],
@@ -367,6 +373,7 @@ const main = async () => {
       annotations: ToolAnnotations,
       cb: (args: TArgs) => Promise<string>,
     ) => {
+      if (!permitsTool(profile, name, annotations.readOnlyHint)) return;
       const handle = registerTool(name, description, paramsSchema, annotations, cb, userKey, server);
       registeredTools.push({ name, readOnly: annotations.readOnlyHint, handle });
       const schema = z.object(paramsSchema).strict();
@@ -377,6 +384,7 @@ const main = async () => {
         inputSchema: toJsonSchemaCompat(schema),
         parse: (args) => schema.parse(args),
         invoke: async (args) => {
+          assertToolPermitted(profile, name, annotations.readOnlyHint);
           if (!rateLimiter.tryAcquire(userKey)) throw Error('MCP rate limit');
           return tokenPolicy
             ? tokenPolicy.execute(name, annotations.readOnlyHint, () => cb(schema.parse(args) as TArgs))
@@ -389,8 +397,9 @@ const main = async () => {
     // Assemble the per-request context and register all tools (grouped by capability in src/tools/*).
     const toolContext: ToolContext = {
       tool,
+      executionProfile: profile,
       conversationTools: () =>
-        conversationCatalog.filter((t) => !tokenPolicy || tokenPolicy.permitted(t.name, t.annotations.readOnlyHint)),
+        conversationCatalog.filter((t) => permitsTool(profile, t.name, t.annotations.readOnlyHint) && (!tokenPolicy || tokenPolicy.permitted(t.name, t.annotations.readOnlyHint))),
       authClientManager,
       metricsClient,
       logsClient,
@@ -432,7 +441,7 @@ const main = async () => {
 
     tokenPolicy?.onChange(() => {
       for (const { name, readOnly, handle } of registeredTools) {
-        const enabled = tokenPolicy!.permitted(name, readOnly);
+        const enabled = permitsTool(profile, name, readOnly) && tokenPolicy!.permitted(name, readOnly);
         if (enabled !== handle.enabled) {
           if (enabled) handle.enable();
           else handle.disable();
@@ -636,7 +645,7 @@ main().catch(async (error) => {
   logErrorObject(error, 'Fatal error in main()');
   try {
     // report error in main
-    const telemetry = await createAndInitializeTelemetry();
+    const telemetry = process.env.DT_MCP_PROFILE === 'incident-intelligence' ? undefined : await createAndInitializeTelemetry();
     await telemetry?.trackError(error, 'main_error');
     await telemetry?.shutdown();
   } catch (e) {

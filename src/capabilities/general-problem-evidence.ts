@@ -1,13 +1,13 @@
 import { normalizeExplainEvent } from './explain-event-context';
 import { collectExplainServiceEvidence } from './explain-service-evidence';
 import { incidentWindow } from './published-problem-diagnosis';
-import { ToolContext } from '../tools/context';
+import type { InvestigationDependencies } from '../core/investigation-engine/dependencies';
 type Reader = (key: string, scope: string, fn: () => Promise<Map<string, any>>) => Promise<any>;
 const validEntity = /^[A-Z][A-Z0-9_]*-[A-F0-9]{16}$/;
 const idOf = (v: any) => typeof v === 'string' ? v : v?.id;
 const clean = (v: any) => String(v ?? '').slice(0, 500);
 /** All entities must originate in this problem; no model supplied selectors/IDs. */
-export async function collectGeneralEvidence(ctx: ToolContext, alias: string, problem: any, result: any, read: Reader) {
+export async function collectGeneralEvidence(ctx: InvestigationDependencies, alias: string, problem: any, result: any, read: Reader) {
   const window = incidentWindow(problem);
   const interval = window ? {from:String(window.from), to:String(window.to)} : {from:'now-2h', to:'now'};
   result.collectionWindow = {...interval, basis:window ? 'incident' : 'recent-context', partial:window?.partial || false};

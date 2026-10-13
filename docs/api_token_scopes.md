@@ -83,3 +83,9 @@ Les sous-lectures vérifient séparément `events.read`, `entities.read`, `metri
 `dynatrace_managed_confirm_conversation_action` exige un droit d’écriture pris en charge (`WriteConfig` ou `slo.write`) à l’exposition, puis revérifie les permissions propres à l’outil proposé. Il ne prend pas de nom d’outil ni de définition arbitraire du client. Une conversation d’environnement ne requiert pas `problems.read` ; une investigation de problème le requiert toujours.
 
 La validation d’une modification dashboard comporte une lecture préalable qui peut nécessiter `ReadConfig`.
+
+## Incident Intelligence profile (Sprint 01)
+
+`DT_MCP_PROFILE=incident-intelligence` enforces an explicit read-only tool allowlist independently of grants. Explain requires problems.read; entities.read, events.read and metrics.read enrich its evidence; logs.read/settings.read are optional. Do not grant WriteConfig/slo.write/ingest scopes to the product token.
+
+The new get_environment_capabilities orchestration has no single mandatory API scope: it observes the caller's validated grants and actual bounded reads, returning unavailable/unverified where necessary. In this profile, get_environments_info reports cached validated configuration without requiring DataExport; the general profile retains its historical mapping above. Clusterversion permission absence is reported as unknown rather than a confirmed minimum version. Token lookup POST is credential validation, not an environment write. API/grant availability must be qualified on the client's Managed version.

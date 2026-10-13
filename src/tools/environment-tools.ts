@@ -70,6 +70,7 @@ function stdioModeVersionResponse(authClient: ManagedAuthClient, tokenScopes?: s
     resp += `- Version: ${authClient.clusterVersion}\n`;
     resp += `- Minimum Version Check: PASSED\n`;
   }
+  if (!authClient.clusterVersion) resp += `- Version: unknown\n- Minimum Version Check: UNVERIFIED\n`;
   resp += tokenScopes
     ? `- Current token API scopes: ${tokenScopes.join(', ')}\n\n\n`
     : `- API scope reference (not verified token grants): ${MANAGED_API_SCOPES.join(', ')}\n\n\n`;
@@ -82,6 +83,10 @@ async function httpModeVersionResponse(authClient: ManagedAuthClient, ctx: ToolC
     const clusterVersion = await authClient.getClusterVersion(ctx.authClientManager.tokenFor(authClient.alias) ?? '');
     const isValidVersion = authClient.validateMinimumVersion(clusterVersion);
     resp += `- Valid Environment: Yes\n`;
+    if (clusterVersion.observed === false) {
+      resp += `- Version: unknown\n- Minimum Version Check: UNVERIFIED\n`;
+      return resp;
+    }
     resp += `- Version: ${clusterVersion.version}\n`;
     resp += `- Minimum Version Check: ${isValidVersion ? 'PASSED' : 'WARNING - Version may not be fully compatible and may not support all features'}\n`;
     resp += `- API scope reference (not verified token grants): ${MANAGED_API_SCOPES.join(', ')}\n\n\n`;

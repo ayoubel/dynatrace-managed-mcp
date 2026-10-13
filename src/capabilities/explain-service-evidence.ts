@@ -1,4 +1,4 @@
-import { ToolContext } from '../tools/context';
+import type { InvestigationDependencies } from '../core/investigation-engine/dependencies';
 import { incidentWindow } from './published-problem-diagnosis';
 type Reader=(key:string,scope:string,fn:()=>Promise<Map<string,any>>)=>Promise<any>;
 export function scopedExplainSeries(data:any,id:string,from:number,to:number,metricId?:string) {
@@ -10,7 +10,7 @@ export function scopedExplainSeries(data:any,id:string,from:number,to:number,met
  const partial=!!data.nextPageKey || r.dataPointCountRatio<1 || r.dimensionCountRatio<1 || points.length>100 || points.length!==all.length || points.some((p:any,i:number)=>i>0&&p.t-points[i-1].t>300000);
  return {count:points.length,mean:points.reduce((n:number,p:any)=>n+p.v,0)/points.length,first:points[0],last:points.at(-1),partial,points:points.slice(-100)};
 }
-export async function collectExplainServiceEvidence(ctx:ToolContext,alias:string,problem:any,result:any,id:string,read:Reader) {
+export async function collectExplainServiceEvidence(ctx:InvestigationDependencies,alias:string,problem:any,result:any,id:string,read:Reader) {
  const partial=()=>{result.coverage={...result.coverage,partial:true};};
  const window=incidentWindow(problem);
  if(!window || window.to<=window.from || window.from<window.to-window.from){partial();result.limitations.push('Fenêtre de référence comparable indisponible ; aucune comparaison service.');return;}

@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosProxyConfig } from 'axios';
+import axios, { AxiosInstance, AxiosProxyConfig, AxiosRequestConfig } from 'axios';
 import { logErrorObject, logger } from '../utils/logger';
 import { ManagedEnvironmentConfig } from '../utils/environment';
 import { MANAGED_API_SCOPES } from './managed-api-scopes';
@@ -7,6 +7,7 @@ export const MINIMUM_VERSION = '1.328.0';
 
 export interface ClusterVersion {
   version: string;
+  observed?: boolean;
 }
 
 export interface ManagedAuthClientParams {
@@ -66,13 +67,14 @@ export class ManagedAuthClient {
     return { Authorization: `Api-Token ${token}` };
   }
 
-  async getTokenScopes(token: string): Promise<string[]> {
+  async getTokenScopes(token: string, options?: Pick<AxiosRequestConfig, 'signal' | 'timeout' | 'maxContentLength'>): Promise<string[]> {
     try {
       const response = await this.httpClient.post<ApiToken>(
         '/api/v2/apiTokens/lookup',
         { token },
         {
           headers: this.authHeader(token),
+          ...options,
         },
       );
       if (
@@ -140,9 +142,9 @@ export class ManagedAuthClient {
         const status = error?.response?.status;
         if (status === 401 || status === 403) {
           logger.warn(
-            `[Alias: ${this.alias}] No permission for /api/v1/config/clusterversion; using minimum version ${this.MINIMUM_VERSION}`,
+            `[Alias: ${this.alias}] No permission for /api/v1/config/clusterversion; version not observed (legacy compatibility fallback ${this.MINIMUM_VERSION})`,
           );
-          return { version: this.MINIMUM_VERSION };
+          return { version: this.MINIMUM_VERSION, observed: false };
         }
       }
       throw error;
@@ -181,12 +183,14 @@ export class ManagedAuthClient {
     endpoint: string,
     token: string,
     params: Record<string, string | number | boolean | undefined> = {},
+    options?: Pick<AxiosRequestConfig, 'signal' | 'timeout' | 'maxContentLength'>,
   ): Promise<T> {
     const url = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
     const requestedAt = Date.now();
     const response = await this.httpClient.get(url, {
       params,
       headers: this.authHeader(token),
+      ...options,
     });
     if (url === '/api/v2/entities' && response.data && typeof response.data === 'object') {
       const receivedAt = Date.now();
@@ -256,8 +260,8 @@ export class ManagedAuthClient {
         return false;
       }
       const clusterVersion = await this.getClusterVersion(token);
-      logger.info(`Connected to Managed cluster version ${clusterVersion.version}`);
-      this.clusterVersion = clusterVersion.version;
+      logger.info(clusterVersion.observed === false ? `Managed cluster version not observed` : `Connected to Managed cluster version ${clusterVersion.version}`);
+      this.clusterVersion = clusterVersion.observed === false ? '' : clusterVersion.version;
 
       const isValidVersion = this.validateMinimumVersion(clusterVersion);
       if (!isValidVersion) {

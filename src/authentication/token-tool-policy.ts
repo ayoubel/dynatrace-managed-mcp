@@ -1,3 +1,4 @@
+import type { ExecutionProfile } from '../core/execution-policy';
 import { permittedTool } from '../tools/token-tool-access';
 
 interface ScopeClient {
@@ -22,6 +23,7 @@ export class TokenToolPolicy {
     private readonly activeTokens: Map<string, string>,
     private readonly ttlMs = 60_000,
     private readonly now: () => number = Date.now,
+    private readonly profile: ExecutionProfile = 'general',
   ) {}
 
   onChange(listener: () => void): void {
@@ -29,6 +31,8 @@ export class TokenToolPolicy {
   }
 
   permitted(name: string, readOnly: boolean | undefined): boolean {
+    if (this.profile === 'incident-intelligence' && name === 'dynatrace_managed_get_environments_info')
+      return this.available && readOnly === true && this.scopes.length > 0 && this.scopes.every(s => s.length > 0);
     return this.available && permittedTool(name, readOnly, this.scopes);
   }
 

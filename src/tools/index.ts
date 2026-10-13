@@ -1,3 +1,5 @@
+import { profiledTools } from '../adapters/mcp/profiled-tools';
+import { registerCapabilityTools } from './capability-tools';
 import { registerConversationTools } from './conversation-tools';
 import { registerInvestigationTools } from './investigation-tools';
 import { registerSloWriteTools } from './slo-write-tools';
@@ -17,7 +19,9 @@ export { ToolContext } from './context';
 /**
  * Registers every Dynatrace Managed tool on the McpServer via the supplied context.
  */
-export function registerAllTools(ctx: ToolContext): void {
+export function registerAllTools(input: ToolContext): void {
+  const ctx = { ...input, tool: profiledTools(input.tool, input.executionProfile || 'general') };
+  registerCapabilityTools(ctx);
   registerEnvironmentTools(ctx);
   registerMetricsTools(ctx);
   registerLogsTools(ctx);

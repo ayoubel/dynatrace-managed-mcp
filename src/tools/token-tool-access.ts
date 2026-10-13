@@ -37,6 +37,7 @@ export const toolScopes = new Map<string, string>(
 );
 
 export function permittedTool(name: string, readOnly: boolean | undefined, scopes: string[][]): boolean {
+  if (name === 'dynatrace_managed_get_environment_capabilities') return readOnly === true && scopes.length > 0 && scopes.every(s => s.length > 0);
   const conversationScope = (s:string[]) => s.some(scope => Object.keys(groups).includes(scope));
   if(['dynatrace_managed_start_conversation','dynatrace_managed_analyze_context','dynatrace_managed_converse_investigation'].includes(name))
     return readOnly===true && scopes.length>0 && scopes.every(conversationScope);

@@ -1,6 +1,7 @@
+import { recordingDependencies, attachInvestigationContract } from '../core/investigation-engine/provenance';
 import { normalizeExplainEvent } from './explain-event-context';
 import { randomUUID } from 'node:crypto';
-import { ToolContext } from '../tools/context';
+import type { InvestigationDependencies } from '../core/investigation-engine/dependencies';
 import { collectGeneralEvidence } from './general-problem-evidence';
 import { enrichPublishedDiagnosis, incidentWindow } from './published-problem-diagnosis';
 import { buildExplainReport } from './problem-explain-report';
@@ -62,7 +63,7 @@ export function summarizeDiskSeries(response: any, hostId: string, diskId: strin
   };
 }
 export async function investigateManagedProblem(
-  ctx: ToolContext,
+  inputDependencies: InvestigationDependencies,
   args: {
     environment_alias: string;
     problemId?: string;
@@ -73,6 +74,8 @@ export async function investigateManagedProblem(
   owner = 'stdio',
   options: {paceMs: number; model?: InvestigationModel | null; explain?: boolean} = { paceMs: 1100 },
 ) {
+  const ctx = recordingDependencies(inputDependencies, source => { trace.at(-1).source = source; trace.at(-1).collectedAt = new Date().toISOString(); });
+  if (ctx.executionProfile === 'incident-intelligence') options = { ...options, model: null };
   const alias = args.environment_alias;
   if (!ctx.authClientManager.validAliases.includes(alias) || alias === 'ALL_ENVIRONMENTS' || alias.includes(';'))
     throw Error('Choose one valid environment');
@@ -90,7 +93,7 @@ export async function investigateManagedProblem(
       try {
         const plan = await model.plan(args.question, prior.report, prior.conversation);
         if (plan !== 'answer' && plan !== 'clarify') {
-          result = await investigateManagedProblem(ctx, {
+          result = await investigateManagedProblem(inputDependencies, {
             environment_alias: alias, investigationId: args.investigationId, action: plan,
           }, owner, {...options, model: null});
         } else result.trace = [];
@@ -128,7 +131,7 @@ export async function investigateManagedProblem(
       investigationId: args.investigationId,
       environment: { alias, url },
       summary: 'Choisir une piste : seuil, tendance, logs, rétablissement ou origine des écritures.',
-      llm: { status: process.env.DT_MCP_OLLAMA_ENABLED === 'true' ? 'available' : 'disabled' },
+      llm: { status: ctx.executionProfile === 'incident-intelligence' || options.model === null ? 'disabled' : process.env.DT_MCP_OLLAMA_ENABLED === 'true' ? 'available' : 'disabled' },
     nextSteps: actions(),
     };
   const problemId = prior?.problemId || args.problemId;
@@ -221,7 +224,7 @@ export async function investigateManagedProblem(
     evidence,
     trace,
     limitations,
-    llm: {status:process.env.DT_MCP_OLLAMA_ENABLED === 'true' ? 'available' : 'disabled'},
+    llm: {status:options.model === null || ctx.executionProfile === 'incident-intelligence' ? 'disabled' : process.env.DT_MCP_OLLAMA_ENABLED === 'true' ? 'available' : 'disabled'},
     nextSteps: actions(),
     scope: null,
     cause: { status: 'unknown', text: 'La cause de cet incident n’est pas établie par les preuves collectées.' },
@@ -584,6 +587,7 @@ export async function investigateManagedProblem(
   result.steps = [...(prior?.steps || []), { action, collectedAt: result.collectedAt, summary: result.summary }].slice(
     -10,
   );
+  attachInvestigationContract(result);
   while (sessions.size >= 100 && !sessions.has(result.investigationId)) sessions.delete(sessions.keys().next().value!);
   sessions.set(result.investigationId, {
     owner,
@@ -599,14 +603,14 @@ export async function investigateManagedProblem(
   result.expiresAt = new Date(Date.now() + ttl).toISOString();
   return result;
 }
-export function investigationContext(ctx: ToolContext, alias: string, id: string, owner = 'stdio') {
+export function investigationContext(ctx: InvestigationDependencies, alias: string, id: string, owner = 'stdio') {
   const session = sessions.get(id);
   if (!session || session.expires < Date.now() || session.owner !== owner || session.alias !== alias ||
       session.url !== ctx.authClientManager.getBaseUrl(alias)) throw Error('Investigation expired or unavailable in this environment');
   return {report: structuredClone(session.report), conversation: structuredClone(session.conversation), expiresAt: new Date(session.expires).toISOString()};
 }
 /** Register an environment conversation without fabricating a Dynatrace problem. */
-export function createEnvironmentConversation(ctx: ToolContext, alias: string, target: any = {kind:'environment'}) {
+export function createEnvironmentConversation(ctx: InvestigationDependencies, alias: string, target: any = {kind:'environment'}) {
   if (!ctx.authClientManager.validAliases.includes(alias)) throw Error('Environment unavailable');
   const url = ctx.authClientManager.getBaseUrl(alias), id = randomUUID(), expires = Date.now() + ttl;
   const report:any = {
@@ -630,7 +634,7 @@ function actions() {
   ];
 }
 
-export function updateInvestigationConversation(ctx:ToolContext,alias:string,id:string,report:any,conversation:any[]) {
+export function updateInvestigationConversation(ctx:InvestigationDependencies,alias:string,id:string,report:any,conversation:any[]) {
   investigationContext(ctx,alias,id,ctx.investigationOwner);
   const session=sessions.get(id)!;session.expires=Date.now()+ttl;report.expiresAt=new Date(session.expires).toISOString();session.report=structuredClone(report);session.conversation=structuredClone(conversation);
 }

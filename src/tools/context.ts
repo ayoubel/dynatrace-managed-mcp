@@ -25,7 +25,16 @@ export type ToolRegistrar = <TArgs = undefined>(
  * Per-request dependencies shared by all tool registration functions. Built once per
  * McpServer instance (per request in stateless HTTP mode) and passed to each register*Tools().
  */
+export interface ConversationTool {
+  name: string;
+  description: string;
+  inputSchema: any;
+  annotations: ToolAnnotations;
+  parse: (args: any) => any;
+  invoke: (args: any) => Promise<string>;
+}
 export interface ToolContext {
+  conversationTools?: () => ConversationTool[];
   tool: ToolRegistrar;
   authClientManager: ManagedAuthClientManager;
   metricsClient: MetricsApiClient;

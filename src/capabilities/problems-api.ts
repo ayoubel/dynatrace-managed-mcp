@@ -98,7 +98,7 @@ export class ProblemsApiClient {
   async getProblemDetails(problemId: string, environment_aliases: string): Promise<Map<string, Problem>> {
     const responses = await this.authManager.makeRequests<Problem>(
       `/api/v2/problems/${encodeURIComponent(problemId)}`,
-      {},
+      { fields: 'evidenceDetails,impactAnalysis' },
       environment_aliases,
     );
 

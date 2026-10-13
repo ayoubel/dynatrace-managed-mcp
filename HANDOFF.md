@@ -1,5 +1,13 @@
 # Reprise — serveur MCP Dynatrace Managed in-house
 
+## Mode sans Ollama — 12 octobre 2026
+
+Le lanceur de l’extension désactive explicitement Ollama sans supprimer runtime/modèles/configurations. Le MCP demande evidenceDetails et impactAnalysis, produit une chronologie, des impacts par entité et un diagnostic déterministe (cause Davis publiée séparée du mécanisme inconnu). Les lectures générales sont centrées sur l’incident, bornées aux deux dernières heures, avec fallback de contexte récent explicitement qualifié si dates invalides. 392 tests MCP réussis, 47 ignorés ; build réussi. Lecture réelle du problème fourni : rapport terminé, llm disabled, diagnosis deterministic, une preuve publiée et chronologie. Aucun write. Voir docs/evaluation/managed-github-structures.md pour les skills Managed trouvés ; pas d’installation ni moteur de remédiation universel.
+
+## Validation locale — 12 octobre 2026
+
+Sessions sans problème via start_conversation et continuation sur la même session. Lectures réelles Host/Service et question sur l’identifiant d’environnement vérifiées ; aucun appel d’écriture. Tests : 388 réussis, 47 ignorés. Guide public dt-obs-problems évalué avec et sans sur données fictives via Ollama local : aucune amélioration factuelle suffisante pour activer son injection. Voir docs/evaluation/managed-skill-assessment.md. La méthode peut guider les capacités déterministes du MCP ; le diagnostic universel reste non réalisé.
+
 > État courant de publication : voir la dernière section « Publication de la branche ». Les états précédents sont historiques.
 
 État du 8 octobre 2026 : version 2 fusionnée localement dans `main`, commit de code **`abcb678`**, branche `feature/obsolescence-compliance-v2` conservée. Pas de push effectué pour cette intégration. Des commits de documentation peuvent suivre. Vérifier `git status`, `git log` et l’objectif du nouveau prompt avant de changer du code.
@@ -79,3 +87,33 @@ Commit de fonctionnalité MCP `c7f2043` ; branche `feature/problem-investigation
 ### Publication Daybreak confirmée
 
 Dépôt GitHub privé créé à la demande du propriétaire : `https://github.com/ayoubel/daybreak`. Remote Daybreak `origin` configuré ; branche `feature/problem-investigation-mcp` poussée et suivie. MCP publié sur son origin `https://github.com/ayoubel/dynatrace-managed-mcp`, même branche. Les mentions précédentes « Daybreak sans remote » sont historiques. Aucun merge, aucune PR créée ; configurations et fichiers locaux préexistants toujours exclus.
+
+## Conversation locale et preuves générales — 12 octobre
+
+Voir docs/local-conversation.md. Sur la branche existante feature/problem-investigation-mcp : collecte hors disque bornée et outils collect_problem_evidence/get_investigation_context ; continuation context/events/metrics ; session stockant dernier rapport et six échanges. Ollama local optionnel, activé par DT_MCP_OLLAMA_ENABLED=true ; endpoint loopback uniquement, modèle installé, sans cloud ni génération libre des valeurs. Routage et sélection d’un fait via modèle, rendu de faits vérifiés par MCP. La qualité et couverture restent limitées ; ce n’est pas un diagnostic universel. Configurations, certificats, fichiers locaux et modification préexistante .github/copilot-instructions.md préservés. Aucun push, merge ou écriture Dynatrace.
+
+## Explain Managed — version du 12 octobre 2026
+
+Nouveau tool read-only dynatrace_managed_explain_problem : contrat directement restituable, sans LLM, sur la session d'investigation existante. Sections incident, impact par entité, cause publiée Davis distincte du mécanisme inconnu, recommandations conditionnelles. Collectes disque et service erreurs/latence, baseline comparable bornée ; plan générique conservateur. Voir docs/managed-explain-spec.md. 395 tests réussis, 47 tests ignorés ; build réussi. Revue review-agent : comparaison disque indue sur séries service corrigée avec test de régression ; estimation utilisateur affichée par entité ; parser de métadonnées passerelle corrigé après vérification live. Aucun push, merge, changement de secret ou écriture Dynatrace.
+
+Validation live finale via passerelle : Explain disque terminé sans LLM, 17 lectures ; rafraîchissement sur même session MCP confirmé. Le service erreurs/latence est couvert par fixtures/tests, pas encore validé sur un incident service réel.
+
+## Parcours contextuels — 12 octobre
+
+analyze_context déterministe sans LLM ; bilan environnement, hôte/service et définition dashboard/contrat métrique. Voir docs/context-analysis.md pour revue, corrections, validations live et dernières vérifications restant à lancer. Verrou imbriqué corrigé, hôte live 10 constats/8 lectures, même job/session au rafraîchissement ; dashboard live 11 constats. Aucune écriture Dynatrace ni push.
+
+## Test événement synthétique demandé — 12 octobre
+
+Préflight du token actuel pour l'environnement 5649c3bb-44c7-4373-b15b-77950f77b31a : problems.read présent, events.ingest absent. Aucun événement ni problème créé. Payload prêt : poc/test-events/daybreak-context-test.json (CUSTOM_ALERT clairement TEST, hôte connu, expiration 5 min, aucune fausse affirmation de saturation). Nécessite events.ingest configuré localement ; ne pas demander de token dans le chat, ne pas changer les permissions automatiquement.
+
+## Explain compact et Fix descriptif — 12 octobre
+
+Contrat enrichi et politique versionnée dans explain-remediation.ts ; trois sections, noms des entités, durée, comparaisons structurées aux fenêtres adjacentes égales et unités lisibles. Corrections disque/service conditionnelles avec étapes et validation, jamais exécutables. Les autres catégories n’ont pas de fix spécifique inventé. 399 tests unitaires et build réussis. Voir docs/managed-explain-spec.md. Pas de nouvelle collecte d’endpoint, push ou écriture Dynatrace.
+
+## Événement synthétique et Explain live — 12 octobre
+
+Token dédié fourni localement par le propriétaire, non affiché. Un seul CUSTOM_ALERT [DAYBREAK TEST] ingéré sur HOST-B657C60AA69325CC, timeout 5 min ; aucune métrique, configuration ou remédiation modifiée. Dynatrace a ouvert P-2610395. Explain via passerelle 4318 et MCP existant terminé, LLM désactivé ; rapport partiel, cause inconnue, aucune saturation inventée. Plan générique : le titre disque ne constitue pas une preuve de sélecteur/volume. La collecte générique a retenu des métriques billing DDU peu pertinentes et non exploitables : limite identifiée, scénario insuffisant pour qualifier l'analyse disque/service riche. Résultats locaux dans poc/test-events/, non publiés et à exclure de tout ajout Git. Passerelle relancée après constat d'absence de listener ; historique préservé. Chrome natif non vérifié. Aucun push/merge.
+
+## 2026-10-13 — Évaluation Explain diversifiée
+
+Cinq nouveaux problèmes seulement : P-2610396 à P-2610400 (minimal, disque déclaré, infra CPU/mémoire, service, moniteur HTTP). Contexte déclaré distinct des mesures, collecte adaptée au type et statut partiel corrigés ; recommandations conditionnelles uniquement. Voir ../dynatrace-managed-mcp-poc/docs/evaluation/managed-explain-five-cases.md. Tests : MCP 408 + build, passerelle 140, extension 10. UI fictive 380 px vérifiée ; Chrome natif non validé. Passerelle 4318 relancée avec MCP à jour et LLM désactivé ; recharger extension et lancer une nouvelle analyse pour voir les changements. Aucune publication ni remédiation. Données brutes locales non publiables.

@@ -93,7 +93,8 @@ describe('Local token rotation over MCP', () => {
     await client.callTool({ name: 'dynatrace_managed_list_dashboards', arguments: { environment_alias: 'test' } });
     expect(dashboardTokens).toEqual(['writer']);
     expect(lookups).toBe(2);
-    expect(client.getServerCapabilities()?.prompts).toBeUndefined();
+    expect(client.getServerCapabilities()?.prompts).toBeDefined();
+    expect((await client.listPrompts()).prompts.map(prompt => prompt.name)).toContain('continue_investigation');
     writeFileSync(join(dir, '.env'), 'ROTATING_TOKEN=invalid\n');
     const rejected = await client.callTool({
       name: 'dynatrace_managed_list_dashboards',

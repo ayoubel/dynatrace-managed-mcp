@@ -15,11 +15,20 @@ const groups: Record<string, string[]> = {
   'logs.read': ['query_logs'],
   'metrics.read': ['list_available_metrics', 'query_metrics_data', 'get_metric_details', 'preview_slo'],
   'slo.write': ['create_slo'],
-  'problems.read': ['list_problems', 'get_problem_details', 'investigate_problem', 'continue_investigation'],
+  'problems.read': [
+    'list_problems',
+    'get_problem_details',
+    'investigate_problem',
+    'explain_problem',
+    'continue_investigation',
+    'collect_problem_evidence',
+    'get_investigation_context',
+    'prepare_problem_dashboard',
+  ],
   'securityProblems.read': ['list_security_problems', 'get_security_problem_details'],
   'slo.read': ['list_slos', 'get_slo_details'],
   'ReadConfig': ['list_dashboards', 'get_dashboard'],
-  'WriteConfig': ['validate_dashboard', 'create_dashboard', 'update_dashboard'],
+  'WriteConfig': ['validate_dashboard', 'validate_dashboard_update', 'create_dashboard', 'update_dashboard'],
 };
 export const toolScopes = new Map<string, string>(
   Object.entries(groups).flatMap(([scope, tools]) =>
@@ -28,6 +37,15 @@ export const toolScopes = new Map<string, string>(
 );
 
 export function permittedTool(name: string, readOnly: boolean | undefined, scopes: string[][]): boolean {
+  const conversationScope = (s:string[]) => s.some(scope => Object.keys(groups).includes(scope));
+  if(['dynatrace_managed_start_conversation','dynatrace_managed_analyze_context','dynatrace_managed_converse_investigation'].includes(name))
+    return readOnly===true && scopes.length>0 && scopes.every(conversationScope);
+  if (name === 'dynatrace_managed_confirm_conversation_action')
+    return (
+      readOnly === false &&
+      scopes.length > 0 &&
+      scopes.every((s) => conversationScope(s) && (s.includes('WriteConfig') || s.includes('slo.write')))
+    );
   const required = toolScopes.get(name);
   // Multiple environments use the intersection so every exposed tool is usable in each.
   const supportedWrite =

@@ -1,13 +1,18 @@
+import { normalizeExplainEvent } from './explain-event-context';
 import { randomUUID } from 'node:crypto';
 import { ToolContext } from '../tools/context';
+import { collectGeneralEvidence } from './general-problem-evidence';
+import { enrichPublishedDiagnosis, incidentWindow } from './published-problem-diagnosis';
+import { buildExplainReport } from './problem-explain-report';
+import { configuredInvestigationModel, InvestigationModel } from './local-investigation-model';
 
-export type InvestigationAction = 'overview' | 'trend' | 'logs' | 'recovery' | 'writers' | 'threshold';
+export type InvestigationAction = 'overview' | 'trend' | 'logs' | 'recovery' | 'writers' | 'threshold' | 'context' | 'events' | 'metrics';
 const entityId = (value: any): string | undefined => (typeof value === 'string' ? value : value?.id);
 const clean = (value: any): string => String(value ?? '').slice(0, 500);
 const idPattern = /^(HOST|DISK)-[A-F0-9]{16}$/;
 const sessions = new Map<
   string,
-  { owner: string; alias: string; url: string; problemId: string; diskId?: string; expires: number; steps: any[] }
+  { owner: string; alias: string; url: string; problemId?: string; diskId?: string; expires: number; steps: any[]; report: any; conversation: any[] }
 >();
 const ttl = 30 * 60 * 1000;
 export function resolveInvestigationAction(question: string): InvestigationAction | null {
@@ -66,7 +71,7 @@ export async function investigateManagedProblem(
     question?: string;
   },
   owner = 'stdio',
-  options = { paceMs: 1100 },
+  options: {paceMs: number; model?: InvestigationModel | null; explain?: boolean} = { paceMs: 1100 },
 ) {
   const alias = args.environment_alias;
   if (!ctx.authClientManager.validAliases.includes(alias) || alias === 'ALL_ENVIRONMENTS' || alias.includes(';'))
@@ -77,6 +82,44 @@ export async function investigateManagedProblem(
   const prior = args.investigationId ? sessions.get(args.investigationId) : undefined;
   if (args.investigationId && (!prior || prior.owner !== owner || prior.alias !== alias || prior.url !== url))
     throw Error('Investigation expired or unavailable in this environment; start a new investigation');
+  if (args.question && prior) {
+    const model = options.model === undefined ? configuredInvestigationModel() : options.model;
+    if (model) {
+      let result = structuredClone(prior.report);
+      result.trace = [];
+      try {
+        const plan = await model.plan(args.question, prior.report, prior.conversation);
+        if (plan !== 'answer' && plan !== 'clarify') {
+          result = await investigateManagedProblem(ctx, {
+            environment_alias: alias, investigationId: args.investigationId, action: plan,
+          }, owner, {...options, model: null});
+        } else result.trace = [];
+        const response = plan === 'clarify' ? {answer: 'Peux-tu préciser la vérification souhaitée ? Cette investigation permet uniquement des lectures des preuves du problème.', evidenceRefs: [], needsClarification: true} : await model.answer(args.question, {...result, selectionAction: plan}, prior.conversation);
+        if (!response.needsClarification && !response.evidenceRefs.length) throw Error('No supporting evidence');
+        result.answer = response;
+        result.answeredAt = new Date().toISOString();
+        result.summary = response.answer;
+        result.action = plan;
+        result.status = response.needsClarification ? 'needs_clarification' : result.status;
+        result.llm = {provider: 'ollama-local', status: 'completed', mode: 'fact-selection'};
+        result.limitations = [...new Set([...result.limitations, 'Le modèle local sélectionne les lectures et les faits ; les valeurs et conclusions sont construites par le MCP. La pertinence de la sélection reste à vérifier.'])];
+        if (plan === 'answer' || plan === 'clarify') result.steps = [...prior.steps, {action: plan, collectedAt: result.answeredAt, summary: result.summary}].slice(-10);
+        const current = sessions.get(args.investigationId!)!;
+        current.expires = Date.now() + ttl;
+        result.expiresAt = new Date(current.expires).toISOString();
+        current.report = structuredClone(result);
+        current.steps = result.steps;
+        current.conversation = [...prior.conversation, {question: args.question, answer: response.answer}].slice(-6);
+        return result;
+      } catch {
+        // Never expose errors containing inference or API request data; no keyword fallback.
+        delete result.answer;
+        return {...result, status: 'partial', action: 'answer', summary: 'Réponse locale indisponible ou non vérifiable. Les constats précédents restent disponibles.',
+          llm: {provider: 'ollama-local', status: 'unavailable'},
+          limitations: [...result.limitations, 'Ollama indisponible, réponse incomplète ou références de preuves invalides.']};
+      }
+    }
+  }
   const action = args.question ? resolveInvestigationAction(args.question) : args.action || 'overview';
   if (!action)
     return {
@@ -85,7 +128,8 @@ export async function investigateManagedProblem(
       investigationId: args.investigationId,
       environment: { alias, url },
       summary: 'Choisir une piste : seuil, tendance, logs, rétablissement ou origine des écritures.',
-      nextSteps: actions(),
+      llm: { status: process.env.DT_MCP_OLLAMA_ENABLED === 'true' ? 'available' : 'disabled' },
+    nextSteps: actions(),
     };
   const problemId = prior?.problemId || args.problemId;
   if (!problemId || problemId.length > 200) throw Error('A problem ID is required');
@@ -148,14 +192,17 @@ export async function investigateManagedProblem(
     ),
   ];
   const events: any[] = [];
+  if(rawEvidence.length>3)limitations.push('Contexte détaillé limité aux trois premières preuves de l’incident.');
   for (const e of rawEvidence.slice(0, 3)) {
     let event = e.data;
     if (!Array.isArray(event?.properties) && e.eventId)
       event = await read('event', 'events.read', () => ctx.eventsClient.getEventDetails(e.eventId, alias));
-    if (Array.isArray(event?.properties)) events.push(event);
+    if (event && typeof event==='object' && (event.eventId || event.eventType)) events.push(event);
   }
+    for (const [i, event] of events.entries()) evidence.push({id: 'published-event-' + i, kind: 'events', returned: 1,
+      events: [normalizeExplainEvent(event)]});
   const diskEvents = events
-    .map((e) => ({ event: e, properties: Object.fromEntries(e.properties.map((p: any) => [p.key, p.value])) }))
+    .map((e) => ({ event: e, properties: Object.fromEntries((Array.isArray(e.properties)?e.properties:[]).map((p: any) => [p.key, p.value])) }))
     .filter(({ properties: p }) =>
       /^\(?builtin:host\.disk\.(used|usedPct)\)?(?=:|$)/.test(p['dt.event.metric_selector'] || ''),
     );
@@ -166,13 +213,15 @@ export async function investigateManagedProblem(
     version: 1,
     investigationId: args.investigationId || randomUUID(),
     environment: { alias, url },
-    problem: { id: problemId, title: clean(problem.title), status: problem.status, startTime: problem.startTime },
+    problem: { id: problemId, displayId: problem.displayId, title: clean(problem.title), status: problem.status, startTime: problem.startTime },
     collectedAt: new Date().toISOString(),
     action,
+    explainRequested: options.explain === true || !!prior?.report.explain,
     findings,
     evidence,
     trace,
     limitations,
+    llm: {status:process.env.DT_MCP_OLLAMA_ENABLED === 'true' ? 'available' : 'disabled'},
     nextSteps: actions(),
     scope: null,
     cause: { status: 'unknown', text: 'La cause de cet incident n’est pas établie par les preuves collectées.' },
@@ -193,7 +242,8 @@ export async function investigateManagedProblem(
       'Une entité désignée par Davis ne constitue pas à elle seule une explication du mécanisme causal.',
     );
   }
-  if (selected) {
+  const useDisk = selected && !['context', 'events', 'metrics'].includes(action);
+  if (useDisk) {
     const p = selected.properties,
       selector = String(p['dt.event.metric_selector']);
     const hosts = [...new Set(selector.match(/HOST-[A-F0-9]{16}/g) || [])];
@@ -248,7 +298,10 @@ export async function investigateManagedProblem(
           description: clean(metric.description),
         });
       const host = await read('host', 'entities.read', () => ctx.entitiesClient.getEntityDetails(hostId, alias));
-      if (host?.entityId === hostId) result.scope.hostName = clean(host.displayName);
+      if (host?.entityId === hostId) {
+        result.scope.hostName = clean(host.displayName);
+        evidence.push({id: trace[trace.length - 1].id, kind: 'entity', entityId: hostId, type: 'HOST', name: result.scope.hostName});
+      }
       const disk = await read('disk', 'entities.read', () => ctx.entitiesClient.getEntityDetails(diskId, alias));
       const diskRef = trace[trace.length - 1].id;
       if (disk?.entityId === diskId) {
@@ -324,6 +377,16 @@ export async function investigateManagedProblem(
           from: new Date(selected.event.startTime - 3600000).toISOString(),
           to: new Date(selected.event.startTime + 3600000).toISOString(),
         });
+      if (result.explainRequested) {
+        const incident = incidentWindow(problem);
+        windows.splice(1);
+        if (incident) {
+          windows.push({label:'incident',from:String(incident.from),to:String(incident.to)});
+          const duration=incident.to-incident.from;
+          if (duration>0 && incident.from>=duration) windows.push({label:'baseline',from:String(incident.from-duration),to:String(incident.from)});
+          if(incident.partial) limitations.push('Fenêtre disque incidente limitée aux deux dernières heures.');
+        } else limitations.push('Dates incidentes invalides : comparaison disque non disponible.');
+      }
       for (const window of windows) {
         const data = await read('disk-' + window.label, 'metrics.read', () =>
           ctx.metricsClient.queryMetrics(
@@ -337,7 +400,8 @@ export async function investigateManagedProblem(
             alias,
           ),
         );
-        const summary = summarizeDiskSeries(data, hostId, diskId),
+        const checkedData = result.explainRequested && window.label !== 'recent' ? { ...data, result:(data?.result || []).map((r:any)=>({...r,data:(r.data || []).map((s:any)=>({...s,values:(s.timestamps || []).map((t:number,i:number)=>t >= Number(window.from) && t < Number(window.to) ? s.values?.[i] : null)}))})) } : data;
+        const summary = summarizeDiskSeries(checkedData, hostId, diskId),
           ref = trace[trace.length - 1].id;
         if (!summary) {
           limitations.push('Mesures ' + window.label + ' absentes, ambiguës ou sans dimensions confirmées.');
@@ -347,6 +411,10 @@ export async function investigateManagedProblem(
           id: ref,
           kind: 'series',
           window: window.label,
+          entityId: diskId,
+          hostId,
+          from: Number(window.from),
+          to: Number(window.to),
           metricId,
           unit: metric?.unit || null,
           ...summary,
@@ -493,17 +561,24 @@ export async function investigateManagedProblem(
       if (diskEvents.length > 1)
         limitations.push('Investigation ciblée sur un seul Disk ; autres événements disque non examinés.');
     }
-  } else
-    limitations.push(
-      'Aucun sélecteur disque précis pris en charge dans les preuves. Diagnostic Davis conservé, sans métriques génériques substituées.',
-    );
+  } else {
+    result.eventMetricIds = [...new Set(events.map(e => (Array.isArray(e.properties)?e.properties:[]).find((p: any) => p.key === 'dt.event.metric_selector')?.value)
+      .map(value => String(value || '').match(/^\(?((?:builtin:)?[A-Za-z0-9_.-]+)\)?(?=:|$)/)?.[1]).filter(Boolean))];
+    await collectGeneralEvidence(ctx, alias, problem, result, read);
+    if (['writers', 'threshold'].includes(action)) limitations.push('Cette piste spécialisée ne dispose pas de preuves suffisantes pour ce problème.');
+  }
   limitations.push(
     'Cause technique non déduite d’une simple corrélation. Lectures bornées ; aucun accès direct au filesystem, aucune commande exécutée.',
   );
-  result.summary = result.scope
+  result.summary = useDisk && result.scope
     ? 'Usage disque signalé · origine des écritures à confirmer'
-    : 'Problème relu · preuves insuffisantes pour une investigation disque';
-  result.status = trace.some((t) => t.status !== 'ok') || evidence.some(e => e.gaps || e.truncated) ? 'partial' : 'completed';
+    : 'Problème relu · impact, entités et preuves disponibles';
+  enrichPublishedDiagnosis(problem, result);
+  if(result.explainRequested) result.explain=buildExplainReport(problem,result);
+  delete result.explainRequested;
+  delete result.explainMetricsCollected;
+  result.status = trace.some((t) => t.status !== 'ok') || evidence.some(e => e.gaps || e.truncated || e.partial) || result.coverage?.partial ? 'partial' : 'completed';
+  delete result.eventMetricIds;
   result.completedAt = new Date().toISOString();
   result.problemUrl = url + '/#problems/problemdetails;pid=' + encodeURIComponent(problemId);
   result.steps = [...(prior?.steps || []), { action, collectedAt: result.collectedAt, summary: result.summary }].slice(
@@ -518,9 +593,32 @@ export async function investigateManagedProblem(
     diskId: result.scope?.diskId || prior?.diskId,
     expires: Date.now() + ttl,
     steps: result.steps,
+    report: structuredClone(result),
+    conversation: prior?.conversation || [],
   });
   result.expiresAt = new Date(Date.now() + ttl).toISOString();
   return result;
+}
+export function investigationContext(ctx: ToolContext, alias: string, id: string, owner = 'stdio') {
+  const session = sessions.get(id);
+  if (!session || session.expires < Date.now() || session.owner !== owner || session.alias !== alias ||
+      session.url !== ctx.authClientManager.getBaseUrl(alias)) throw Error('Investigation expired or unavailable in this environment');
+  return {report: structuredClone(session.report), conversation: structuredClone(session.conversation), expiresAt: new Date(session.expires).toISOString()};
+}
+/** Register an environment conversation without fabricating a Dynatrace problem. */
+export function createEnvironmentConversation(ctx: ToolContext, alias: string, target: any = {kind:'environment'}) {
+  if (!ctx.authClientManager.validAliases.includes(alias)) throw Error('Environment unavailable');
+  const url = ctx.authClientManager.getBaseUrl(alias), id = randomUUID(), expires = Date.now() + ttl;
+  const report:any = {
+    version:1, investigationId:id, sessionKind:'environment', environment:{alias,url}, problem:null,
+    llm:{status:process.env.DT_MCP_OLLAMA_ENABLED === 'true' ? 'available' : 'disabled'}, contextTarget:target, scope:{entities:[]}, evidence:[], findings:[], trace:[], nextSteps:[], steps:[],
+    summary:'Conversation sur cet environnement.', status:'completed', collectedAt:new Date().toISOString(),
+    expiresAt:new Date(expires).toISOString(), limitations:['Session MCP : 30 minutes ; perdue au redémarrage.'],
+  };
+  for(const [key, session] of sessions) if(session.expires < Date.now()) sessions.delete(key);
+  while(sessions.size >= 100) sessions.delete(sessions.keys().next().value!);
+  sessions.set(id,{owner:ctx.investigationOwner || 'stdio',alias,url,expires,steps:[],report:structuredClone(report),conversation:[]});
+  return report;
 }
 function actions() {
   return [
@@ -530,4 +628,9 @@ function actions() {
     { id: 'recovery', label: 'Relire l’état' },
     { id: 'writers', label: 'Origine des écritures' },
   ];
+}
+
+export function updateInvestigationConversation(ctx:ToolContext,alias:string,id:string,report:any,conversation:any[]) {
+  investigationContext(ctx,alias,id,ctx.investigationOwner);
+  const session=sessions.get(id)!;session.expires=Date.now()+ttl;report.expiresAt=new Date(session.expires).toISOString();session.report=structuredClone(report);session.conversation=structuredClone(conversation);
 }

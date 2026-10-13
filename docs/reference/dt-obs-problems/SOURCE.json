@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/Dynatrace/dynatrace-for-ai",
+  "revision": "f4da5a6a86c0620ff0c0c343dc9a4ab90e0eb40c",
+  "license": "Apache-2.0",
+  "retrieved": "2026-10-12",
+  "purpose": "Read-only reference for evaluation; not installed or loaded by the production MCP."
+}

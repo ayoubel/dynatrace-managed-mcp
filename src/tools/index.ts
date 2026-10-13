@@ -1,3 +1,4 @@
+import { registerConversationTools } from './conversation-tools';
 import { registerInvestigationTools } from './investigation-tools';
 import { registerSloWriteTools } from './slo-write-tools';
 import { ToolContext } from './context';
@@ -28,4 +29,5 @@ export function registerAllTools(ctx: ToolContext): void {
   registerSloTools(ctx);
   registerSloWriteTools(ctx);
   registerDashboardTools(ctx);
+  registerConversationTools(ctx);
 }

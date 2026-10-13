@@ -1,0 +1,107 @@
+{
+  "model": "qwen3:1.7b",
+  "synthetic": true,
+  "temperature": 0,
+  "maxOutputTokens": 450,
+  "results": [
+    {
+      "variant": "without",
+      "fixture": "disk-insufficient",
+      "contextTokens": 4096,
+      "guideBytes": 0,
+      "doneReason": "stop",
+      "promptTokens": 335,
+      "outputTokens": 84,
+      "complete": true,
+      "response": {
+        "answer": "L'erreur est due à un manque de place sur le disque /data. L'étape de remédiation a été de libérer du espace en supprimant des fichiers inutiles et de réorganiser les données pour améliorer l'utilisation du disque. L'ID de preuve utilisé est E1.",
+        "evidenceRefs": [
+          "E1"
+        ]
+      },
+      "seconds": 20.832
+    },
+    {
+      "variant": "without",
+      "fixture": "service-failure",
+      "contextTokens": 4096,
+      "guideBytes": 0,
+      "doneReason": "stop",
+      "promptTokens": 397,
+      "outputTokens": 134,
+      "complete": true,
+      "response": {
+        "answer": "L'augmentation de la fréquence des requêtes externes a entraîné une perte de performance. Les étapes de remédiation incluent l'analyse des logs, la détection de la cause racine (requêtes externes), et la mise en place de mesures pour réduire la charge. La preuve E1 indique l'impact sur les services et les utilisateurs, E2 montre l'erreur rate et le temps de réponse, et E3 indique la perte de logs.",
+        "evidenceRefs": [
+          "E1",
+          "E2",
+          "E3"
+        ]
+      },
+      "seconds": 20.406
+    },
+    {
+      "variant": "managed-adapted",
+      "fixture": "disk-insufficient",
+      "contextTokens": 4096,
+      "guideBytes": 2173,
+      "doneReason": "stop",
+      "promptTokens": 904,
+      "outputTokens": 144,
+      "complete": true,
+      "response": {
+        "answer": "Ce qui s’est passé : L’usage du disque /data a dépassé les capacités prévues, entraînant une perte de disque disponible. La cause est liée à l’usage excessif du disque. Les étapes de remédiation incluent la vérification des logs, la détection de l’usage du disque, et la mise en place de mesures de gestion du disque pour éviter des pannes futures. Les données manquantes incluent la preuve des logs et des mesures de gestion du disque avant l’incident.",
+        "evidenceRefs": [
+          "E1",
+          "E2"
+        ]
+      },
+      "seconds": 29.035
+    },
+    {
+      "variant": "managed-adapted",
+      "fixture": "service-failure",
+      "contextTokens": 4096,
+      "guideBytes": 2173,
+      "doneReason": "stop",
+      "promptTokens": 966,
+      "outputTokens": 103,
+      "complete": true,
+      "response": {
+        "answer": "Ce qui s’est passé : Le service web-demo a connu un taux d’erreurs de 29,58% en raison des requêtes externes. Les étapes de remédiation incluent l’analyse des logs et la vérification des dépendances. Données manquantes : logsAvailable, deploymentEvents, framework, destinationDomains.",
+        "evidenceRefs": [
+          "E1",
+          "E2",
+          "E3"
+        ]
+      },
+      "seconds": 20.582
+    },
+    {
+      "variant": "saas-full",
+      "fixture": "disk-insufficient",
+      "contextTokens": 8192,
+      "guideBytes": 18452,
+      "error": "local-timeout",
+      "seconds": 120.057
+    },
+    {
+      "variant": "saas-full",
+      "fixture": "service-failure",
+      "contextTokens": 8192,
+      "guideBytes": 18452,
+      "doneReason": "stop",
+      "promptTokens": 4726,
+      "outputTokens": 106,
+      "complete": true,
+      "response": {
+        "answer": "Le problème de perte de performance est resolu. L'origine du problème est identifiée comme étant des requêtes externes. Les étapes de remédiation incluent la détection de la perte de performance, l'analyse des données de logs et des taux d'erreurs, et la mise en place de mesures pour réduire la charge sur les services web.",
+        "evidenceRefs": [
+          "E1",
+          "E2"
+        ]
+      },
+      "seconds": 27.438
+    }
+  ]
+}

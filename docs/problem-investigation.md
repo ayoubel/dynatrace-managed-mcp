@@ -35,3 +35,11 @@ Fonctionnalité commitée : Daybreak `69d3401`, MCP `c7f2043`. Branche MCP `feat
 ### Publication Daybreak confirmée
 
 Dépôt GitHub privé créé à la demande du propriétaire : `https://github.com/ayoubel/daybreak`. Remote Daybreak `origin` configuré ; branche `feature/problem-investigation-mcp` poussée et suivie. MCP publié sur son origin `https://github.com/ayoubel/dynatrace-managed-mcp`, même branche. Les mentions précédentes « Daybreak sans remote » sont historiques. Aucun merge, aucune PR créée ; configurations et fichiers locaux préexistants toujours exclus.
+
+## Évolution du 12 octobre — preuves générales et Ollama
+
+Le parcours n’est plus exclusivement disque. La collecte générale et les outils de contexte sont décrits dans [Conversation locale et limites](local-conversation.md). Les questions naturelles utilisent Ollama uniquement si activé explicitement ; sans activation, l’ancien mode cinq intentions subsiste. Le modèle sélectionne lectures/faits, les réponses techniques sont construites à partir des preuves MCP. Aucune promesse de root cause universelle.
+
+## Mode déterministe sans modèle — 12 octobre 2026
+
+Le rapport initial ne nécessite aucun LLM. Il inclut diagnosis, timeline, les impacts et les preuves Davis publiés. Les lectures générales utilisent la fenêtre incidente valide, bornée à deux heures ; si dates invalides, seul le contexte récent est lu, explicitement signalé. Les impacts utilisateurs ne sont pas additionnés, les preuves tronquées sont qualifiées, et la cause technique reste inconnue en l’absence de preuve. L’extension désactive le prompting via son lanceur ; les actions structurées continuent sur la même fiche. Voir evaluation/managed-github-structures.md pour les références et prochaines capacités proposées, non implémentées.

@@ -64,7 +64,22 @@ Supported creation definitions: enabled Classic SLO, AGGREGATE evaluation, targe
 
 | Outil | Lecture | Scope d’exposition |
 | --- | --- | --- |
+| `dynatrace_managed_explain_problem` | `read-only` | `problems.read` |
 | `dynatrace_managed_investigate_problem` | `read-only` | `problems.read` |
 | `dynatrace_managed_continue_investigation` | `read-only` | `problems.read` |
+| `dynatrace_managed_collect_problem_evidence` | `read-only` | `problems.read` |
+| `dynatrace_managed_get_investigation_context` | `read-only` | `problems.read` |
 
 Les sous-lectures vérifient séparément `events.read`, `entities.read`, `metrics.read`, `logs.read` et `settings.read`. Un scope absent donne une preuve indisponible, sans élargir la recherche. `settings.read` sert uniquement à relire l’objet de configuration référencé par l’événement ; aucun PUT/POST. Le prompt `continue_investigation` prépare l’appel de continuation sans lire ni publier de télémétrie.
+
+| Outil | Lecture | Scope d’exposition |
+| --- | --- | --- |
+| `dynatrace_managed_start_conversation` | `read-only` | Au moins un scope pris en charge ; chaque lecture ciblée vérifie son scope |
+| `dynatrace_managed_analyze_context` | `read-only` | Au moins un scope pris en charge ; chaque lecture ciblée vérifie son scope |
+| `dynatrace_managed_converse_investigation` | `read-only` | Au moins un scope pris en charge ; chaque outil choisi vérifie son scope |
+| `dynatrace_managed_validate_dashboard_update` | `read-only` | `WriteConfig` |
+| `dynatrace_managed_prepare_problem_dashboard` | `read-only` | `problems.read` |
+
+`dynatrace_managed_confirm_conversation_action` exige un droit d’écriture pris en charge (`WriteConfig` ou `slo.write`) à l’exposition, puis revérifie les permissions propres à l’outil proposé. Il ne prend pas de nom d’outil ni de définition arbitraire du client. Une conversation d’environnement ne requiert pas `problems.read` ; une investigation de problème le requiert toujours.
+
+La validation d’une modification dashboard comporte une lecture préalable qui peut nécessiter `ReadConfig`.

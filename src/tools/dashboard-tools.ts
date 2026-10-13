@@ -103,6 +103,22 @@ export function registerDashboardTools(ctx: ToolContext): void {
       );
     },
   );
+  ctx.tool<{ environment_alias: string; dashboardId: string; dashboard: z.infer<typeof dashboardUpdateDefinition> }>(
+    'dynatrace_managed_validate_dashboard_update',
+    'Validate a complete replacement of an existing Classic dashboard. Read-only preview; does not update it.',
+    { environment_alias, dashboardId: z.string().uuid(), dashboard: dashboardUpdateDefinition },
+    { readOnlyHint: true },
+    async ({ environment_alias: alias, dashboardId, dashboard }) => {
+      const { client, token } = selected(alias);
+      if (dashboard.id !== undefined && dashboard.id !== dashboardId) throw Error('Dashboard ID mismatch');
+      await client.makeRequest('/api/config/v1/dashboards/' + dashboardId, token);
+      await client.postConfiguration('/api/config/v1/dashboards/' + dashboardId + '/validator', token, {
+        ...dashboard,
+        id: dashboardId,
+      });
+      return JSON.stringify({ valid: true, updated: false });
+    },
+  );
   const validate = async (alias: string, dashboard: unknown) => {
     const { client, token } = selected(alias);
     await client.postConfiguration('/api/config/v1/dashboards/validator', token, dashboard);

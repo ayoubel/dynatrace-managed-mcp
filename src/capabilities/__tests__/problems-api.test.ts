@@ -75,7 +75,7 @@ describe('ProblemsApiClient', () => {
 
       const result = await client.getProblemDetails('PROBLEM-123', 'testAlias');
 
-      expect(mockAuthManager.makeRequests).toHaveBeenCalledWith('/api/v2/problems/PROBLEM-123', {}, 'testAlias');
+      expect(mockAuthManager.makeRequests).toHaveBeenCalledWith('/api/v2/problems/PROBLEM-123', { fields: 'evidenceDetails,impactAnalysis' }, 'testAlias');
       expect(result).toEqual(mockResponse);
     });
   });

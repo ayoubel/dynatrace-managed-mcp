@@ -450,3 +450,16 @@ The Dynatrace MCP Server includes sending Telemetry Data via Dynatrace OpenKit t
 
 - [Changelog format](docs/CHANGELOG.format.md) - instruction for developers on how to write consistent and structured changelogs
 - [Development](docs/DEVELOPMENT.md) - general information about running the project and its contents
+
+## Daybreak fork — developer entry points
+
+This fork retains the upstream layout and MCP entry point. It adds the deterministic Managed Investigation Engine, evidence contracts and read-only incident profile. No SaaS/Grail dependency is introduced. Daybreak Gateway and the Chrome extension are separate consumers in sibling repositories; neither is required by the [independent Core API](docs/core-public-api.md).
+
+- `src/core/investigation-engine/index.ts`: public API; `src/adapters/mcp/`: MCP projection.
+- `src/capabilities/`: inherited clients and existing fork collectors; `src/contracts/`: Evidence/Investigation 1.0.
+- [Fork/upstream strategy](docs/FORK_UPSTREAM_STRATEGY.md): provenance, conflict zones and synchronization precautions.
+- [Sprint 10 initial audit](SPRINT_10_INITIAL_AUDIT.md); consolidated architecture, runbook and validation matrix live in the Daybreak repository under `SPRINT_10_*.md` and `docs/ARCHITECTURE_OVERVIEW.md`.
+
+Use the existing Node 26.5.1 runtime and installed dependencies. For isolated validation without replacing `dist/`: `.poc-runtime/bin/node scripts/validate-sprint09.mjs`. This runs Engine/MCP loopback tests, the 22-scenario independent client and sibling unit suites. `.poc-runtime/bin/node scripts/validate-sprint10-chain.mjs` additionally exercises the real Gateway and a synthetic MCP adapter against the real Core. It creates only a temporary build and temporary data; it never configures a real Managed instance. Native Chrome and real incident acceptance are separate validations.
+
+Production incident mode requires `DT_MCP_PROFILE=incident-intelligence`, `DT_MCP_OLLAMA_ENABLED=false`, disabled telemetry and scoped Managed read credentials. Do not use a general-profile development startup or the historical live integration instructions elsewhere as an offline test procedure. Sprint 08–10 activation is a separate controlled operation; no active runtime was replaced during Sprint 10.

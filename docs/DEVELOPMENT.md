@@ -299,3 +299,9 @@ Verbose debug logging includes:
 There is minimal use of `console.error()` (note this writes to stderr, so does not interfere with the stdio transport).
 We write a single startup message, to give the user some feedback that it has started. But that's it. Instead, rely
 on logging (especially because the stderr output is not seen by anyone when an LLM connects to the MCP via stdio).
+
+## Daybreak consolidation — offline development
+
+For the Daybreak incident profile, prefer the isolated validation scripts documented in the root README. Historical integration commands above can use real Managed credentials and are not the Sprint 10 offline procedure. Never compile into an active `dist/` as part of local validation. Debug API responses and traces as sensitive data; use synthetic ports and disabled log output for shareable test artifacts.
+
+Modify a Managed adapter in its existing capabilities module, retain the upstream file path and add a focused fixture or contract test. Keep collection/diagnosis in Core and its existing collectors, with bounded read ports. Validate schema versions and evidence references before testing the MCP compatibility projection. See `FORK_UPSTREAM_STRATEGY.md` for the maintenance boundary and `core-public-api.md` for session, timeout and payload limitations.

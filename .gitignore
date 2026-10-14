@@ -36,3 +36,6 @@ dt-config.json
 /devbox.*
 /.devbox/
 /bun.lock
+
+# Local Managed captures and validation telemetry (Sprint 03.6)
+/validation/

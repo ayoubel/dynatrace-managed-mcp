@@ -1,3 +1,4 @@
+import { summarizeMetricPoints } from '../core/investigation-engine/metric-analysis';
 import { normalizeExplainEvent } from './explain-event-context';
 import { collectExplainServiceEvidence } from './explain-service-evidence';
 import { incidentWindow } from './published-problem-diagnosis';
@@ -8,8 +9,9 @@ const idOf = (v: any) => typeof v === 'string' ? v : v?.id;
 const clean = (v: any) => String(v ?? '').slice(0, 500);
 /** All entities must originate in this problem; no model supplied selectors/IDs. */
 export async function collectGeneralEvidence(ctx: InvestigationDependencies, alias: string, problem: any, result: any, read: Reader) {
-  const window = incidentWindow(problem);
-  const interval = window ? {from:String(window.from), to:String(window.to)} : {from:'now-2h', to:'now'};
+  const window = incidentWindow(problem,Date.parse(result.collectedAt));
+  const collectedAt=Date.parse(result.collectedAt);
+  const interval = window ? {from:String(window.from), to:String(window.to)} : {from:String(collectedAt-7200000), to:String(collectedAt)};
   result.collectionWindow = {...interval, basis:window ? 'incident' : 'recent-context', partial:window?.partial || false};
   if (!window) result.limitations.push('Fenêtre incidente inexploitable : lectures récentes de contexte, sans reconstitution de l’incident.');
   const ids: string[] = [...new Set<string>([
@@ -37,9 +39,10 @@ export async function collectGeneralEvidence(ctx: InvestigationDependencies, ali
     if (type === 'HOST' && !result.scope.hostId) {result.scope.hostId = id; result.scope.hostName = name;}
     const relations = Object.entries({...entity.fromRelationships, ...entity.toRelationships}).slice(0, 10)
       .map(([relation, values]: any) => ({relation, entities: (Array.isArray(values) ? values : []).slice(0, 10).map((v: any) => ({id: v.id, type: v.type}))}));
+    const contextualSlowdown=result.explainRequested && type==='SERVICE' && problem.severityLevel==='PERFORMANCE' && ['overview','metrics','trend'].includes(result.action);
     result.evidence.push({id: entityRef, kind: 'entity', ...context, relations});
     fact('context', type + ' concerné', name, [entityRef, 'impact']);
-    if (['overview', 'events'].includes(result.action)) {
+    if (['overview', 'events'].includes(result.action) && !contextualSlowdown) {
       const events = await read('entity-events', 'events.read', () => ctx.eventsClient.queryEvents({
         entitySelector: `entityId("${id}")`, ...interval, pageSize: 10,
       }, alias));
@@ -53,7 +56,7 @@ export async function collectGeneralEvidence(ctx: InvestigationDependencies, ali
       }
     }
     if(result.explainRequested && type==='SERVICE' && ['ERROR','PERFORMANCE'].includes(problem.severityLevel) && ['overview','metrics','trend'].includes(result.action)) {
-      await collectExplainServiceEvidence(ctx,alias,problem,result,id,read);
+      await collectExplainServiceEvidence(ctx,alias,problem,result,id,read,contextualSlowdown?{entity,evidenceId:entityRef}:undefined);
     } else if (['overview', 'metrics', 'trend', 'recovery'].includes(result.action)) {
       // Discover metrics appropriate to the exact affected entity. Never substitute CPU
       // or a title-derived metric as the explanation of an unrelated problem.
@@ -82,16 +85,14 @@ export async function collectGeneralEvidence(ctx: InvestigationDependencies, ali
         if (rows.length !== 1) {result.limitations.push('Série absente ou multidimensionnelle pour ' + metric.metricId);result.coverage.partial=true; continue;}
         const {r, s} = rows[0];
         const numericWindow=Number.isFinite(Number(interval.from))&&Number.isFinite(Number(interval.to));
-        const points = (s.timestamps || []).map((t: any, i: number) => ({t, v: s.values?.[i]}))
-          .filter((p: any) => Number.isFinite(p.t) && Number.isFinite(p.v) && p.t<=Date.now()+300000 && (!numericWindow || p.t>=Number(interval.from)&&p.t<Number(interval.to))).sort((a: any, b: any) => a.t - b.t);
-        if (!points.length) {result.limitations.push('Mesures absentes pour ' + metric.metricId);result.coverage.partial=true; continue;}
-        const first = points[0], last = points.at(-1);
-        const partial = !!data.nextPageKey || r.dataPointCountRatio < 1 || r.dimensionCountRatio < 1 || points.length > 100 ||
-          points.length !== s.timestamps.length || points.some((p: any, i: number) => i > 0 && p.t - points[i - 1].t > 300000);
+        const summary=summarizeMetricPoints(s.timestamps,s.values,numericWindow?{from:Number(interval.from),to:Number(interval.to)}:undefined);
+        if (!summary) {result.limitations.push('Mesures absentes pour ' + metric.metricId);result.coverage.partial=true; continue;}
+        const {last}=summary;
+        const partial=summary.partial || !!data.nextPageKey || [r.dataPointCountRatio,r.dimensionCountRatio].some(ratio=>ratio!==undefined&&(!Number.isFinite(ratio)||ratio<0||ratio>1));
         const metricRef = ref();
         result.evidence.push({id: metricRef, kind: 'series', entityId: id, metricId: metric.metricId, unit: metric.unit || null,
-          from:numericWindow?Number(interval.from):null,to:numericWindow?Number(interval.to):null,window:window?'incident':'recent-context',first, last, count: points.length, delta: last.v - first.v, partial, points: points.slice(-100)});
-        fact('metrics', clean(metric.displayName || metric.metricId), `${last.v} ${metric.unit || '(unité non retournée)'} au dernier point, ${points.length} point(s). Mesure descriptive ; aucun seuil ni mécanisme causal déduit.`, [metricRef]);
+          from:numericWindow?Number(interval.from):null,to:numericWindow?Number(interval.to):null,window:window?'incident':'recent-context',timestampBasis:'bucket-end',...summary,partial});
+        fact('metrics', clean(metric.displayName || metric.metricId), `${last.v} ${metric.unit || '(unité non retournée)'} au dernier point, ${summary.count} point(s). Mesure descriptive ; aucun seuil ni mécanisme causal déduit.`, [metricRef]);
         if (partial) result.limitations.push('Série partielle pour ' + metric.metricId);
         if (last.t > Date.now() + 300000) result.limitations.push('Horodatage futur : mesure non qualifiée comme état actuel.');
       }

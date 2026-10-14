@@ -5,9 +5,9 @@ import { investigationContext } from '../problem-investigation';
 import { permittedTool } from '../../tools/token-tool-access';
 const service='SERVICE-1111111111111111',root='SERVICE-2222222222222222',host='HOST-3333333333333333';
 function fixture(){
- const start=Date.now()-3600000,end=start+600000,map=(v:any)=>new Map([['prod',v]]);
+ const start=Math.floor((Date.now()-3600000)/300000)*300000,end=start+600000,map=(v:any)=>new Map([['prod',v]]);
  const problem={problemId:'problem',status:'CLOSED',severityLevel:'ERROR',title:'Failure rate increase',startTime:start,endTime:end,affectedEntities:[{entityId:{id:service}}],rootCauseEntity:{entityId:{id:root},name:'External dependency'},evidenceDetails:{totalCount:1,details:[{evidenceType:'METRIC',entity:{entityId:{id:root}},rootCauseRelevant:true}]},impactAnalysis:{impacts:[{impactedEntity:{entityId:{id:service},name:'web'},estimatedAffectedUsers:120}]}};
- const query=jest.fn().mockImplementation(async(p:any)=>map({result:[{metricId:p.metricSelector,data:[{dimensionMap:{'dt.entity.service':p.entitySelector.match(/SERVICE-[A-F0-9]+/)?.[0]},timestamps:[Number(p.from)+1000,Number(p.from)+301000],values:Number(p.from)===start?[20,40]:[1,1]}]}]}));
+ const query=jest.fn().mockImplementation(async(p:any)=>map({resolution:'5m',result:[{metricId:p.metricSelector,data:[{dimensionMap:{'dt.entity.service':p.entitySelector.match(/SERVICE-[A-F0-9]+/)?.[0]},timestamps:[Number(p.from)+300000,Number(p.from)+600000],values:Number(p.from)===start?[20,40]:[1,1]}]}]}));
  const ctx:any={investigationOwner:'owner',authClientManager:{validAliases:['prod'],getBaseUrl:()=> 'https://example/e/prod'},tokenScopesFor:()=>['problems.read','metrics.read','entities.read','events.read'],problemsClient:{getProblemDetails:jest.fn().mockResolvedValue(map(problem))},entitiesClient:{getEntityDetails:jest.fn().mockImplementation(async(id:string)=>map({entityId:id,displayName:id}))},eventsClient:{queryEvents:jest.fn().mockResolvedValue(map({events:[]}))},metricsClient:{getMetricDetails:jest.fn().mockImplementation(async(metricId:string)=>map({metricId,unit:metricId.includes('time')?'MicroSecond':'Percent'})),queryMetrics:query}};
  return {ctx,problem,query,start,end};
 }

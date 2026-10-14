@@ -29,13 +29,14 @@ export function buildExplainReport(problem:any,report:any) {
  for(const incident of evidence.filter((e:any)=>e.kind==='series'&&e.window==='incident')){
    const baseline=evidence.find((e:any)=>e.kind==='series'&&e.window==='baseline'&&e.metricId===incident.metricId&&e.entityId===incident.entityId);
    if(!baseline || !incident.unit || incident.unit!==baseline.unit || incident.count<2 || baseline.count<2 || [incident,baseline].some(e=>e.partial||e.gaps||e.truncated))continue;
-   if(![incident.from,incident.to,baseline.from,baseline.to].every(Number.isFinite) || incident.to<=incident.from || baseline.to!==incident.from || incident.to-incident.from!==baseline.to-baseline.from)continue;
+   if(![incident.from,incident.to,baseline.from,baseline.to].every(Number.isFinite) || incident.to<=incident.from || (baseline.to!==incident.from && !(incident.windowBasis==='complete-5m-buckets; baseline-before-problem-start' && baseline.windowBasis===incident.windowBasis && baseline.to<=incident.from)) || incident.to-incident.from!==baseline.to-baseline.from)continue;
    const serviceComparison=plan==='service'&&incident.aggregation==='avg'&&baseline.aggregation==='avg'&&Number.isFinite(incident.mean)&&Number.isFinite(baseline.mean);
+   const volumeComparison=plan==='service'&&incident.metricId==='builtin:service.requestCount.total'&&incident.aggregation==='value'&&baseline.aggregation==='value'&&Number.isFinite(incident.sum)&&Number.isFinite(baseline.sum);
    const diskComparison=plan==='disk'&&Number.isFinite(incident.max)&&Number.isFinite(baseline.max);
-   if(!serviceComparison&&!diskComparison)continue;
-   const title=incident.metricId==='builtin:service.errors.server.rate'?'Erreurs côté serveur':incident.metricId==='builtin:service.response.time'?'Temps de réponse moyen':'Usage disque · maximum';
-   const before=formatMeasure(serviceComparison?baseline.mean:baseline.max,baseline.unit),during=formatMeasure(serviceComparison?incident.mean:incident.max,incident.unit);
-   comparisons.push({title,metricId:incident.metricId,entityId:incident.entityId,entityName:clean(evidence.find((e:any)=>e.kind==='entity'&&e.entityId===incident.entityId)?.name || root?.entityId===incident.entityId&&root.name || incident.entityId),baseline:before,incident:during,windows:{baseline:{from:baseline.from,to:baseline.to},incident:{from:incident.from,to:incident.to}},aggregation:serviceComparison?'avg':'max',certainty:'observed',evidenceRefs:[incident.id,baseline.id]});
+   if(!serviceComparison&&!volumeComparison&&!diskComparison)continue;
+   const title=incident.metricId==='builtin:service.errors.server.rate'?'Erreurs côté serveur':incident.metricId==='builtin:service.response.time'?'Temps de réponse moyen':volumeComparison?'Volume de requêtes':'Usage disque · maximum';
+   const before=formatMeasure(serviceComparison?baseline.mean:volumeComparison?baseline.sum:baseline.max,baseline.unit),during=formatMeasure(serviceComparison?incident.mean:volumeComparison?incident.sum:incident.max,incident.unit);
+   comparisons.push({title,metricId:incident.metricId,entityId:incident.entityId,entityName:clean(evidence.find((e:any)=>e.kind==='entity'&&e.entityId===incident.entityId)?.name || root?.entityId===incident.entityId&&root.name || incident.entityId),baseline:before,incident:during,windows:{baseline:{from:baseline.from,to:baseline.to},incident:{from:incident.from,to:incident.to}},aggregation:serviceComparison?'avg':volumeComparison?'value':'max',certainty:'observed',evidenceRefs:[incident.id,baseline.id]});
  }
  const observations=(report.findings || []).filter((f:any)=>f.certainty==='observed'&&f.kind!=='context').map((f:any)=>item(f.title,f.text,'observed',f.evidenceRefs));
  if(plan==='disk'&&comparisons.length)for(const c of comparisons)observations.unshift(item('Comparaison disque',`Maximum incident : ${c.incident.text} ; précédent : ${c.baseline.text}. Cet écart ne démontre ni saturation ni cause.`,'observed',c.evidenceRefs));

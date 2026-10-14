@@ -107,3 +107,21 @@ test('Host resource metrics outrank network error noise in a mixed catalogue',as
  f.ctx.metricsClient.listAvailableMetrics=jest.fn().mockResolvedValue(new Map([['prod',{metrics:[metric('builtin:host.net.nic.packets.errors'),metric('builtin:host.mem.usage'),metric('builtin:host.cpu.usage'),metric('builtin:billing.ddu.metrics.byEntity')]}]]));
  await run(f.ctx,{problemId:'P'});expect(f.query.mock.calls.map(call=>call[0].metricSelector)).toEqual(['builtin:host.cpu.usage','builtin:host.mem.usage']);
 });
+
+test('CPU data with duplicate timestamps remains descriptive, partial and unit-preserving',async()=>{
+ const f=fixture();const t=Date.now()-300000;
+ f.query.mockResolvedValue(new Map([['prod',{result:[{metricId:'builtin:host.cpu.usage',data:[{dimensionMap:{'dt.entity.host':host},timestamps:[t,t],values:[10,20]}]}]}]]));
+ const r:any=await run(f.ctx,{problemId:'P'});const e=r.evidence.find((proof:any)=>proof.kind==='series');
+ expect(e).toMatchObject({metricId:'builtin:host.cpu.usage',unit:'Percent',partial:true,count:1});
+ expect(e.provenance.measurement.unit).toBe('Percent');expect(r.status).toBe('partial');
+ expect(r.cause.status).toBe('unknown');expect(r.findings.filter((x:any)=>x.kind==='comparison')).toEqual([]);
+});
+
+test('complete CPU windows are not marked partial by normal Managed query-budget ratios',async()=>{
+ const f=fixture(),start=Math.floor((Date.now()-7200000)/300000)*300000,end=start+3600000;
+ Object.assign(f.problem,{status:'CLOSED',startTime:start,endTime:end});
+ f.query.mockResolvedValue(new Map([['prod',{resolution:'5m',result:[{metricId:'builtin:host.cpu.usage',dataPointCountRatio:0.000024,dimensionCountRatio:0.00008,
+ data:[{dimensionMap:{'dt.entity.host':host},timestamps:Array.from({length:12},(_,i)=>start+(i+1)*300000),values:Array(12).fill(10)}]}]}]]));
+ const r:any=await run(f.ctx,{problemId:'P'});expect(r.evidence.find((e:any)=>e.kind==='series')).toMatchObject({count:12,expectedCount:12,partial:false});
+ expect(r.status).toBe('completed');expect(r.cause.status).toBe('unknown');
+});

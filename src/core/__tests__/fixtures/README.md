@@ -1,0 +1,1 @@
+Managed response shapes with synthetic metric values, replaced IDs, shifted timestamps, and no internal names, URLs or properties. Original captures remain local and excluded. These fixtures validate parsing and coverage, not production measurements.

@@ -11,7 +11,7 @@ import { discoverCapabilities } from '../capabilities/discover';
 function fixture(): InvestigationDependencies {
   const alias = 'prod',
     service = 'SERVICE-1111111111111111',
-    from = Date.now() - 3600000,
+    from = Math.floor((Date.now() - 3600000) / 300000) * 300000,
     to = from + 600000;
   const map = (data: any) => Promise.resolve(new Map([[alias, data]]));
   return {
@@ -43,16 +43,24 @@ function fixture(): InvestigationDependencies {
     logsClient: { queryLogs: jest.fn() },
     metricsClient: {
       listAvailableMetrics: jest.fn(),
-      getMetricDetails: jest.fn((id) => map({ metricId: id, unit: id.includes('time') ? 'MicroSecond' : 'Percent' })),
+      getMetricDetails: jest.fn((id) =>
+        map({
+          metricId: id,
+          unit: id.includes('time') ? 'MicroSecond' : id.includes('Count') ? 'Count' : 'Percent',
+          aggregationTypes: id.includes('Count') ? ['value'] : ['avg'],
+          dimensionDefinitions: [{ key: 'dt.entity.service' }],
+        }),
+      ),
       queryMetrics: jest.fn((params) =>
         map({
+          resolution: '5m',
           result: [
             {
               metricId: params.metricSelector,
               data: [
                 {
                   dimensionMap: { 'dt.entity.service': service },
-                  timestamps: [Number(params.from) + 1000, Number(params.from) + 301000],
+                  timestamps: [Number(params.from) + 300000, Number(params.from) + 600000],
                   values: [2, 4],
                 },
               ],

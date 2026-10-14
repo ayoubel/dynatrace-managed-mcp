@@ -96,7 +96,9 @@ export function attachInvestigationContract(report: any): void {
       : undefined;
     const inherited =
       ['impact', 'trigger', 'alert-rule'].includes(proof.kind) || String(proof.id).startsWith('published-event-');
-    const origin = trace || event || (inherited ? problem : undefined);
+    const relationOrigin = proof.kind === 'service-relations'
+      ? report.trace.find((t: any) => t.id === proof.evidenceRefs?.[0]) : undefined;
+    const origin = trace || event || relationOrigin || (inherited ? problem : undefined);
     const limitations: string[] = [];
     const eventData = proof.kind === 'events' && proof.events?.length === 1 ? proof.events[0] : undefined;
     const timestamp = (value: unknown) => {
@@ -134,7 +136,10 @@ export function attachInvestigationContract(report: any): void {
       measurement: ['series', 'available-space'].includes(proof.kind)
         ? {
             metricId: text(proof.metricId),
-            value: number(proof.mean) ?? number(proof.last?.v),
+            value:
+              proof.metricId === 'builtin:service.requestCount.total'
+                ? number(proof.sum)
+                : (number(proof.mean) ?? number(proof.last?.v)),
             unit: text(proof.unit),
             aggregation:
               text(proof.aggregation) ||
@@ -144,7 +149,7 @@ export function attachInvestigationContract(report: any): void {
               .slice(-100)
               .map((point: any) => ({ timestamp: point.t, value: point.v })),
             summary: Object.fromEntries(
-              ['count', 'mean', 'min', 'max', 'delta']
+              ['count', 'expectedCount', 'mean', 'sum', 'min', 'max', 'delta']
                 .filter((key) => number(proof[key]) !== null)
                 .map((key) => [key, proof[key]]),
             ),

@@ -123,7 +123,8 @@ test('wrong Disk, missing dimensions, gaps and truncated data cannot become comp
   expect(summarizeDiskSeries(data, host, 'DISK-3333333333333333')).toBeNull();
   const s = summarizeDiskSeries(data, host, disk)!;
   expect(s.gaps).toBe(true);
-  expect(s.truncated).toBe(true);
+  expect(s.truncated).toBe(false); // 0.5 is query-budget usage; the null point still produces gaps.
+  expect(summarizeDiskSeries({...data,nextPageKey:'next'},host,disk)?.truncated).toBe(true);
   expect(s.count).toBe(2);
 });
 test('host outside actual impact or arbitrary selectors never trigger metric or log calls', async () => {

@@ -1,0 +1,66 @@
+{
+  "entities": [
+    {
+      "entityId": "SERVICE-0000000000000001",
+      "fromRelationships": {
+        "calls": [
+          {
+            "id": "SERVICE-0000000000000003",
+            "type": "SERVICE"
+          },
+          {
+            "id": "SERVICE-0000000000000009",
+            "type": "SERVICE"
+          }
+        ]
+      },
+      "toRelationships": {
+        "calls": []
+      }
+    },
+    {
+      "entityId": "SERVICE-0000000000000009",
+      "fromRelationships": {
+        "calls": []
+      },
+      "toRelationships": {
+        "calls": [
+          {
+            "id": "SERVICE-000000000000000A",
+            "type": "SERVICE"
+          },
+          {
+            "id": "SERVICE-0000000000000006",
+            "type": "SERVICE"
+          },
+          {
+            "id": "SERVICE-0000000000000001",
+            "type": "SERVICE"
+          },
+          {
+            "id": "SERVICE-000000000000000B",
+            "type": "SERVICE"
+          }
+        ]
+      }
+    }
+  ],
+  "event": {
+    "eventId": "sanitized-event",
+    "title": "Sanitized historical event",
+    "entityId": {
+      "entityId": {
+        "id": "SERVICE-0000000000000009",
+        "type": "SERVICE"
+      }
+    },
+    "eventType": "ERROR_EVENT",
+    "startTime": 1841674330,
+    "endTime": 1842274330,
+    "status": "CLOSED"
+  },
+  "incident": {
+    "from": 1898700000,
+    "to": 1900500000
+  }
+}

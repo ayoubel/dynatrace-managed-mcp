@@ -1,3 +1,4 @@
+import { metricWindows, scopedMetricSeries, type MetricWindow } from '../core/investigation-engine/metric-analysis';
 import { recordingDependencies, attachInvestigationContract } from '../core/investigation-engine/provenance';
 import { normalizeExplainEvent } from './explain-event-context';
 import { randomUUID } from 'node:crypto';
@@ -28,39 +29,9 @@ export function resolveInvestigationAction(question: string): InvestigationActio
   if (/croissance|growth|trend|tendance|avant|pendant|compar|evol/.test(text)) return 'trend';
   return null;
 }
-export function summarizeDiskSeries(response: any, hostId: string, diskId: string) {
-  const rows = (response?.result || [])
-    .flatMap((r: any) => (r.data || []).map((s: any) => ({ r, s })))
-    .filter(
-      ({ s }: any) => s.dimensionMap?.['dt.entity.host'] === hostId && s.dimensionMap?.['dt.entity.disk'] === diskId,
-    );
-  if (rows.length !== 1) return null;
-  const { r, s } = rows[0];
-  const points = (s.timestamps || [])
-    .map((t: number, i: number) => ({ t, v: s.values?.[i] }))
-    .filter((p: any) => Number.isFinite(p.t) && Number.isFinite(p.v))
-    .sort((a: any, b: any) => a.t - b.t);
-  if (!points.length) return null;
-  const first = points[0],
-    last = points[points.length - 1];
-  const truncated =
-    !!response.nextPageKey ||
-    (Number.isFinite(r.dataPointCountRatio) && r.dataPointCountRatio < 1) ||
-    (Number.isFinite(r.dimensionCountRatio) && r.dimensionCountRatio < 1) ||
-    points.length > 100;
-  return {
-    first,
-    last,
-    count: points.length,
-    delta: last.v - first.v,
-    min: Math.min(...points.map((p: any) => p.v)),
-    max: Math.max(...points.map((p: any) => p.v)),
-    gaps:
-      points.length !== (s.timestamps || []).length ||
-      points.some((p: any, i: number) => i > 0 && p.t - points[i - 1].t > 300000),
-    truncated,
-    points: points.slice(-100),
-  };
+export function summarizeDiskSeries(response: any, hostId: string, diskId: string, window?: MetricWindow, metricId?: string) {
+ const exactSelector=metricId?`${metricId}:filter(eq("dt.entity.disk",${diskId}),eq("dt.entity.host",${hostId})):avg`:undefined;
+ return scopedMetricSeries(response, {'dt.entity.host':hostId,'dt.entity.disk':diskId},metricId,'avg',window,!!window,exactSelector);
 }
 export async function investigateManagedProblem(
   inputDependencies: InvestigationDependencies,
@@ -381,14 +352,13 @@ export async function investigateManagedProblem(
           to: new Date(selected.event.startTime + 3600000).toISOString(),
         });
       if (result.explainRequested) {
-        const incident = incidentWindow(problem);
+        const periods = metricWindows(problem, Date.parse(result.collectedAt));
         windows.splice(1);
-        if (incident) {
-          windows.push({label:'incident',from:String(incident.from),to:String(incident.to)});
-          const duration=incident.to-incident.from;
-          if (duration>0 && incident.from>=duration) windows.push({label:'baseline',from:String(incident.from-duration),to:String(incident.from)});
-          if(incident.partial) limitations.push('Fenêtre disque incidente limitée aux deux dernières heures.');
-        } else limitations.push('Dates incidentes invalides : comparaison disque non disponible.');
+        if (periods) {
+          windows.push({label:'incident',from:String(periods.incident.from),to:String(periods.incident.to)});
+          windows.push({label:'baseline',from:String(periods.baseline.from),to:String(periods.baseline.to)});
+          if(periods.clipped) limitations.push('Fenêtre disque bornée aux créneaux complets ; baseline avant le début publié.');
+        } else limitations.push('Dates ou couverture incidentes insuffisantes : comparaison disque non disponible.');
       }
       for (const window of windows) {
         const data = await read('disk-' + window.label, 'metrics.read', () =>
@@ -403,8 +373,8 @@ export async function investigateManagedProblem(
             alias,
           ),
         );
-        const checkedData = result.explainRequested && window.label !== 'recent' ? { ...data, result:(data?.result || []).map((r:any)=>({...r,data:(r.data || []).map((s:any)=>({...s,values:(s.timestamps || []).map((t:number,i:number)=>t >= Number(window.from) && t < Number(window.to) ? s.values?.[i] : null)}))})) } : data;
-        const summary = summarizeDiskSeries(checkedData, hostId, diskId),
+        const bounds = result.explainRequested && window.label !== 'recent' ? {from:Number(window.from),to:Number(window.to)} : undefined;
+        const summary = summarizeDiskSeries(data, hostId, diskId, bounds, bounds ? metricId : undefined),
           ref = trace[trace.length - 1].id;
         if (!summary) {
           limitations.push('Mesures ' + window.label + ' absentes, ambiguës ou sans dimensions confirmées.');
@@ -420,6 +390,8 @@ export async function investigateManagedProblem(
           to: Number(window.to),
           metricId,
           unit: metric?.unit || null,
+          aggregation: 'avg',
+          ...(bounds ? {windowBasis:'complete-5m-buckets; baseline-before-problem-start',timestampBasis:'bucket-end'} : {}),
           ...summary,
         });
         if (summary.last.t > Date.now() + 300000)

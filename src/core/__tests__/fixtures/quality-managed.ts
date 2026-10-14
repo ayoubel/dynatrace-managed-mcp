@@ -65,7 +65,9 @@ export function fixture(scenario: Scenario) {
     authClientManager: {
       validAliases: ['prod'],
       getBaseUrl: () => 'https://managed.example/e/prod',
-      makeRequests: jest.fn(),
+      makeRequests: async () => {
+        throw new Error('Unexpected fixture read');
+      },
     },
     tokenScopesFor: () =>
       scenario === 'permissions'
@@ -81,9 +83,15 @@ export function fixture(scenario: Scenario) {
           totalCount: ['deployment', 'synthetic'].includes(scenario) ? 1 : 0,
         }),
     },
-    logsClient: { queryLogs: jest.fn() },
+    logsClient: {
+      queryLogs: async () => {
+        throw new Error('Unexpected fixture read');
+      },
+    },
     metricsClient: {
-      listAvailableMetrics: jest.fn(),
+      listAvailableMetrics: async () => {
+        throw new Error('Unexpected fixture read');
+      },
       getMetricDetails: (id: string) =>
         map(
           scenario === 'sparse'

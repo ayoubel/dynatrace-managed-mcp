@@ -9,6 +9,7 @@ export function investigationDependencies(ctx: ToolContext): InvestigationDepend
     logsClient: ctx.logsClient,
     eventsClient: ctx.eventsClient,
     entitiesClient: ctx.entitiesClient,
+    investigationLimits: ctx.investigationLimits,
     investigationOwner: ctx.investigationOwner,
     tokenScopesFor: ctx.tokenScopesFor,
     executionProfile: ctx.executionProfile,

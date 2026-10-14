@@ -1,3 +1,4 @@
+import type { InvestigationDependencies } from '../core/investigation-engine/dependencies';
 import type { ExecutionProfile } from '../core/execution-policy';
 import { ZodRawShape } from 'zod';
 import { ToolAnnotations } from '@modelcontextprotocol/sdk/types.js';
@@ -49,6 +50,7 @@ export interface ToolContext {
   envAliasValidate: (alias: string) => boolean;
   initErrors: string[];
   httpMode: boolean;
+  investigationLimits?: InvestigationDependencies['investigationLimits'];
   investigationOwner?: string;
   tokenScopesFor?: (alias: string) => string[] | undefined;
 }

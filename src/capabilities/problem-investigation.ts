@@ -7,7 +7,7 @@ import type { InvestigationDependencies } from '../core/investigation-engine/dep
 import { collectGeneralEvidence } from './general-problem-evidence';
 import { enrichPublishedDiagnosis, incidentWindow } from './published-problem-diagnosis';
 import { buildExplainReport } from './problem-explain-report';
-import { configuredInvestigationModel, InvestigationModel } from './local-investigation-model';
+import type { InvestigationModel } from './local-investigation-model';
 
 export type InvestigationAction = 'overview' | 'trend' | 'logs' | 'recovery' | 'writers' | 'threshold' | 'context' | 'events' | 'metrics';
 const entityId = (value: any): string | undefined => (typeof value === 'string' ? value : value?.id);
@@ -58,7 +58,7 @@ export async function investigateManagedProblem(
   if (args.investigationId && (!prior || prior.owner !== owner || prior.alias !== alias || prior.url !== url))
     throw Error('Investigation expired or unavailable in this environment; start a new investigation');
   if (args.question && prior) {
-    const model = options.model === undefined ? configuredInvestigationModel() : options.model;
+    const model = options.model === undefined ? (await import('./local-investigation-model')).configuredInvestigationModel() : options.model;
     if (model) {
       let result = structuredClone(prior.report);
       result.trace = [];

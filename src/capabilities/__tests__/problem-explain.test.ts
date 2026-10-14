@@ -29,7 +29,7 @@ test('absence of scopes, metadata or cause cannot generate a comparison or asser
  const f=fixture();f.ctx.tokenScopesFor=()=>['problems.read'];delete (f.problem as any).rootCauseEntity;
  const r:any=await explainManagedProblem(f.ctx,{environment_alias:'prod',problemId:'problem'},0);
  expect(f.query).not.toHaveBeenCalled();expect(r.status).toBe('partial');expect(r.explain.whyItHappened.conclusion.certainty).toBe('unknown');
- expect(r.explain.whyItHappened.observations).toEqual([]);expect(r.explain.remediation.shortTerm[0].certainty).toBe('conditional');
+ expect(r.explain.whyItHappened.observations).toEqual([]);expect(r.explain.remediation.shortTerm).toEqual([]);expect(r.explain.remediation.immediate.some((i:any)=>i.title==='Vérifier les permissions de lecture'&&i.certainty==='conditional')).toBe(true);
  expect(permittedTool('dynatrace_managed_explain_problem',true,[['problems.read']])).toBe(true);
  expect(permittedTool('dynatrace_managed_explain_problem',true,[['metrics.read']])).toBe(false);
 });
@@ -48,7 +48,7 @@ test('extension contract names entities and shows qualified units without adding
  expect(r.explain.impact.entities[0].name).toBe('next');expect(r.explain.whatHappened.durationMinutes).toBe(10);
  expect(r.explain.whyItHappened.comparisons[0]).toMatchObject({title:'Erreurs côté serveur',entityId:root,baseline:{unit:'%'},incident:{unit:'%'}});
  expect(r.explain.whyItHappened.comparisons[1].incident).toMatchObject({value:0.03,unit:'ms'});
- expect(r.explain.remediation.shortTerm).toHaveLength(3);expect(r.explain.remediation.shortTerm.every((i:any)=>i.steps.length===3&&i.validation&&i.condition&&!i.action)).toBe(true);
+ expect(r.explain.remediation.shortTerm).toEqual([]);expect(r.explain.remediation.prevention).toEqual([]);
  expect(r.explain.remediation.immediate.some((i:any)=>i.action==='logs')).toBe(false);
  expect(JSON.stringify(r.explain)).not.toContain('/_next/image');expect(r.explain.whyItHappened.hypotheses).toEqual([]);
 });

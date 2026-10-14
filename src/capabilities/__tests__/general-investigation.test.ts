@@ -125,3 +125,13 @@ test('complete CPU windows are not marked partial by normal Managed query-budget
  const r:any=await run(f.ctx,{problemId:'P'});expect(r.evidence.find((e:any)=>e.kind==='series')).toMatchObject({count:12,expectedCount:12,partial:false});
  expect(r.status).toBe('completed');expect(r.cause.status).toBe('unknown');
 });
+
+test('CPU Explain keeps descriptive measurements and provenance with verification-only guidance',async()=>{
+ const f=fixture();const {explainManagedProblem}=await import('../problem-explain');
+ const r:any=await explainManagedProblem(f.ctx,{environment_alias:'prod',problemId:'P'},0);
+ expect(r.explain.plan).toBe('generic');expect(r.explain.whyItHappened.hypotheses).toEqual([]);
+ const proof=r.evidence.find((e:any)=>e.metricId==='builtin:host.cpu.usage');
+ expect(proof.provenance.measurement.unit).toBe('Percent');
+ expect(r.explain.whyItHappened.observations.some((o:any)=>o.evidenceRefs.includes(proof.id)&&o.text.includes(host)&&o.text.includes('Limites'))).toBe(true);
+ expect(r.explain.remediation.shortTerm).toEqual([]);expect(r.cause.status).toBe('unknown');
+});

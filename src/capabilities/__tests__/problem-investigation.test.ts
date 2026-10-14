@@ -192,3 +192,13 @@ test('scopes expose the portable read-only tools through problems.read only', ()
   expect(permittedTool('dynatrace_managed_continue_investigation', true, [['metrics.read']])).toBe(false);
   expect(permittedTool('dynatrace_managed_continue_investigation', false, [['problems.read']])).toBe(false);
 });
+
+test('disk Explain preserves scope and raw threshold without proposing an intrusive correction',async()=>{
+ const f=fixture();const {explainManagedProblem}=await import('../problem-explain');
+ const r:any=await explainManagedProblem(f.ctx,{environment_alias:'prod',problemId:'P'},0);
+ expect(r.explain.plan).toBe('disk');expect(r.scope).toMatchObject({hostId:host,diskId:disk});
+ expect(r.evidence.find((e:any)=>e.kind==='alert-rule')).toMatchObject({verified:false,reportedThreshold:'100.0'});
+ expect(r.explain.remediation.shortTerm).toEqual([]);expect(r.explain.remediation.prevention).toEqual([]);
+ expect(JSON.stringify(r.explain.remediation)).not.toMatch(/purge|extension du volume|rollback/i);
+ expect(r.explain.whyItHappened.mechanism.certainty).toBe('unknown');
+});

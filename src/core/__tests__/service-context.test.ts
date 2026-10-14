@@ -248,8 +248,8 @@ test('Explain reuses the primary entity and existing sections, verifies all evid
   );
   const r = await explainProblem(deps, { environment_alias: 'prod', problemId: 'context' }, 0);
   expect(r.explain.whyItHappened.comparisons).toHaveLength(4);
-  expect(r.explain.whyItHappened.observations.some((f: any) => f.title.includes('change'))).toBe(true);
-  expect(r.explain.whyItHappened.hypotheses).toHaveLength(1);
+  expect(r.explain.whyItHappened.observations.some((f: any) => f.title==='Événement contextuel publié')).toBe(true);
+  expect(r.explain.whyItHappened.hypotheses.map((h:any)=>h.title)).toEqual(['Latence également augmentée sur la dépendance','Changement publié proche de la hausse de latence']);
   expect(r.explain.whyItHappened.mechanism.certainty).toBe('unknown');
   expect(r.diagnosis.causalMechanism).toBe('unknown');
   expect(deps.entitiesClient.getEntityDetails).toHaveBeenCalledTimes(1);

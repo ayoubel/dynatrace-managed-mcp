@@ -1,6 +1,6 @@
 # Daybreak — Sprint 03.6 : consolidation et activation locale
 
-État au 14 octobre 2026, Europe/Paris. **Consolidation terminée ; activation en attente de l’accord utilisateur.** Aucun arrêt ni redémarrage effectué. Ce rapport sera complété après autorisation.
+État au 14 octobre 2026, Europe/Paris. **Consolidation et activation terminées.** Redémarrage autorisé par le message utilisateur « oui », effectué le 14 octobre à 10:04 Europe/Paris. Chrome natif reste à recetter manuellement.
 
 ## Git et périmètre
 
@@ -21,7 +21,7 @@ Commit Engine créé : **de8fc70239bb929481698431eed0774f38aae0b6**, `feat: cons
 - Sprint 03 : service-context.ts, dépendances directionnelles/événements, intégration slowdown/provenance et tests.
 - Sprint 03.5 : aucune modification de production ; scripts, rapports et captures de recette conservés localement.
 
-Les modifications des sprints sont entrelacées dans les mêmes modules : un commit cohérent conserve leur état final. Un second commit documentaire enregistre ce rapport (identifiable avec `git log -- SPRINT_03_6_ACTIVATION_REPORT.md`).
+Les modifications des sprints sont entrelacées dans les mêmes modules : un commit cohérent conserve leur état final. Commit documentaire préparatoire : **e95aecf**, `docs: record consolidation and proposed local activation`. Un troisième commit documentaire enregistre les résultats d’activation (identifiable avec `git log -- SPRINT_03_6_ACTIVATION_REPORT.md`).
 
 ## Confidentialité et exclusions
 
@@ -54,17 +54,17 @@ Compilation TypeScript complète `tsc --build --force` réussie, le 14/10 vers 0
 
 Tests finaux : Engine **488/488, 36 suites**, Gateway **148/148**, extension **15/15**. Journaux locaux dans `/private/tmp/daybreak-03-6-*-tests.log`. L’accès hors sandbox a été nécessaire pour le test config-loader qui écrit puis supprime `~/.test-dt-config.json` ; absence vérifiée avant et après. Les premiers essais des fixtures assainies ont signalé une résolution omise et un décalage non aligné ; corrigés sans modifier les assertions, puis suite complète verte.
 
-## Processus, stockage et activation préparée
+## Processus, stockage et activation
 
-Gateway PID **46178**, démarré le 13/10 à 16:04:12 ; MCP enfant **46185**, démarré à 16:04:13. Gateway écoute uniquement `127.0.0.1:4318`. Aucun listener 4319 observé. Le MCP existant reste antérieur au Sprint 03, même si les fichiers sur disque sont récents.
+Gateway PID **46178**, démarré le 13/10 à 16:04:12 ; MCP enfant **46185**, démarré à 16:04:13. Gateway écoute uniquement `127.0.0.1:4318`. Aucun listener 4319 observé. Ces processus antérieurs au Sprint 03 ont été arrêtés après autorisation.
 
 Répertoire de travail Gateway : `/Users/ayoubelyagoubi/Documents/sre-morning-check`. `.local-config.json` pointe sur `.vscode/mcp.json` du moteur. Celui-ci lance `/bin/sh scripts/start-local.sh`, avec Node local, configuration Managed et env-file existants. Le lanceur charge `dist/index.js`, filtre les tools de token et désactive la télémétrie par défaut. Profil actif relevé : `incident-intelligence`, LLM désactivé, origine Chrome existante conservée.
 
 Stockage relatif au répertoire Gateway : environments.json, history.json, preferences.json, workbench.json, workbench.json.slo-gates. Sauvegarde privée des cinq fichiers et manifeste SHA-256 créés sous `daybreak-sprint03-6-private/data-before` et `data-before-manifest.json`.
 
-Avant activation : `/api/workbench` et `/api/capabilities` HTTP **200**, aucun job actif ; **30 jobs**, **8 étapes de continuation** persistées. Un job est `uncertain`, état préexistant. Le Gateway limite la liste à 30 jobs : un nouvel Explain persisté évincerait le plus ancien. Le test d’activation utilisera directement le MCP configuré pour éviter cette éviction, puis vérifiera les anciens jobs par HTTP. Une nouvelle sauvegarde sera prise juste avant arrêt si les données ont évolué.
+Avant activation : `/api/workbench` et `/api/capabilities` HTTP **200**, aucun job actif ; **30 jobs**, **8 étapes de continuation** persistées. Un job est `uncertain`, état préexistant. Le Gateway limite la liste à 30 jobs : un nouvel Explain persisté évincerait le plus ancien. Le test d’activation utilisera directement le MCP configuré pour éviter cette éviction, puis vérifiera les anciens jobs par HTTP. Une nouvelle sauvegarde des cinq fichiers a été prise juste avant arrêt sous `data-at-stop/`, avec manifeste SHA-256 privé.
 
-Commandes proposées, **non exécutées**, après nouvel examen de l’absence d’opération active :
+Commandes présentées et autorisées, exécutées après nouvel examen de l’absence d’opération active :
 
 ```sh
 kill -TERM 46178
@@ -79,15 +79,24 @@ nohup /bin/sh scripts/start-extension.sh \
 
 Le lanceur configure les deux profils incident-intelligence et désactive le LLM. L’arrêt SIGTERM ferme les clients MCP via registry.close(). Le redémarrage garde le répertoire, les fichiers de stockage et la configuration existants. Les sessions MCP en mémoire expirent au redémarrage ; les rapports persistés restent distincts et accessibles. Aucun nouveau port permanent ni modification Chrome prévue.
 
-Après accord : relever nouveaux PID/dates/chemins de lancement, vérifier les empreintes du build, l’écoute 4318, les capabilities read-only et le profil. Exécuter un Explain en lecture sur un problème Managed existant, contrôler contrat, statut, preuves et limitations. Comparer IDs et rapports des 30 jobs/8 étapes avec la sauvegarde et vérifier leur accès HTTP. Ne pas exposer les payloads internes dans le rapport.
+L’arrêt SIGTERM a fait sortir les anciens PID 46178 et 46185, sans arrêt forcé. Le premier lancement nohup n’a pas persisté dans le shell d’exécution (journal vide, connexion refusée). Le même script a ensuite été lancé avec Node child_process.spawn, detached=true et unref(), stdin ignoré et sorties vers le même journal privé. Aucun changement de script ni de configuration.
 
-## Résultats en attente
+Processus persistants confirmés à la fin : Gateway **58037**, démarré à **10:04:15 Europe/Paris**, parent 1 ; MCP enfant **58043**, démarré à **10:04:16**, utilisant le Node existant et le chemin absolu du moteur dist/index.js avec l’env-file existant. Les quatre empreintes du build correspondent au manifeste avant relance ; dates de build antérieures au démarrage des nouveaux processus.
 
-- Redémarrage : **non exécuté, accord requis**.
-- MCP récent dans instance habituelle : **non encore activé**.
-- Explain Sprint 03.6 : **non exécuté**. La réussite Sprint 03.5 sur 4319 ne vaut pas validation après redémarrage de 4318.
-- Historique avant arrêt : 30 jobs accessibles via liste HTTP ; stockage sauvegardé. Vérification après arrêt en attente.
-- Chrome natif : **non testé** ; aucun accès natif revendiqué.
+Les deux processus portent DT_MCP_PROFILE=incident-intelligence et DT_MCP_OLLAMA_ENABLED=false. Gateway porte DAYBREAK_PROFILE=incident-intelligence et DAYBREAK_DISABLE_LOCAL_LLM=true ; le MCP porte DT_MCP_ENABLE_TELEMETRY=false. Aucun secret affiché. L’écoute est uniquement 127.0.0.1:4318 ; aucun listener 4319.
+
+/api/workbench, /api/capabilities et /api/extension/context répondent **HTTP 200**. Un environnement disponible, LLM désactivé, 20 outils exposés en lecture seule, dont Explain ; aucun outil d’écriture dans les capacités de l’instance habituelle.
+
+## Résultats d’activation
+
+- Redémarrage : **réussi après accord**, processus persistants confirmés.
+- Core récent : **activé** via le nouveau MCP 58043 de Gateway.
+- Explain non destructif : **réussi à 10:05:12 Europe/Paris**, sur le même problème Managed existant que Sprint 03.5, sans publication d’identifiant interne. Client MCP direct utilisant la définition de lancement habituelle ; processus de test fermé proprement. Ce test ne constitue pas une nouvelle création de job HTTP dans Gateway ni une interaction Chrome.
+- Rapport version 1, statut **partial**, **9 preuves**, **8 limitations**, **15 traces de lecture toutes ok** ; LLM disabled. Schéma InvestigationSnapshotV1 et références de preuves valides. Aucune mutation Managed ni création de job habituelle.
+- Historique : les **30 jobs** sont listés et chacun retourne HTTP 200 ; comparaison exacte des payloads complets avec la sauvegarde, incluant rapports initiaux et **8 étapes d’actualisation**, réussie. **12 instantanés** accessibles via /api/history. workbench.json, history.json, preferences.json et workbench.json.slo-gates sont identiques octet par octet. Dans environments.json, seul **updatedAt** a changé à la redécouverte ; catalogue inchangé.
+- Chrome natif : **non testé**, procédure ci-dessous prête.
+
+Preuves privées : build-manifest.json, data-at-stop-manifest.json, preservation-result.json, environment-change-fields.json, explain-result.json et explain-report.json sous daybreak-sprint03-6-private/. Aucun payload Managed ni sauvegarde ajouté à Git.
 
 ## Recette manuelle Chrome après activation
 
@@ -103,4 +112,4 @@ Distinction vérifiée dans le code et les tests existants : `job.status=complet
 
 ## Limites et risques
 
-Chrome natif et SERVICE_SLOWDOWN sur un vrai SERVICE/PERFORMANCE restent à valider. Le test d’activation sera une lecture Managed ; il ne certifiera pas la causalité des constats. Le redémarrage interrompt les sessions MCP mémoire ; attendre la fin des opérations avant arrêt. La limite préexistante de 30 jobs impose de sauvegarder l’historique avant une nouvelle recette manuelle. Aucune configuration, migration de stockage ou fonctionnalité applicative ajoutée.
+Chrome natif et SERVICE_SLOWDOWN sur un vrai SERVICE/PERFORMANCE restent à valider. Le test d’activation est une lecture Managed réussie ; il ne certifie pas la causalité des constats. Le redémarrage interrompt les sessions MCP mémoire ; attendre la fin des opérations avant arrêt. La limite préexistante de 30 jobs impose de sauvegarder l’historique avant une nouvelle recette manuelle. Aucune configuration, migration de stockage ou fonctionnalité applicative ajoutée.

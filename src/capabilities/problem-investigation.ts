@@ -1,3 +1,4 @@
+import { boundedResponse, serviceCollectionLimits } from '../core/investigation-engine/collection-limits';
 import { metricWindows, scopedMetricSeries, type MetricWindow } from '../core/investigation-engine/metric-analysis';
 import { recordingDependencies, attachInvestigationContract } from '../core/investigation-engine/provenance';
 import { normalizeExplainEvent } from './explain-event-context';
@@ -112,6 +113,8 @@ export async function investigateManagedProblem(
     evidence: any[] = [],
     findings: any[] = [],
     limitations: string[] = [];
+  const limits = serviceCollectionLimits(ctx);
+  let serviceEnrichment = false, stopped = false, totalBytes = 0, successfulAttempts = 0;
   let lastRead = 0;
   const read = async (key: string, scope: string, fn: () => Promise<Map<string, any>>) => {
     const item: any = { id: 'E' + (trace.length + 1), kind: key, collectedAt: new Date().toISOString(), status: 'ok' };
@@ -121,21 +124,33 @@ export async function investigateManagedProblem(
       item.reason = 'Permission absente : ' + scope;
       return null;
     }
-    if (Date.now() - now > 80000 || trace.length > 18) {
+    if (stopped || Date.now() - now > limits.maxDurationMs || successfulAttempts >= (serviceEnrichment ? limits.maxApiCalls : Math.min(18, limits.maxApiCalls))) {
       item.status = 'unavailable';
       item.reason = 'Budget de collecte atteint';
       return null;
     }
     const gap = Math.max(0, options.paceMs - (Date.now() - lastRead));
     if (gap) await new Promise((resolve) => setTimeout(resolve, gap));
+    if (Date.now() - now >= limits.maxDurationMs) {
+      item.status = 'unavailable'; item.reason = 'Budget de collecte atteint'; return null;
+    }
     lastRead = Date.now();
     // All subreads are sequential and bounded; never expose upstream exceptions or credentials.
     try {
-      const map = await fn();
+      successfulAttempts++;
+      const map = await boundedResponse(fn, Math.min(limits.timeoutMs, Math.max(1, limits.maxDurationMs - (Date.now() - now))));
       const value = map.get(alias);
       if (!value || typeof value !== 'object') throw Error();
+      const bytes = Buffer.byteLength(JSON.stringify(value));
+      totalBytes += bytes;
+      if (bytes > limits.maxResponseBytes || totalBytes > limits.maxTotalBytes) {
+        stopped = true; item.status = 'unavailable'; item.reason = 'Budget de volume atteint'; return null;
+      }
       return value;
-    } catch {
+    } catch (error) {
+      if (error instanceof Error && error.message === 'Collection timeout') {
+        stopped = true; item.status = 'unavailable'; item.reason = 'Timeout de collecte ; lectures suivantes arrêtées'; return null;
+      }
       item.status = 'unavailable';
       item.reason = 'Permission, connexion ou données indisponibles';
       return null;
@@ -147,6 +162,8 @@ export async function investigateManagedProblem(
     ctx.problemsClient.getProblemDetails(problemId, alias),
   );
   if (problem?.problemId !== problemId) throw Error('Problem details unavailable; no diagnosis produced');
+  serviceEnrichment = options.explain === true && problem.severityLevel === 'PERFORMANCE' &&
+    [...(problem.affectedEntities || []), ...(problem.impactedEntities || []), ...(problem.rootCauseEntity ? [problem.rootCauseEntity] : [])].some((e: any) => /^SERVICE-[A-F0-9]{16}$/.test(entityId(e.entityId) || ''));
   evidence.push({
     id: trace[0].id,
     kind: 'problem',

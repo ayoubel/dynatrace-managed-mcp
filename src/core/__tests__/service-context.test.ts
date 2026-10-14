@@ -217,7 +217,7 @@ test.each(['increased', 'stable', 'missing', 'api-error', 'no-relations', 'no-ev
     expect(r.playbook.causalMechanism).toBe('unknown');
     expect(JSON.stringify(r)).not.toContain('secret-token');
     expect(r.playbook.context.inspectedDependencies.length).toBeLessThanOrEqual(2);
-    expect(deps.entitiesClient.getEntityDetails).toHaveBeenCalledTimes(kind === 'permissions' ? 0 : 1);
+    expect(deps.entitiesClient.getEntityDetails).toHaveBeenCalledTimes(kind === 'permissions' ? 0 : kind === 'cap' ? 3 : ['increased', 'api-error', 'no-events'].includes(kind) ? 2 : 1);
     if (['increased', 'stable'].includes(kind))
       expect(r.playbook.context.dependencies[0]).toMatchObject({
         status: 'compared',
@@ -247,12 +247,12 @@ test('Explain reuses the primary entity and existing sections, verifies all evid
     ),
   );
   const r = await explainProblem(deps, { environment_alias: 'prod', problemId: 'context' }, 0);
-  expect(r.explain.whyItHappened.comparisons).toHaveLength(4);
+  expect(r.explain.whyItHappened.comparisons).toHaveLength(6);
   expect(r.explain.whyItHappened.observations.some((f: any) => f.title==='Événement contextuel publié')).toBe(true);
   expect(r.explain.whyItHappened.hypotheses.map((h:any)=>h.title)).toEqual(['Latence également augmentée sur la dépendance','Changement publié proche de la hausse de latence']);
   expect(r.explain.whyItHappened.mechanism.certainty).toBe('unknown');
   expect(r.diagnosis.causalMechanism).toBe('unknown');
-  expect(deps.entitiesClient.getEntityDetails).toHaveBeenCalledTimes(1);
+  expect(deps.entitiesClient.getEntityDetails).toHaveBeenCalledTimes(2);
   expect(InvestigationSnapshotSchemaV1.safeParse(r.investigation).success).toBe(true);
   expect(r.evidence.find((e: any) => e.kind === 'service-relations').provenance.source.endpoint).toBe(
     '/api/v2/entities/' + main,
@@ -265,6 +265,7 @@ test('Explain reuses the primary entity and existing sections, verifies all evid
 });
 test('existing shared read budget blocks extra context without changing the three primary comparisons', async () => {
   const { deps, problem, entity } = fixture();
+  deps.investigationLimits = { maxApiCalls: 18 };
   entity.fromRelationships.calls.push({ id: incoming, type: 'SERVICE' });
   problem.evidenceDetails.details = Array.from({ length: 3 }, (_, i) => ({
     evidenceType: 'EVENT',

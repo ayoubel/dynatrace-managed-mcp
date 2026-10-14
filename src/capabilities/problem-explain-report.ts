@@ -83,6 +83,7 @@ export function buildExplainReport(problem: any, report: any) {
         e.kind === 'series' &&
         e.window === 'baseline' &&
         e.metricId === incident.metricId &&
+        e.aggregation === incident.aggregation &&
         e.entityId === incident.entityId,
     );
     const incidents = evidence.filter(
@@ -90,6 +91,7 @@ export function buildExplainReport(problem: any, report: any) {
         e.kind === 'series' &&
         e.window === 'incident' &&
         e.metricId === incident.metricId &&
+        e.aggregation === incident.aggregation &&
         e.entityId === incident.entityId,
     );
     if (baselines.length !== 1 || incidents.length !== 1) continue;
@@ -121,27 +123,38 @@ export function buildExplainReport(problem: any, report: any) {
     if (incident.aggregation !== baseline.aggregation) continue;
     const serviceComparison =
       plan === 'service' &&
-      incident.aggregation === 'avg' &&
-      baseline.aggregation === 'avg' &&
+      ['avg', 'percentile(95)'].includes(incident.aggregation) &&
+      baseline.aggregation === incident.aggregation &&
       Number.isFinite(incident.mean) &&
       Number.isFinite(baseline.mean);
     const volumeComparison =
       plan === 'service' &&
-      incident.metricId === 'builtin:service.requestCount.total' &&
+      incident.unit === 'Count' &&
       incident.aggregation === 'value' &&
       baseline.aggregation === 'value' &&
       Number.isFinite(incident.sum) &&
       Number.isFinite(baseline.sum);
     const diskComparison = plan === 'disk' && Number.isFinite(incident.max) && Number.isFinite(baseline.max);
     if (!serviceComparison && !volumeComparison && !diskComparison) continue;
+    const metricTitles: Record<string, string> = {
+      'builtin:service.keyRequest.response.server': 'Temps de réponse de la key request',
+      'builtin:service.keyRequest.errors.server.rate': 'Erreurs de la key request',
+      'builtin:host.cpu.usage': 'Utilisation CPU de l’hôte · moyenne',
+      'builtin:host.mem.usage': 'Utilisation mémoire de l’hôte · moyenne',
+    };
     const title =
-      incident.metricId === 'builtin:service.errors.server.rate'
+      metricTitles[incident.metricId] ||
+      (incident.metricId === 'builtin:service.errors.server.rate'
         ? 'Erreurs côté serveur'
         : incident.metricId === 'builtin:service.response.time'
-          ? 'Temps de réponse moyen'
+          ? incident.aggregation === 'percentile(95)'
+            ? 'Latence de queue · moyenne des p95 par créneau'
+            : 'Temps de réponse moyen'
           : volumeComparison
             ? 'Volume de requêtes'
-            : 'Usage disque · maximum';
+            : plan === 'service'
+              ? 'Comparaison métrique · ' + incident.metricId
+              : 'Usage disque · maximum');
     const before = formatMeasure(
         serviceComparison ? baseline.mean : volumeComparison ? baseline.sum : baseline.max,
         baseline.unit,
@@ -165,7 +178,7 @@ export function buildExplainReport(problem: any, report: any) {
         baseline: { from: baseline.from, to: baseline.to },
         incident: { from: incident.from, to: incident.to },
       },
-      aggregation: serviceComparison ? 'avg' : volumeComparison ? 'value' : 'max',
+      aggregation: serviceComparison ? incident.aggregation : volumeComparison ? 'value' : 'max',
       certainty: 'observed',
       evidenceRefs: [incident.id, baseline.id],
     });
@@ -409,7 +422,7 @@ function enrichInvestigationPresentation(
       const synthetic = !!event.synthetic;
       if (synthetic)
         unknowns.push(`Événement de test publié sur ${proof.entityId} ; dégradation réelle et impact non démontrés.`);
-      const fact = `${proof.entityId} · ${event.type} · ${period({ from: event.startTime, to: event.endTime })} · ${event.timing === 'before' ? 'précède' : 'recouvre'} la fenêtre étudiée.`;
+      const fact = `${proof.entityId} · ${event.type} · ${period({ from: event.startTime, to: event.endTime })} · ${event.timing === 'before' ? 'précède' : event.timing === 'after' ? 'suit' : 'recouvre'} la fenêtre étudiée.`;
       // Existing event finding is replaced by this bounded declaration, including synthetic origin.
       observations.push({
         title: synthetic ? 'Déclaration synthétique ou de test' : 'Événement contextuel publié',
@@ -419,6 +432,7 @@ function enrichInvestigationPresentation(
       });
       if (
         !synthetic &&
+        event.timing !== 'after' &&
         ['deployment', 'change'].includes(event.category) &&
         primaryLatency &&
         primaryLatency.incident.value > primaryLatency.baseline.value &&
@@ -435,11 +449,47 @@ function enrichInvestigationPresentation(
         lead(
           'Changement publié proche de la hausse de latence',
           fact,
-          'contenu du changement, version effectivement exécutée et comportement avant/après',
+          'contenu du changement, version effectivement exécutée et comportement avant/après ; début précis de dégradation non déterminé par les moyennes',
           [proof.id, ...topologyRefs, ...primaryLatency.evidenceRefs],
           `Vérifier le contenu du changement sur ${proof.entityId}, sa version déployée et les traces avant/après ${period(primaryLatency.windows.incident)} ; rechercher un lien technique avec les requêtes ralenties.`,
         );
       }
+    }
+  }
+  for (const relation of evidence.filter(
+    (e) => e.kind === 'request-relations' || e.kind === 'infrastructure-relations',
+  )) {
+    observations.push({
+      title:
+        relation.kind === 'request-relations' ? 'Key request explicitement liée' : 'Infrastructure explicitement liée',
+      text: `${relation.serviceId} → ${relation.entityId} · relation publiée à ${period(relation)}. Présence historique inconnue ; aucune causalité démontrée.`,
+      certainty: 'observed',
+      evidenceRefs: [relation.id],
+    });
+    const measures = comparisons.filter((c) => c.entityId === relation.entityId);
+    const increased = measures.filter((c) => c.incident.value > c.baseline.value);
+    if (increased.length) {
+      const refs = [relation.id, ...increased.flatMap((c) => c.evidenceRefs)];
+      const isRequest = relation.kind === 'request-relations';
+      lead(
+        isRequest ? 'Key request à examiner' : 'Signaux infrastructure à examiner',
+        `${relation.entityId} · ${increased.map((c) => c.title + ' : ' + c.baseline.text + ' → ' + c.incident.text).join('; ')} · fenêtre ${period(increased[0].windows.incident)}.`,
+        isRequest
+          ? 'répartition des appels, traces, exceptions et représentativité des key requests ; contribution au temps global non quantifiée'
+          : 'placement historique, contention effective et lien technique avec les requêtes du service',
+        refs,
+        isRequest
+          ? `Examiner les requêtes ${relation.entityId} du service ${relation.serviceId}, comparer erreurs et traces sur ${period(increased[0].windows.incident)} ; ne pas généraliser aux endpoints non configurés.`
+          : `Examiner CPU/mémoire et événements de ${relation.entityId} sur ${period(increased[0].windows.incident)}, confirmer le placement de ${relation.serviceId} pendant l’incident.`,
+      );
+    } else if (!measures.length && relation.kind === 'infrastructure-relations' && relation.relation === 'runsOnHost') {
+      check(
+        'Métriques de l’hôte associé indisponibles',
+        `Vérifier la couverture CPU/mémoire de ${relation.entityId} pendant l’incident et confirmer le placement historique du service.`,
+        'Relation explicite publiée ; aucune paire métrique comparable.',
+        [relation.id],
+        'metrics',
+      );
     }
   }
   const errors = comparisons.find((c) => c.entityId === primary && c.metricId === 'builtin:service.errors.server.rate');
@@ -467,13 +517,25 @@ function enrichInvestigationPresentation(
       'Hausse mesurée de latence ; mécanisme technique et répartition du temps inconnus.',
       primaryLatency.evidenceRefs,
     );
+  const tail = comparisons.find((c) => c.entityId === primary && c.aggregation === 'percentile(95)');
+  if (tail && tail.incident.value > tail.baseline.value)
+    check(
+      'Examiner les requêtes de queue',
+      `Comparer les requêtes lentes de ${primary} sur ${period(tail.windows.incident)} à la baseline ; examiner les traces disponibles dans Managed.`,
+      'Hausse de la moyenne des p95 de créneaux ; percentile global, échantillonnage et mécanisme inconnus.',
+      tail.evidenceRefs,
+    );
+  if ((report.limitations || []).some((s: string) => s.includes('Traces/PurePaths')))
+    unknowns.push(
+      'Traces brutes non accessibles via une API publique Managed vérifiée ; les vérifications de traces proposées sont manuelles dans Managed.',
+    );
   const compared = new Set(comparisons.flatMap((c) => c.evidenceRefs));
   const incomplete = evidence.filter((e) => e.kind === 'series' && !compared.has(e.id));
   if (incomplete.length)
     unknowns.push('Mesures présentes sans paire complète, unique et comparable ; variation et mécanisme inconnus.');
   for (const e of incomplete) {
     if (!Number.isFinite(e.count) || e.count < 1) continue;
-    const volume = e.metricId === 'builtin:service.requestCount.total';
+    const volume = e.aggregation === 'value' && e.unit === 'Count';
     const value = Number.isFinite(volume ? e.sum : e.mean)
       ? formatMeasure(volume ? e.sum : e.mean, e.unit || 'unité inconnue').text
       : 'valeur agrégée indisponible';

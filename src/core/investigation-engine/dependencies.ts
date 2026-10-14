@@ -29,6 +29,16 @@ export interface InvestigationDependencies {
     queryMetrics(params: MetricQueryParams, alias: string): ApiResults;
   };
   logsClient: { queryLogs(params: LogQueryParams, alias: string): ApiResults };
+  investigationLimits?: {
+    maxApiCalls?: number;
+    maxCandidates?: number;
+    maxDependencies?: number;
+    maxKeyRequests?: number;
+    timeoutMs?: number;
+    maxDurationMs?: number;
+    maxResponseBytes?: number;
+    maxTotalBytes?: number;
+  };
   investigationOwner?: string;
   tokenScopesFor?: (alias: string) => string[] | undefined;
   executionProfile?: ExecutionProfile;

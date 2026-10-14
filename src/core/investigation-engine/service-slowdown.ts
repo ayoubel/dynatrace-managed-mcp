@@ -1,3 +1,5 @@
+import { boundedResponse, serviceCollectionLimits } from './collection-limits';
+import { collectServiceEnrichment, type MetricContract } from './service-enrichment';
 import type { InvestigationDependencies } from './dependencies';
 import { metricWindows, scopedMetricSeries } from './metric-analysis';
 import { collectServiceContext } from './service-context';
@@ -5,6 +7,7 @@ import { collectServiceContext } from './service-context';
 export interface MetricCollection {
   read(key: string, scope: string, fn: () => Promise<Map<string, any>>): Promise<any>;
   evidenceId(): string;
+  metricContracts?: Map<string, MetricContract>;
   primaryEntity?: { entity: any; evidenceId: string };
 }
 const definitions = [
@@ -48,20 +51,43 @@ export async function runServiceSlowdown(
   let latencyContractRef: string | undefined;
   let sequence = 0;
   const collectionStarted = Date.now();
+  const limits = serviceCollectionLimits(dependencies);
+  let stopped = false,
+    bytes = 0;
   const reader = collection || {
     evidenceId: () => 'S' + sequence,
     async read(_key: string, scope: string, fn: () => Promise<Map<string, any>>) {
       sequence++;
-      if (sequence > 18 || Date.now() - collectionStarted > 80000) return null;
+      if (stopped || sequence > limits.maxApiCalls || Date.now() - collectionStarted > limits.maxDurationMs)
+        return null;
       const scopes = dependencies.tokenScopesFor?.(alias);
       if (scopes && !scopes.includes(scope)) return null;
       try {
-        return (await fn()).get(alias) ?? null;
-      } catch {
+        const response =
+          (
+            await boundedResponse(
+              fn,
+              Math.min(limits.timeoutMs, Math.max(1, limits.maxDurationMs - (Date.now() - collectionStarted))),
+            )
+          ).get(alias) ?? null;
+        const size = Buffer.byteLength(JSON.stringify(response));
+        bytes += size;
+        if (size > limits.maxResponseBytes || bytes > limits.maxTotalBytes) {
+          stopped = true;
+          limitations.push('Budget de volume atteint');
+          return null;
+        }
+        return response;
+      } catch (error) {
+        if (error instanceof Error && error.message === 'Collection timeout') {
+          stopped = true;
+          limitations.push('Timeout de collecte ; lectures suivantes arrêtées');
+        }
         return null;
       }
     },
   };
+  reader.metricContracts = new Map();
   const playbook: any = {
     id: 'SERVICE_SLOWDOWN',
     version: 1,
@@ -102,6 +128,7 @@ export async function runServiceSlowdown(
       continue;
     }
     const contractId = reader.evidenceId();
+    reader.metricContracts.set(metric.id, { descriptor, evidenceId: contractId });
     if (metric.role === 'latency') {
       latencyUnit = descriptor.unit;
       latencyContractRef = contractId;
@@ -201,7 +228,7 @@ export async function runServiceSlowdown(
   playbook.status = checks.every((c) => c.status === 'compared') ? 'completed' : 'partial';
   const contextual = await collectServiceContext(
     dependencies,
-    { environment_alias: alias, serviceId, windows, latencyUnit, latencyContractRef, now },
+    { environment_alias: alias, serviceId, windows, latencyUnit, latencyContractRef, now, problem, limits },
     reader,
     reader.primaryEntity,
   );
@@ -209,5 +236,18 @@ export async function runServiceSlowdown(
   evidence.push(...contextual.evidence);
   findings.push(...contextual.findings);
   limitations.push(...contextual.limitations);
+  const enrichment = { evidence, findings, limitations, partial: false };
+  await collectServiceEnrichment(
+    dependencies,
+    reader,
+    alias,
+    serviceId,
+    contextual.primary.entity,
+    contextual.primary.evidenceId,
+    windows,
+    now,
+    enrichment,
+  );
+  if (enrichment.partial) playbook.context.status = 'partial';
   return { playbook, evidence, findings, limitations };
 }

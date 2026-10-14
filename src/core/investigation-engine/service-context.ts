@@ -1,3 +1,5 @@
+import { deepenDependency } from './service-enrichment';
+import { serviceCollectionLimits } from './collection-limits';
 import type { InvestigationDependencies } from './dependencies';
 import type { MetricCollection } from './service-slowdown';
 import { scopedMetricSeries } from './metric-analysis';
@@ -88,8 +90,9 @@ export function qualifyServiceEvents(data: any, entityId: string, incident: Wind
     const category = eventCategories[event.type];
     const overlaps =
       start <= incident.to && (end === null ? raw.status === 'OPEN' || start >= incident.from : end >= incident.from);
+    const after = start > incident.to && start <= incident.to + CONTEXT_LOOKBACK_MS;
     const before = start >= Math.max(0, incident.from - CONTEXT_LOOKBACK_MS) && start < incident.from;
-    if (!category || (!overlaps && !before) || seen.has(event.id)) {
+    if (!category || (!overlaps && !before && !after) || seen.has(event.id)) {
       rejected++;
       continue;
     }
@@ -98,7 +101,7 @@ export function qualifyServiceEvents(data: any, entityId: string, incident: Wind
       ...event,
       entityId,
       category,
-      timing: overlaps ? 'during' : 'before',
+      timing: overlaps ? 'during' : before ? 'before' : 'after',
       qualification: event.synthetic ? 'synthetic-declaration' : 'confirmed-observation',
       interpretationLimit: noCause,
     });
@@ -137,7 +140,7 @@ export function compareDependencyLatency(incident: any, baseline: any) {
   };
 }
 
-/** Maximum eight reads standalone, seven with the already collected primary entity; shared Explain budget wins. */
+/** Candidate screening and selected deepening share the caller budget; primary identity is reused. */
 export async function collectServiceContext(
   deps: Pick<InvestigationDependencies, 'entitiesClient' | 'eventsClient' | 'metricsClient'>,
   input: {
@@ -147,6 +150,8 @@ export async function collectServiceContext(
     latencyUnit?: string;
     latencyContractRef?: string;
     now: number;
+    problem?: any;
+    limits?: ReturnType<typeof serviceCollectionLimits>;
   },
   reader: MetricCollection,
   primary?: { entity: any; evidenceId: string },
@@ -174,14 +179,26 @@ export async function collectServiceContext(
     ));
   const topologyRef = primary?.evidenceId || reader.evidenceId();
   const topology = directServiceRelations(entity, serviceId);
-  const selected = topology.outgoing.slice(0, MAX_SERVICE_DEPENDENCIES);
+  const limits = input.limits || serviceCollectionLimits({});
+  const published = new Set<string>(
+    [
+      ...(input.problem?.affectedEntities || []),
+      ...(input.problem?.impactedEntities || []),
+      ...(input.problem?.rootCauseEntity ? [input.problem.rootCauseEntity] : []),
+    ].map((e: any) => (typeof e.entityId === 'string' ? e.entityId : e.entityId?.id)),
+  );
+  const candidates = [...topology.outgoing]
+    .sort((a, b) => Number(published.has(b)) - Number(published.has(a)) || a.localeCompare(b))
+    .slice(0, limits.maxCandidates);
   const context: any = {
     status: 'completed',
     topology,
-    inspectedDependencies: selected,
+    inspectedDependencies: [],
+    candidateDependencies: candidates,
+    selectionRule: 'published-problem-entity, measured-latency-increase, ID; no causal ranking',
     dependencies: [],
     events: [],
-    maxDependencies: MAX_SERVICE_DEPENDENCIES,
+    maxDependencies: limits.maxDependencies,
     depth: 1,
   };
   const limited = (text: string) => {
@@ -194,9 +211,9 @@ export async function collectServiceContext(
   );
   if (!topology.available || topology.partial)
     limited('Dépendances absentes, incomplètes ou indisponibles : aucune topologie complète affirmée.');
-  if (topology.outgoing.length > MAX_SERVICE_DEPENDENCIES)
+  if (topology.outgoing.length > limits.maxCandidates)
     limited(
-      'Dépendances sortantes bornées aux deux premiers IDs triés ; aucune sélection causale ni exploration récursive.',
+      'Dépendances sortantes bornées aux candidates publiées par le problème puis IDs ; aucune sélection causale ni exploration récursive.',
     );
   if (topology.available) {
     evidence.push({
@@ -205,9 +222,9 @@ export async function collectServiceContext(
       entityId: serviceId,
       from: now,
       to: now,
-      outgoing: topology.outgoing.slice(0, 2),
+      outgoing: candidates,
       incoming: topology.incoming.slice(0, 2),
-      partial: topology.partial || topology.outgoing.length > 2 || topology.incoming.length > 2,
+      partial: topology.partial || topology.outgoing.length > candidates.length || topology.incoming.length > 2,
       evidenceRefs: [topologyRef],
       source: { api: 'entities', method: 'GET', endpoint: '/api/v2/entities/' + serviceId, parameters: {} },
     });
@@ -220,7 +237,7 @@ export async function collectServiceContext(
         name: entity.displayName || serviceId,
         source: { api: 'entities', method: 'GET', endpoint: '/api/v2/entities/' + serviceId, parameters: {} },
       });
-    for (const id of selected)
+    for (const id of candidates)
       findings.push({
         kind: 'dependency-context',
         qualification: 'investigation-lead',
@@ -233,7 +250,7 @@ export async function collectServiceContext(
         interpretationLimit: noCause,
         text: `${serviceId} → ${id} : relation sortante calls observée à ${new Date(now).toISOString()}. Service à examiner ; relation historique et cause non démontrées.`,
       });
-    if (!selected.length)
+    if (!candidates.length)
       limitations.push(
         'Aucune dépendance sortante SERVICE dans la réponse ; les relations entrantes ne sont pas utilisées comme dépendances sortantes.',
       );
@@ -241,7 +258,7 @@ export async function collectServiceContext(
   const eventsFor = async (id: string) => {
     const params = {
       from: String(Math.max(0, windows.incident.from - CONTEXT_LOOKBACK_MS)),
-      to: String(windows.incident.to),
+      to: String(Math.min(now, windows.incident.to + CONTEXT_LOOKBACK_MS)),
       pageSize: 10,
       entitySelector: `entityId("${id}")`,
     };
@@ -276,7 +293,7 @@ export async function collectServiceContext(
         signal: event.type,
         window: { from: event.startTime, to: event.endTime },
         interpretationLimit: noCause,
-        text: `${id} · ${event.type} · début ${new Date(event.startTime).toISOString()} · ${event.timing === 'during' ? 'recouvre la fenêtre étudiée' : 'commence dans les 30 minutes précédentes'}. ${event.synthetic ? 'Déclaration synthétique, aucune dégradation réelle prouvée. ' : ''}${noCause}`,
+        text: `${id} · ${event.type} · début ${new Date(event.startTime).toISOString()} · ${event.timing === 'during' ? 'recouvre la fenêtre étudiée' : event.timing === 'before' ? 'commence dans les 30 minutes précédentes' : 'commence après la fenêtre étudiée'}. ${event.synthetic ? 'Déclaration synthétique, aucune dégradation réelle prouvée. ' : ''}${noCause}`,
       });
     if (!qualified.observations.length)
       limitations.push(
@@ -286,7 +303,7 @@ export async function collectServiceContext(
       );
   };
   await eventsFor(serviceId);
-  for (const id of selected) {
+  for (const id of candidates) {
     const refs: string[] = [],
       summaries: Record<string, any> = {};
     if (['MicroSecond', 'MilliSecond', 'Second'].includes(latencyUnit || ''))
@@ -349,8 +366,39 @@ export async function collectServiceContext(
         interpretationLimit: noCause,
         text: `${id} · moyenne baseline ${comparison.baselineValue} ${latencyUnit} (${new Date(windows.baseline.from).toISOString()} → ${new Date(windows.baseline.to).toISOString()}) ; observation ${comparison.incidentValue} ${latencyUnit} (${new Date(windows.incident.from).toISOString()} → ${new Date(windows.incident.to).toISOString()}) ; différence ${comparison.delta} ${latencyUnit}. Écart descriptif, sans seuil d’anomalie. ${noCause}`,
       });
-    await eventsFor(id);
+  }
+  const selected = [...context.dependencies]
+    .sort(
+      (a: any, b: any) =>
+        Number(published.has(b.entityId)) - Number(published.has(a.entityId)) ||
+        Number(b.direction === 'increase') - Number(a.direction === 'increase') ||
+        a.entityId.localeCompare(b.entityId),
+    )
+    .slice(0, limits.maxDependencies);
+  context.inspectedDependencies = selected.map((d: any) => d.entityId);
+  if (context.dependencies.length > selected.length)
+    limited('Dépendances approfondies bornées ; candidates comparées sans approfondissement exhaustif.');
+  for (const dependency of selected) {
+    if (dependency.direction === 'increase' || published.has(dependency.entityId)) {
+      await deepenDependency(
+        deps as InvestigationDependencies,
+        reader,
+        alias,
+        dependency.entityId,
+        windows,
+        topologyRef + '-calls',
+        { evidence, findings, limitations },
+      );
+    }
+    await eventsFor(dependency.entityId);
   }
   if (!findings.length) limitations.push('Aucune donnée contextuelle exploitable dans ce périmètre borné.');
-  return { context, evidence, findings, limitations, causalMechanism: 'unknown' as const };
+  return {
+    context,
+    evidence,
+    findings,
+    limitations,
+    causalMechanism: 'unknown' as const,
+    primary: { entity, evidenceId: topologyRef },
+  };
 }

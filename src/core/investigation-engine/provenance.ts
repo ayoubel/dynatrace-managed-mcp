@@ -21,7 +21,7 @@ export function recordingDependencies(
       validAliases: input.authClientManager.validAliases,
       getBaseUrl: (alias) => input.authClientManager.getBaseUrl(alias),
       makeRequests: (endpoint, params, alias) => {
-        source('settings', endpoint, params);
+        source(endpoint.startsWith('/api/v2/entities') ? 'entities' : 'settings', endpoint, params);
         return input.authClientManager.makeRequests(endpoint, params, alias);
       },
     },
@@ -96,7 +96,7 @@ export function attachInvestigationContract(report: any): void {
       : undefined;
     const inherited =
       ['impact', 'trigger', 'alert-rule'].includes(proof.kind) || String(proof.id).startsWith('published-event-');
-    const relationOrigin = proof.kind === 'service-relations'
+    const relationOrigin = proof.kind.endsWith('-relations')
       ? report.trace.find((t: any) => t.id === proof.evidenceRefs?.[0]) : undefined;
     const origin = trace || event || relationOrigin || (inherited ? problem : undefined);
     const limitations: string[] = [];
@@ -137,7 +137,7 @@ export function attachInvestigationContract(report: any): void {
         ? {
             metricId: text(proof.metricId),
             value:
-              proof.metricId === 'builtin:service.requestCount.total'
+              proof.aggregation === 'value' && proof.unit === 'Count'
                 ? number(proof.sum)
                 : (number(proof.mean) ?? number(proof.last?.v)),
             unit: text(proof.unit),

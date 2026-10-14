@@ -66,6 +66,7 @@ function fixture(scenario: Scenario) {
   });
   const dependencies: any = {
     investigationOwner: 'quality',
+    ...(scenario === 'budget' ? { investigationLimits: { maxApiCalls: 18 } } : {}),
     authClientManager: {
       validAliases: ['prod'],
       getBaseUrl: () => 'https://managed.example/e/prod',

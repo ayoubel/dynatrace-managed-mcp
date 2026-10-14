@@ -300,6 +300,20 @@ function enrichInvestigationPresentation(
   const evidence: any[] = report.evidence || [];
   const byId = new Map<string, any>(evidence.map((e) => [e.id, e]));
   const valid = (refs: string[]) => refs.length > 0 && refs.every((ref) => byId.has(ref));
+  // Rule decisions use collected units. Display formatting may switch ms to s per value.
+  const isIncreased = (comparison: any) => {
+    const series = comparison.evidenceRefs.map((ref: string) => byId.get(ref));
+    const before = series.find((e: any) => e?.window === 'baseline');
+    const during = series.find((e: any) => e?.window === 'incident');
+    const value = (e: any) =>
+      comparison.aggregation === 'value' ? e?.sum : comparison.aggregation === 'max' ? e?.max : e?.mean;
+    return (
+      before?.unit === during?.unit &&
+      Number.isFinite(value(before)) &&
+      Number.isFinite(value(during)) &&
+      value(during) > value(before)
+    );
+  };
   const period = (w: any) =>
     Number.isFinite(w?.from) && Number.isFinite(w?.to)
       ? `${new Date(w.from).toISOString()} → ${new Date(w.to).toISOString()}`
@@ -384,11 +398,7 @@ function enrichInvestigationPresentation(
       );
       const dependency = comparisons.find((c) => c.entityId === id && c.metricId === 'builtin:service.response.time');
       const sameWindows = main && dependency && JSON.stringify(main.windows) === JSON.stringify(dependency.windows);
-      if (
-        sameWindows &&
-        main.incident.value > main.baseline.value &&
-        dependency.incident.value > dependency.baseline.value
-      ) {
+      if (sameWindows && isIncreased(main) && isIncreased(dependency)) {
         const refs = [relation.id, ...main.evidenceRefs, ...dependency.evidenceRefs];
         lead(
           'Latence également augmentée sur la dépendance',
@@ -435,7 +445,7 @@ function enrichInvestigationPresentation(
         event.timing !== 'after' &&
         ['deployment', 'change'].includes(event.category) &&
         primaryLatency &&
-        primaryLatency.incident.value > primaryLatency.baseline.value &&
+        isIncreased(primaryLatency) &&
         [primary, ...relations.filter((r) => r.entityId === primary).flatMap((r) => r.outgoing || [])].includes(
           proof.entityId,
         )
@@ -467,7 +477,7 @@ function enrichInvestigationPresentation(
       evidenceRefs: [relation.id],
     });
     const measures = comparisons.filter((c) => c.entityId === relation.entityId);
-    const increased = measures.filter((c) => c.incident.value > c.baseline.value);
+    const increased = measures.filter((c) => isIncreased(c));
     if (increased.length) {
       const refs = [relation.id, ...increased.flatMap((c) => c.evidenceRefs)];
       const isRequest = relation.kind === 'request-relations';
@@ -500,8 +510,8 @@ function enrichInvestigationPresentation(
     errors &&
     traffic &&
     JSON.stringify(errors.windows) === JSON.stringify(traffic.windows) &&
-    errors.incident.value > errors.baseline.value &&
-    traffic.incident.value <= traffic.baseline.value
+    isIncreased(errors) &&
+    !isIncreased(traffic)
   )
     lead(
       'Erreurs augmentées sans hausse du volume',
@@ -510,7 +520,7 @@ function enrichInvestigationPresentation(
       [...errors.evidenceRefs, ...traffic.evidenceRefs],
       `Examiner les erreurs et exceptions de ${primary} sur ${period(errors.windows.incident)} et comparer les endpoints et types de requêtes à la baseline.`,
     );
-  if (primaryLatency && primaryLatency.incident.value > primaryLatency.baseline.value && !hypotheses.length)
+  if (primaryLatency && isIncreased(primaryLatency) && !hypotheses.length)
     check(
       'Localiser le temps passé dans le service',
       `Examiner les traces de ${primary} sur ${period(primaryLatency.windows.incident)} et comparer les durées des spans à la baseline ${period(primaryLatency.windows.baseline)}.`,
@@ -518,7 +528,7 @@ function enrichInvestigationPresentation(
       primaryLatency.evidenceRefs,
     );
   const tail = comparisons.find((c) => c.entityId === primary && c.aggregation === 'percentile(95)');
-  if (tail && tail.incident.value > tail.baseline.value)
+  if (tail && isIncreased(tail))
     check(
       'Examiner les requêtes de queue',
       `Comparer les requêtes lentes de ${primary} sur ${period(tail.windows.incident)} à la baseline ; examiner les traces disponibles dans Managed.`,

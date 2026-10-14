@@ -50,7 +50,8 @@
     "version:check": "node .github/scripts/check-version-sync.js",
     "plugin:validate": "claude plugin validate .claude-plugin/plugin.json --strict && claude plugin validate . --strict",
     "prettier": "prettier --check .",
-    "prettier:fix": "prettier --write ."
+    "prettier:fix": "prettier --write .",
+    "test:diagnostic": "jest --selectProjects unit --runInBand --runTestsByPath src/core/__tests__/diagnostic-corpus.test.ts"
   },
   "author": "Dynatrace",
   "license": "Apache-2.0",

@@ -1,0 +1,133 @@
+{
+  "nature": "Synthetic deterministic scenarios; Managed Classic API shapes; not real incidents",
+  "scenarios": [
+    {
+      "id": "S01",
+      "base": "complete",
+      "latency": [100000, 300000]
+    },
+    {
+      "id": "S02",
+      "base": "dependency-slow",
+      "latency": [100000, 300000]
+    },
+    {
+      "id": "S03",
+      "base": "complete",
+      "latency": [100000, 100000],
+      "errors": [1, 5]
+    },
+    {
+      "id": "S04",
+      "base": "missing-baseline",
+      "latency": [100000, 300000]
+    },
+    {
+      "id": "S05",
+      "base": "complete",
+      "latency": [100000, 300000],
+      "errors": [5, 1],
+      "mutation": "extra-error-dimension"
+    },
+    {
+      "id": "S06",
+      "base": "deployment",
+      "latency": [100000, 300000]
+    },
+    {
+      "id": "S07",
+      "base": "complete",
+      "latency": [100000, 100000]
+    },
+    {
+      "id": "S08",
+      "base": "complete",
+      "latency": [100000, 300000],
+      "mutation": "api-error"
+    },
+    {
+      "id": "S09",
+      "base": "complete",
+      "latency": [100000, 300000],
+      "mutation": "resolution"
+    },
+    {
+      "id": "S10",
+      "base": "complete",
+      "latency": [100000, 300000]
+    },
+    {
+      "id": "S01-unit-boundary",
+      "base": "complete",
+      "latency": [900000, 1800000]
+    },
+    {
+      "id": "S02-unit-boundary",
+      "base": "dependency-slow",
+      "latency": [900000, 1800000]
+    },
+    {
+      "id": "S06-unit-boundary",
+      "base": "deployment",
+      "latency": [900000, 1800000]
+    },
+    {
+      "id": "S08-timeout",
+      "base": "complete",
+      "latency": [100000, 300000],
+      "mutation": "timeout"
+    },
+    {
+      "id": "S08-malformed",
+      "base": "complete",
+      "latency": [100000, 300000],
+      "mutation": "malformed"
+    },
+    {
+      "id": "S08-budget",
+      "base": "complete",
+      "latency": [100000, 300000],
+      "mutation": "budget"
+    },
+    {
+      "id": "S09-missing-bucket",
+      "base": "complete",
+      "latency": [100000, 300000],
+      "mutation": "missing-bucket"
+    },
+    {
+      "id": "S09-foreign-entity",
+      "base": "complete",
+      "latency": [100000, 300000],
+      "mutation": "foreign-entity"
+    },
+    {
+      "id": "S03-error",
+      "base": "complete",
+      "severity": "ERROR",
+      "latency": [100000, 100000],
+      "errors": [1, 5]
+    },
+    {
+      "id": "S03-error-invalid-contract",
+      "base": "complete",
+      "severity": "ERROR",
+      "latency": [100000, 100000],
+      "errors": [1, 5],
+      "mutation": "invalid-contract"
+    },
+    {
+      "id": "S03-error-invalid-values",
+      "base": "complete",
+      "severity": "ERROR",
+      "latency": [100000, 100000],
+      "errors": [1, 150],
+      "mutation": "invalid-values"
+    },
+    {
+      "id": "S07-unit-boundary-decrease",
+      "base": "complete",
+      "latency": [1800000, 900000]
+    }
+  ]
+}

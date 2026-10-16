@@ -1,0 +1,2405 @@
+{
+  "ui-0-0": {
+    "version": 3,
+    "evaluatedAt": "2026-10-08T12:00:00.000Z",
+    "category": "runtime",
+    "anticipationDays": 180,
+    "rows": [
+      {
+        "product": "Java",
+        "rawVersion": "21.0.10",
+        "version": "21.0.10",
+        "evidence": [],
+        "field": "softwareTechnologies",
+        "category": "runtime",
+        "auditGroup": "runtimes",
+        "edition": null,
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "entityId": "PROCESS_GROUP_INSTANCE-0123456789ABCDEF",
+        "environmentId": "a",
+        "name": "Java process",
+        "observedAt": 1791460800000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "unknown",
+        "qualification": "support_context",
+        "reason": "Version connue ; politique éditeur/édition/distribution à préciser",
+        "cycle": "21",
+        "reference": null,
+        "policySource": "https://adoptium.net/support/",
+        "url": "https://managed.example/e/a/ui/entity/PROCESS_GROUP_INSTANCE-0123456789ABCDEF",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      }
+    ],
+    "entityProfiles": [
+      {
+        "environmentId": "a",
+        "entityId": "PROCESS_GROUP_INSTANCE-0123456789ABCDEF",
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "name": "Java process",
+        "url": "https://managed.example/e/a/ui/entity/PROCESS_GROUP_INSTANCE-0123456789ABCDEF",
+        "primaryTechnology": "Runtime",
+        "relationships": [],
+        "technologies": [
+          {
+            "product": "Java",
+            "auditGroup": "runtimes",
+            "version": "21.0.10",
+            "rawVersion": "21.0.10",
+            "edition": null,
+            "category": "runtime",
+            "status": "unknown",
+            "qualification": "support_context",
+            "reason": "Version connue ; politique éditeur/édition/distribution à préciser",
+            "reference": null,
+            "field": "softwareTechnologies",
+            "observedAt": 1791460800000,
+            "policySource": "https://adoptium.net/support/",
+            "evidence": []
+          }
+        ],
+        "assessment": {
+          "status": "unknown",
+          "evaluated": 0,
+          "total": 1,
+          "unknown": 1,
+          "versionsKnown": 1,
+          "reason": "Versions ou politiques de support à compléter"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "type": "HOST",
+        "environmentId": "a",
+        "environmentName": "Managed A",
+        "inspected": 1,
+        "total": 1,
+        "available": true,
+        "complete": true
+      }
+    ],
+    "assessment": {
+      "total": 1,
+      "contextual": 0,
+      "evaluated": 0,
+      "conforming": 0,
+      "unknown": 1,
+      "coverage": 0,
+      "assessedScore": null,
+      "score": null,
+      "inventoryComplete": true,
+      "clockSkew": 0,
+      "responseClockOffsetsMinutes": [],
+      "clockNotice": null,
+      "reason": "Couverture insuffisante",
+      "policy": {
+        "id": "standard-support-v1",
+        "label": "Support standard / upstream actif",
+        "minimumCoverage": 60,
+        "observationHours": 24,
+        "referenceDays": 90
+      }
+    },
+    "campaigns": [
+      {
+        "id": "ac29131026688e76",
+        "environmentId": "a",
+        "product": "Java",
+        "cycle": "21",
+        "category": "runtime",
+        "auditGroup": "runtimes",
+        "edition": null,
+        "status": "unknown",
+        "qualification": "support_context",
+        "rows": [
+          {
+            "product": "Java",
+            "rawVersion": "21.0.10",
+            "version": "21.0.10",
+            "evidence": [],
+            "field": "softwareTechnologies",
+            "category": "runtime",
+            "auditGroup": "runtimes",
+            "edition": null,
+            "entityType": "PROCESS_GROUP_INSTANCE",
+            "entityId": "PROCESS_GROUP_INSTANCE-0123456789ABCDEF",
+            "environmentId": "a",
+            "name": "Java process",
+            "observedAt": 1791460800000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "unknown",
+            "qualification": "support_context",
+            "reason": "Version connue ; politique éditeur/édition/distribution à préciser",
+            "cycle": "21",
+            "reference": null,
+            "policySource": "https://adoptium.net/support/",
+            "url": "https://managed.example/e/a/ui/entity/PROCESS_GROUP_INSTANCE-0123456789ABCDEF",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Process",
+        "versions": [
+          "21.0.10"
+        ],
+        "end": null,
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Préciser la politique éditeur, édition ou distribution"
+      }
+    ],
+    "engine": "dynatrace-managed-mcp",
+    "provenance": "synthetic_contract_fixture",
+    "referenceVerifiedAt": "2026-10-08",
+    "limitations": []
+  },
+  "ui-1-0": {
+    "version": 3,
+    "evaluatedAt": "2026-10-08T12:00:00.000Z",
+    "category": "runtime",
+    "anticipationDays": 180,
+    "rows": [
+      {
+        "product": "ERLANG",
+        "rawVersion": null,
+        "version": null,
+        "evidence": [
+          {
+            "field": "metadata.EXE_PATH",
+            "value": "/erts-14.2.5/bin/beam.smp",
+            "kind": "version_hint"
+          }
+        ],
+        "field": "softwareTechnologies",
+        "category": "runtime",
+        "auditGroup": "technologies",
+        "edition": null,
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "environmentId": "a",
+        "name": "Java process",
+        "observedAt": 1791460800000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "versionHint": "14.2.5",
+        "hintProduct": "ERTS",
+        "status": "unknown",
+        "qualification": "version_hint",
+        "reason": "Indice de version ERTS dans le chemin ; version Erlang/OTP à confirmer",
+        "reference": null,
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      },
+      {
+        "product": "Java",
+        "rawVersion": "21.0.10",
+        "version": "21.0.10",
+        "evidence": [],
+        "field": "softwareTechnologies",
+        "category": "runtime",
+        "auditGroup": "runtimes",
+        "edition": "Eclipse Adoptium",
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "environmentId": "a",
+        "name": "Java process",
+        "observedAt": 1791460800000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "ok",
+        "cycle": "21",
+        "reference": {
+          "product": "Java",
+          "cycle": "21",
+          "end": "2029-12",
+          "edition": "Eclipse Adoptium",
+          "endKind": "minimum_availability",
+          "source": "https://adoptium.net/support/",
+          "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+          "verifiedAt": "2026-10-08",
+          "precision": "month"
+        },
+        "qualification": null,
+        "reason": "Support de référence non échu",
+        "daysToEnd": 1149,
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      },
+      {
+        "product": "JDK_HTTP_CLIENT",
+        "rawVersion": "21.0.10",
+        "version": "21.0.10",
+        "evidence": [
+          {
+            "field": "softwareTechnologies",
+            "value": "21.0.10",
+            "kind": "same_process_jdk"
+          }
+        ],
+        "field": "softwareTechnologies",
+        "category": "runtime",
+        "auditGroup": "technologies",
+        "edition": "Eclipse Adoptium",
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "environmentId": "a",
+        "name": "Java process",
+        "observedAt": 1791460800000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "ok",
+        "cycle": "21",
+        "reference": {
+          "product": "Java",
+          "cycle": "21",
+          "end": "2029-12",
+          "edition": "Eclipse Adoptium",
+          "endKind": "minimum_availability",
+          "source": "https://adoptium.net/support/",
+          "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+          "verifiedAt": "2026-10-08",
+          "precision": "month"
+        },
+        "qualification": null,
+        "reason": "Support lié au JDK Java de ce Process ; aucune version indépendante attribuée",
+        "daysToEnd": 1149,
+        "supportDependency": "Java",
+        "versionKind": "inherited",
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      }
+    ],
+    "entityProfiles": [
+      {
+        "environmentId": "a",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "name": "Java process",
+        "url": "",
+        "primaryTechnology": "Runtime",
+        "relationships": [],
+        "technologies": [
+          {
+            "product": "ERLANG",
+            "auditGroup": "technologies",
+            "version": null,
+            "rawVersion": null,
+            "edition": null,
+            "category": "runtime",
+            "status": "unknown",
+            "qualification": "version_hint",
+            "reason": "Indice de version ERTS dans le chemin ; version Erlang/OTP à confirmer",
+            "reference": null,
+            "field": "softwareTechnologies",
+            "observedAt": 1791460800000,
+            "versionHint": "14.2.5",
+            "hintProduct": "ERTS",
+            "evidence": [
+              {
+                "field": "metadata.EXE_PATH",
+                "value": "/erts-14.2.5/bin/beam.smp",
+                "kind": "version_hint"
+              }
+            ]
+          },
+          {
+            "product": "Java",
+            "auditGroup": "runtimes",
+            "version": "21.0.10",
+            "rawVersion": "21.0.10",
+            "edition": "Eclipse Adoptium",
+            "category": "runtime",
+            "status": "ok",
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "reference": {
+              "product": "Java",
+              "cycle": "21",
+              "end": "2029-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "field": "softwareTechnologies",
+            "observedAt": 1791460800000,
+            "evidence": []
+          },
+          {
+            "product": "JDK_HTTP_CLIENT",
+            "auditGroup": "technologies",
+            "version": "21.0.10",
+            "rawVersion": "21.0.10",
+            "edition": "Eclipse Adoptium",
+            "category": "runtime",
+            "status": "ok",
+            "qualification": null,
+            "reason": "Support lié au JDK Java de ce Process ; aucune version indépendante attribuée",
+            "reference": {
+              "product": "Java",
+              "cycle": "21",
+              "end": "2029-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "field": "softwareTechnologies",
+            "observedAt": 1791460800000,
+            "supportDependency": "Java",
+            "versionKind": "inherited",
+            "evidence": [
+              {
+                "field": "softwareTechnologies",
+                "value": "21.0.10",
+                "kind": "same_process_jdk"
+              }
+            ]
+          }
+        ],
+        "assessment": {
+          "status": "unknown",
+          "evaluated": 2,
+          "total": 3,
+          "unknown": 1,
+          "versionsKnown": 2,
+          "reason": "Versions ou politiques de support à compléter"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "type": "HOST",
+        "environmentId": "a",
+        "environmentName": "Managed A",
+        "inspected": 1,
+        "total": 1,
+        "available": true,
+        "complete": true
+      }
+    ],
+    "assessment": {
+      "total": 2,
+      "contextual": 1,
+      "evaluated": 1,
+      "conforming": 1,
+      "unknown": 1,
+      "coverage": 50,
+      "assessedScore": 100,
+      "score": null,
+      "inventoryComplete": true,
+      "clockSkew": 0,
+      "responseClockOffsetsMinutes": [],
+      "clockNotice": null,
+      "reason": "Couverture insuffisante",
+      "policy": {
+        "id": "standard-support-v1",
+        "label": "Support standard / upstream actif",
+        "minimumCoverage": 60,
+        "observationHours": 24,
+        "referenceDays": 90
+      }
+    },
+    "campaigns": [
+      {
+        "id": "1edc433ffdce4466",
+        "environmentId": "a",
+        "product": "ERLANG",
+        "cycle": null,
+        "category": "runtime",
+        "auditGroup": "technologies",
+        "edition": null,
+        "status": "unknown",
+        "qualification": "version_hint",
+        "rows": [
+          {
+            "product": "ERLANG",
+            "rawVersion": null,
+            "version": null,
+            "evidence": [
+              {
+                "field": "metadata.EXE_PATH",
+                "value": "/erts-14.2.5/bin/beam.smp",
+                "kind": "version_hint"
+              }
+            ],
+            "field": "softwareTechnologies",
+            "category": "runtime",
+            "auditGroup": "technologies",
+            "edition": null,
+            "entityType": "PROCESS_GROUP_INSTANCE",
+            "entityId": "PROCESS_GROUP_INSTANCE-A",
+            "environmentId": "a",
+            "name": "Java process",
+            "observedAt": 1791460800000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "versionHint": "14.2.5",
+            "hintProduct": "ERTS",
+            "status": "unknown",
+            "qualification": "version_hint",
+            "reason": "Indice de version ERTS dans le chemin ; version Erlang/OTP à confirmer",
+            "reference": null,
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Process",
+        "versions": [],
+        "end": null,
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Confirmer la version du produit à partir de l’indice observé"
+      },
+      {
+        "id": "c8fc276c754f35b4",
+        "environmentId": "a",
+        "product": "Java",
+        "cycle": "21",
+        "category": "runtime",
+        "auditGroup": "runtimes",
+        "edition": "Eclipse Adoptium",
+        "status": "ok",
+        "qualification": null,
+        "rows": [
+          {
+            "product": "Java",
+            "rawVersion": "21.0.10",
+            "version": "21.0.10",
+            "evidence": [],
+            "field": "softwareTechnologies",
+            "category": "runtime",
+            "auditGroup": "runtimes",
+            "edition": "Eclipse Adoptium",
+            "entityType": "PROCESS_GROUP_INSTANCE",
+            "entityId": "PROCESS_GROUP_INSTANCE-A",
+            "environmentId": "a",
+            "name": "Java process",
+            "observedAt": 1791460800000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "ok",
+            "cycle": "21",
+            "reference": {
+              "product": "Java",
+              "cycle": "21",
+              "end": "2029-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 1149,
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Process",
+        "versions": [
+          "21.0.10"
+        ],
+        "end": "Au moins 2029-12",
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Conserver cette version sous surveillance"
+      },
+      {
+        "id": "40e64decae94b6c5",
+        "environmentId": "a",
+        "product": "JDK_HTTP_CLIENT",
+        "supportDependency": "Java",
+        "versionKind": "inherited",
+        "cycle": "21",
+        "category": "runtime",
+        "auditGroup": "technologies",
+        "edition": "Eclipse Adoptium",
+        "status": "ok",
+        "qualification": null,
+        "rows": [
+          {
+            "product": "JDK_HTTP_CLIENT",
+            "rawVersion": "21.0.10",
+            "version": "21.0.10",
+            "evidence": [
+              {
+                "field": "softwareTechnologies",
+                "value": "21.0.10",
+                "kind": "same_process_jdk"
+              }
+            ],
+            "field": "softwareTechnologies",
+            "category": "runtime",
+            "auditGroup": "technologies",
+            "edition": "Eclipse Adoptium",
+            "entityType": "PROCESS_GROUP_INSTANCE",
+            "entityId": "PROCESS_GROUP_INSTANCE-A",
+            "environmentId": "a",
+            "name": "Java process",
+            "observedAt": 1791460800000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "ok",
+            "cycle": "21",
+            "reference": {
+              "product": "Java",
+              "cycle": "21",
+              "end": "2029-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support lié au JDK Java de ce Process ; aucune version indépendante attribuée",
+            "daysToEnd": 1149,
+            "supportDependency": "Java",
+            "versionKind": "inherited",
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Process",
+        "versions": [
+          "21.0.10"
+        ],
+        "end": "Au moins 2029-12",
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Conserver cette version sous surveillance"
+      }
+    ],
+    "engine": "dynatrace-managed-mcp",
+    "provenance": "synthetic_contract_fixture",
+    "referenceVerifiedAt": "2026-10-08",
+    "limitations": []
+  },
+  "ui-3-0": {
+    "version": 3,
+    "evaluatedAt": "2026-10-08T12:00:00.000Z",
+    "category": "os",
+    "anticipationDays": 180,
+    "rows": [
+      {
+        "product": "Ubuntu",
+        "rawVersion": "Ubuntu 22.04.5 LTS",
+        "version": "22.04.5",
+        "evidence": [],
+        "field": "osInfo",
+        "category": "os",
+        "auditGroup": "os",
+        "edition": null,
+        "entityType": "KUBERNETES_NODE",
+        "entityId": "node-a",
+        "environmentId": "a",
+        "name": "node-a",
+        "observedAt": 1791460800000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "ok",
+        "cycle": "22.04",
+        "reference": {
+          "product": "Ubuntu",
+          "cycle": "22.04",
+          "end": "2027-05",
+          "source": "https://ubuntu.com/about/release-cycle",
+          "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+          "verifiedAt": "2026-10-08",
+          "precision": "month"
+        },
+        "qualification": null,
+        "reason": "Support de référence non échu",
+        "daysToEnd": 204,
+        "environmentName": "a",
+        "url": "",
+        "traceId": "T2",
+        "collectedAt": "2026-10-08T12:00:00.000Z",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      }
+    ],
+    "entityProfiles": [
+      {
+        "environmentId": "a",
+        "entityId": "node-a",
+        "entityType": "KUBERNETES_NODE",
+        "name": "node-a",
+        "url": "",
+        "primaryTechnology": "Runtime",
+        "relationships": [],
+        "technologies": [
+          {
+            "product": "Kubernetes",
+            "auditGroup": "platform",
+            "version": "1.28.9",
+            "rawVersion": "v1.28.9",
+            "edition": null,
+            "category": "platform",
+            "status": "action",
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.28",
+              "end": "2024-10-22",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "field": "kubeletVersion",
+            "observedAt": 1791460800000,
+            "traceId": "T2",
+            "evidence": []
+          },
+          {
+            "product": "Ubuntu",
+            "auditGroup": "os",
+            "version": "22.04.5",
+            "rawVersion": "Ubuntu 22.04.5 LTS",
+            "edition": null,
+            "category": "os",
+            "status": "ok",
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "field": "osInfo",
+            "observedAt": 1791460800000,
+            "traceId": "T2",
+            "evidence": []
+          }
+        ],
+        "assessment": {
+          "status": "action",
+          "evaluated": 2,
+          "total": 2,
+          "unknown": 0,
+          "versionsKnown": 2,
+          "reason": "Au moins une technologie hors support de référence"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "type": "HOST",
+        "environmentId": "a",
+        "environmentName": "Managed A",
+        "inspected": 1,
+        "total": 1,
+        "available": true,
+        "complete": true
+      }
+    ],
+    "assessment": {
+      "total": 1,
+      "contextual": 0,
+      "evaluated": 1,
+      "conforming": 1,
+      "unknown": 0,
+      "coverage": 100,
+      "assessedScore": 100,
+      "score": 100,
+      "inventoryComplete": true,
+      "clockSkew": 0,
+      "responseClockOffsetsMinutes": [],
+      "clockNotice": null,
+      "reason": null,
+      "policy": {
+        "id": "standard-support-v1",
+        "label": "Support standard / upstream actif",
+        "minimumCoverage": 60,
+        "observationHours": 24,
+        "referenceDays": 90
+      }
+    },
+    "campaigns": [
+      {
+        "id": "fc49652fd7e316ec",
+        "environmentId": "a",
+        "environmentName": "a",
+        "product": "Ubuntu",
+        "cycle": "22.04",
+        "category": "os",
+        "auditGroup": "os",
+        "edition": null,
+        "status": "ok",
+        "qualification": null,
+        "rows": [
+          {
+            "product": "Ubuntu",
+            "rawVersion": "Ubuntu 22.04.5 LTS",
+            "version": "22.04.5",
+            "evidence": [],
+            "field": "osInfo",
+            "category": "os",
+            "auditGroup": "os",
+            "edition": null,
+            "entityType": "KUBERNETES_NODE",
+            "entityId": "node-a",
+            "environmentId": "a",
+            "name": "node-a",
+            "observedAt": 1791460800000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "ok",
+            "cycle": "22.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 204,
+            "environmentName": "a",
+            "url": "",
+            "traceId": "T2",
+            "collectedAt": "2026-10-08T12:00:00.000Z",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Kubernetes nodes",
+        "versions": [
+          "22.04.5"
+        ],
+        "end": "2027-05",
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Conserver cette version sous surveillance"
+      }
+    ],
+    "engine": "dynatrace-managed-mcp",
+    "provenance": "synthetic_contract_fixture",
+    "referenceVerifiedAt": "2026-10-08",
+    "limitations": []
+  },
+  "ui-4-0": {
+    "version": 3,
+    "evaluatedAt": "2026-10-08T12:00:00.000Z",
+    "category": "all",
+    "anticipationDays": 180,
+    "rows": [
+      {
+        "product": "Ubuntu",
+        "rawVersion": "Ubuntu 20.04",
+        "version": "20.04",
+        "evidence": [],
+        "field": "osVersion",
+        "category": "os",
+        "auditGroup": "os",
+        "edition": null,
+        "entityType": "HOST",
+        "entityId": "<img src=x onerror=alert(1)>",
+        "environmentId": "a",
+        "name": "<img src=x onerror=alert(1)>",
+        "observedAt": 1791460800000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "action",
+        "cycle": "20.04",
+        "reference": {
+          "product": "Ubuntu",
+          "cycle": "20.04",
+          "end": "2025-05",
+          "source": "https://ubuntu.com/about/release-cycle",
+          "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+          "verifiedAt": "2026-10-08",
+          "precision": "month"
+        },
+        "qualification": null,
+        "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+        "daysToEnd": -526,
+        "environmentName": "a",
+        "url": "javascript:alert(1)",
+        "traceId": "T2",
+        "collectedAt": "2026-10-08T12:00:00.000Z",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      }
+    ],
+    "entityProfiles": [
+      {
+        "environmentId": "a",
+        "entityId": "<img src=x onerror=alert(1)>",
+        "entityType": "HOST",
+        "name": "<img src=x onerror=alert(1)>",
+        "url": "javascript:alert(1)",
+        "primaryTechnology": "Runtime",
+        "relationships": [],
+        "technologies": [
+          {
+            "product": "Ubuntu",
+            "auditGroup": "os",
+            "version": "20.04",
+            "rawVersion": "Ubuntu 20.04",
+            "edition": null,
+            "category": "os",
+            "status": "action",
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "20.04",
+              "end": "2025-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "field": "osVersion",
+            "observedAt": 1791460800000,
+            "traceId": "T2",
+            "evidence": []
+          }
+        ],
+        "assessment": {
+          "status": "action",
+          "evaluated": 1,
+          "total": 1,
+          "unknown": 0,
+          "versionsKnown": 1,
+          "reason": "Au moins une technologie hors support de référence"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "type": "HOST",
+        "environmentId": "a",
+        "environmentName": "Managed A",
+        "inspected": 1,
+        "total": 1,
+        "available": true,
+        "complete": true
+      }
+    ],
+    "assessment": {
+      "total": 1,
+      "contextual": 0,
+      "evaluated": 1,
+      "conforming": 0,
+      "unknown": 0,
+      "coverage": 100,
+      "assessedScore": 0,
+      "score": 0,
+      "inventoryComplete": true,
+      "clockSkew": 0,
+      "responseClockOffsetsMinutes": [],
+      "clockNotice": null,
+      "reason": null,
+      "policy": {
+        "id": "standard-support-v1",
+        "label": "Support standard / upstream actif",
+        "minimumCoverage": 60,
+        "observationHours": 24,
+        "referenceDays": 90
+      }
+    },
+    "campaigns": [
+      {
+        "id": "4edaec414a0e4f5a",
+        "environmentId": "a",
+        "environmentName": "a",
+        "product": "Ubuntu",
+        "cycle": "20.04",
+        "category": "os",
+        "auditGroup": "os",
+        "edition": null,
+        "status": "action",
+        "qualification": null,
+        "rows": [
+          {
+            "product": "Ubuntu",
+            "rawVersion": "Ubuntu 20.04",
+            "version": "20.04",
+            "evidence": [],
+            "field": "osVersion",
+            "category": "os",
+            "auditGroup": "os",
+            "edition": null,
+            "entityType": "HOST",
+            "entityId": "<img src=x onerror=alert(1)>",
+            "environmentId": "a",
+            "name": "<img src=x onerror=alert(1)>",
+            "observedAt": 1791460800000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "action",
+            "cycle": "20.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "20.04",
+              "end": "2025-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -526,
+            "environmentName": "a",
+            "url": "javascript:alert(1)",
+            "traceId": "T2",
+            "collectedAt": "2026-10-08T12:00:00.000Z",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Hosts",
+        "versions": [
+          "20.04"
+        ],
+        "end": "2025-05",
+        "gainPoints": 100,
+        "projectedScore": 100,
+        "action": "Vérifier le support contractuel puis préparer la mise à niveau"
+      }
+    ],
+    "engine": "dynatrace-managed-mcp",
+    "provenance": "synthetic_contract_fixture",
+    "referenceVerifiedAt": "2026-10-08",
+    "limitations": []
+  },
+  "ui-5-0": {
+    "version": 3,
+    "evaluatedAt": "2026-10-08T12:00:00.000Z",
+    "category": "runtime",
+    "anticipationDays": 180,
+    "rows": [
+      {
+        "product": "Python",
+        "rawVersion": null,
+        "version": null,
+        "evidence": [],
+        "field": "softwareTechnologies",
+        "category": "runtime",
+        "auditGroup": "runtimes",
+        "edition": null,
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "environmentId": "a",
+        "name": "A",
+        "observedAt": 1791460800000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "unknown",
+        "qualification": "version_missing",
+        "reason": "Version non exposée dans les champs Dynatrace consultés",
+        "reference": null,
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      },
+      {
+        "product": "CUSTOM",
+        "rawVersion": "1.2.3",
+        "version": "1.2.3",
+        "evidence": [],
+        "field": "softwareTechnologies",
+        "category": "runtime",
+        "auditGroup": "technologies",
+        "edition": null,
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "environmentId": "a",
+        "name": "A",
+        "observedAt": 1791460800000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "unknown",
+        "qualification": "reference_missing",
+        "reason": "Version connue ; référence de support absente pour ce cycle",
+        "cycle": "1.2",
+        "reference": null,
+        "policySource": null,
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      },
+      {
+        "product": "NGINX",
+        "rawVersion": "nginx/1.24.0",
+        "version": "1.24.0",
+        "evidence": [],
+        "field": "softwareTechnologies",
+        "category": "runtime",
+        "auditGroup": "technologies",
+        "edition": null,
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "environmentId": "a",
+        "name": "A",
+        "observedAt": 1791460800000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "unknown",
+        "qualification": "support_context",
+        "reason": "Version connue ; politique éditeur/édition/distribution à préciser",
+        "cycle": "1.24",
+        "reference": null,
+        "policySource": "https://nginx.org/en/download.html",
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      }
+    ],
+    "entityProfiles": [
+      {
+        "environmentId": "a",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "name": "A",
+        "url": "",
+        "primaryTechnology": "Runtime",
+        "relationships": [],
+        "technologies": [
+          {
+            "product": "Python",
+            "auditGroup": "runtimes",
+            "version": null,
+            "rawVersion": null,
+            "edition": null,
+            "category": "runtime",
+            "status": "unknown",
+            "qualification": "version_missing",
+            "reason": "Version non exposée dans les champs Dynatrace consultés",
+            "reference": null,
+            "field": "softwareTechnologies",
+            "observedAt": 1791460800000,
+            "evidence": []
+          },
+          {
+            "product": "CUSTOM",
+            "auditGroup": "technologies",
+            "version": "1.2.3",
+            "rawVersion": "1.2.3",
+            "edition": null,
+            "category": "runtime",
+            "status": "unknown",
+            "qualification": "reference_missing",
+            "reason": "Version connue ; référence de support absente pour ce cycle",
+            "reference": null,
+            "field": "softwareTechnologies",
+            "observedAt": 1791460800000,
+            "policySource": null,
+            "evidence": []
+          },
+          {
+            "product": "NGINX",
+            "auditGroup": "technologies",
+            "version": "1.24.0",
+            "rawVersion": "nginx/1.24.0",
+            "edition": null,
+            "category": "runtime",
+            "status": "unknown",
+            "qualification": "support_context",
+            "reason": "Version connue ; politique éditeur/édition/distribution à préciser",
+            "reference": null,
+            "field": "softwareTechnologies",
+            "observedAt": 1791460800000,
+            "policySource": "https://nginx.org/en/download.html",
+            "evidence": []
+          }
+        ],
+        "assessment": {
+          "status": "unknown",
+          "evaluated": 0,
+          "total": 3,
+          "unknown": 3,
+          "versionsKnown": 2,
+          "reason": "Versions ou politiques de support à compléter"
+        }
+      }
+    ],
+    "inventories": [],
+    "assessment": {
+      "total": 3,
+      "contextual": 0,
+      "evaluated": 0,
+      "conforming": 0,
+      "unknown": 3,
+      "coverage": 0,
+      "assessedScore": null,
+      "score": null,
+      "inventoryComplete": false,
+      "clockSkew": 0,
+      "responseClockOffsetsMinutes": [],
+      "clockNotice": null,
+      "reason": "Inventaire incomplet",
+      "policy": {
+        "id": "standard-support-v1",
+        "label": "Support standard / upstream actif",
+        "minimumCoverage": 60,
+        "observationHours": 24,
+        "referenceDays": 90
+      }
+    },
+    "campaigns": [
+      {
+        "id": "421461ba274a9e7d",
+        "environmentId": "a",
+        "product": "CUSTOM",
+        "cycle": "1.2",
+        "category": "runtime",
+        "auditGroup": "technologies",
+        "edition": null,
+        "status": "unknown",
+        "qualification": "reference_missing",
+        "rows": [
+          {
+            "product": "CUSTOM",
+            "rawVersion": "1.2.3",
+            "version": "1.2.3",
+            "evidence": [],
+            "field": "softwareTechnologies",
+            "category": "runtime",
+            "auditGroup": "technologies",
+            "edition": null,
+            "entityType": "PROCESS_GROUP_INSTANCE",
+            "entityId": "PROCESS_GROUP_INSTANCE-A",
+            "environmentId": "a",
+            "name": "A",
+            "observedAt": 1791460800000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "unknown",
+            "qualification": "reference_missing",
+            "reason": "Version connue ; référence de support absente pour ce cycle",
+            "cycle": "1.2",
+            "reference": null,
+            "policySource": null,
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Process",
+        "versions": [
+          "1.2.3"
+        ],
+        "end": null,
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Ajouter une référence de support pour cette version"
+      },
+      {
+        "id": "cbc4c029e2f18db6",
+        "environmentId": "a",
+        "product": "NGINX",
+        "cycle": "1.24",
+        "category": "runtime",
+        "auditGroup": "technologies",
+        "edition": null,
+        "status": "unknown",
+        "qualification": "support_context",
+        "rows": [
+          {
+            "product": "NGINX",
+            "rawVersion": "nginx/1.24.0",
+            "version": "1.24.0",
+            "evidence": [],
+            "field": "softwareTechnologies",
+            "category": "runtime",
+            "auditGroup": "technologies",
+            "edition": null,
+            "entityType": "PROCESS_GROUP_INSTANCE",
+            "entityId": "PROCESS_GROUP_INSTANCE-A",
+            "environmentId": "a",
+            "name": "A",
+            "observedAt": 1791460800000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "unknown",
+            "qualification": "support_context",
+            "reason": "Version connue ; politique éditeur/édition/distribution à préciser",
+            "cycle": "1.24",
+            "reference": null,
+            "policySource": "https://nginx.org/en/download.html",
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Process",
+        "versions": [
+          "1.24.0"
+        ],
+        "end": null,
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Préciser la politique éditeur, édition ou distribution"
+      },
+      {
+        "id": "e2a9c830367722de",
+        "environmentId": "a",
+        "product": "Python",
+        "cycle": null,
+        "category": "runtime",
+        "auditGroup": "runtimes",
+        "edition": null,
+        "status": "unknown",
+        "qualification": "version_missing",
+        "rows": [
+          {
+            "product": "Python",
+            "rawVersion": null,
+            "version": null,
+            "evidence": [],
+            "field": "softwareTechnologies",
+            "category": "runtime",
+            "auditGroup": "runtimes",
+            "edition": null,
+            "entityType": "PROCESS_GROUP_INSTANCE",
+            "entityId": "PROCESS_GROUP_INSTANCE-A",
+            "environmentId": "a",
+            "name": "A",
+            "observedAt": 1791460800000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "unknown",
+            "qualification": "version_missing",
+            "reason": "Version non exposée dans les champs Dynatrace consultés",
+            "reference": null,
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Process",
+        "versions": [],
+        "end": null,
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Vérifier les preuves du Process group et les champs de version exposés"
+      }
+    ],
+    "engine": "dynatrace-managed-mcp",
+    "provenance": "synthetic_contract_fixture",
+    "referenceVerifiedAt": "2026-10-08",
+    "limitations": []
+  },
+  "ui-6-0": {
+    "version": 3,
+    "evaluatedAt": "2026-10-08T12:00:00.000Z",
+    "category": "runtime",
+    "anticipationDays": 180,
+    "rows": [
+      {
+        "product": "NGINX",
+        "rawVersion": "nginx/1.24.0",
+        "version": "1.24.0",
+        "evidence": [],
+        "field": "softwareTechnologies",
+        "category": "runtime",
+        "auditGroup": "technologies",
+        "edition": null,
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "environmentId": "a",
+        "name": "<process>",
+        "observedAt": 1791460800000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "unknown",
+        "qualification": "support_context",
+        "reason": "Version connue ; politique éditeur/édition/distribution à préciser",
+        "cycle": "1.24",
+        "reference": null,
+        "policySource": "https://nginx.org/en/download.html",
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      },
+      {
+        "product": "LIBC",
+        "rawVersion": "1.2.3",
+        "version": "1.2.3",
+        "evidence": [],
+        "field": "softwareTechnologies",
+        "category": "runtime",
+        "auditGroup": "technologies",
+        "edition": "musl",
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "environmentId": "a",
+        "name": "<process>",
+        "observedAt": 1791460800000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "unknown",
+        "qualification": "support_context",
+        "reason": "Version connue ; politique éditeur/édition/distribution à préciser",
+        "cycle": "1.2",
+        "reference": null,
+        "policySource": "https://musl.libc.org/",
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      },
+      {
+        "product": "containerd",
+        "rawVersion": null,
+        "version": null,
+        "evidence": [],
+        "field": "softwareTechnologies",
+        "category": "runtime",
+        "auditGroup": "runtimes",
+        "edition": null,
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "environmentId": "a",
+        "name": "<process>",
+        "observedAt": 1791460800000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "unknown",
+        "qualification": "version_missing",
+        "reason": "Version non exposée dans les champs Dynatrace consultés",
+        "reference": null,
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      }
+    ],
+    "entityProfiles": [
+      {
+        "environmentId": "a",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "entityType": "PROCESS_GROUP_INSTANCE",
+        "name": "<process>",
+        "url": "",
+        "primaryTechnology": "NGINX",
+        "relationships": [],
+        "technologies": [
+          {
+            "product": "NGINX",
+            "auditGroup": "technologies",
+            "version": "1.24.0",
+            "rawVersion": "nginx/1.24.0",
+            "edition": null,
+            "category": "runtime",
+            "status": "unknown",
+            "qualification": "support_context",
+            "reason": "Version connue ; politique éditeur/édition/distribution à préciser",
+            "reference": null,
+            "field": "softwareTechnologies",
+            "observedAt": 1791460800000,
+            "policySource": "https://nginx.org/en/download.html",
+            "evidence": []
+          },
+          {
+            "product": "LIBC",
+            "auditGroup": "technologies",
+            "version": "1.2.3",
+            "rawVersion": "1.2.3",
+            "edition": "musl",
+            "category": "runtime",
+            "status": "unknown",
+            "qualification": "support_context",
+            "reason": "Version connue ; politique éditeur/édition/distribution à préciser",
+            "reference": null,
+            "field": "softwareTechnologies",
+            "observedAt": 1791460800000,
+            "policySource": "https://musl.libc.org/",
+            "evidence": []
+          },
+          {
+            "product": "containerd",
+            "auditGroup": "runtimes",
+            "version": null,
+            "rawVersion": null,
+            "edition": null,
+            "category": "runtime",
+            "status": "unknown",
+            "qualification": "version_missing",
+            "reason": "Version non exposée dans les champs Dynatrace consultés",
+            "reference": null,
+            "field": "softwareTechnologies",
+            "observedAt": 1791460800000,
+            "evidence": []
+          }
+        ],
+        "assessment": {
+          "status": "unknown",
+          "evaluated": 0,
+          "total": 3,
+          "unknown": 3,
+          "versionsKnown": 2,
+          "reason": "Versions ou politiques de support à compléter"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "type": "HOST",
+        "environmentId": "a",
+        "environmentName": "Managed A",
+        "inspected": 1,
+        "total": 1,
+        "available": true,
+        "complete": true
+      }
+    ],
+    "assessment": {
+      "total": 3,
+      "contextual": 0,
+      "evaluated": 0,
+      "conforming": 0,
+      "unknown": 3,
+      "coverage": 0,
+      "assessedScore": null,
+      "score": null,
+      "inventoryComplete": true,
+      "clockSkew": 0,
+      "responseClockOffsetsMinutes": [],
+      "clockNotice": null,
+      "reason": "Couverture insuffisante",
+      "policy": {
+        "id": "standard-support-v1",
+        "label": "Support standard / upstream actif",
+        "minimumCoverage": 60,
+        "observationHours": 24,
+        "referenceDays": 90
+      }
+    },
+    "campaigns": [
+      {
+        "id": "da3ccef8bb6aa576",
+        "environmentId": "a",
+        "product": "containerd",
+        "cycle": null,
+        "category": "runtime",
+        "auditGroup": "runtimes",
+        "edition": null,
+        "status": "unknown",
+        "qualification": "version_missing",
+        "rows": [
+          {
+            "product": "containerd",
+            "rawVersion": null,
+            "version": null,
+            "evidence": [],
+            "field": "softwareTechnologies",
+            "category": "runtime",
+            "auditGroup": "runtimes",
+            "edition": null,
+            "entityType": "PROCESS_GROUP_INSTANCE",
+            "entityId": "PROCESS_GROUP_INSTANCE-A",
+            "environmentId": "a",
+            "name": "<process>",
+            "observedAt": 1791460800000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "unknown",
+            "qualification": "version_missing",
+            "reason": "Version non exposée dans les champs Dynatrace consultés",
+            "reference": null,
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Process",
+        "versions": [],
+        "end": null,
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Vérifier les preuves du Process group et les champs de version exposés"
+      },
+      {
+        "id": "1428be3ef11c90b0",
+        "environmentId": "a",
+        "product": "LIBC",
+        "cycle": "1.2",
+        "category": "runtime",
+        "auditGroup": "technologies",
+        "edition": "musl",
+        "status": "unknown",
+        "qualification": "support_context",
+        "rows": [
+          {
+            "product": "LIBC",
+            "rawVersion": "1.2.3",
+            "version": "1.2.3",
+            "evidence": [],
+            "field": "softwareTechnologies",
+            "category": "runtime",
+            "auditGroup": "technologies",
+            "edition": "musl",
+            "entityType": "PROCESS_GROUP_INSTANCE",
+            "entityId": "PROCESS_GROUP_INSTANCE-A",
+            "environmentId": "a",
+            "name": "<process>",
+            "observedAt": 1791460800000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "unknown",
+            "qualification": "support_context",
+            "reason": "Version connue ; politique éditeur/édition/distribution à préciser",
+            "cycle": "1.2",
+            "reference": null,
+            "policySource": "https://musl.libc.org/",
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Process",
+        "versions": [
+          "1.2.3"
+        ],
+        "end": null,
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Préciser la politique éditeur, édition ou distribution"
+      },
+      {
+        "id": "cbc4c029e2f18db6",
+        "environmentId": "a",
+        "product": "NGINX",
+        "cycle": "1.24",
+        "category": "runtime",
+        "auditGroup": "technologies",
+        "edition": null,
+        "status": "unknown",
+        "qualification": "support_context",
+        "rows": [
+          {
+            "product": "NGINX",
+            "rawVersion": "nginx/1.24.0",
+            "version": "1.24.0",
+            "evidence": [],
+            "field": "softwareTechnologies",
+            "category": "runtime",
+            "auditGroup": "technologies",
+            "edition": null,
+            "entityType": "PROCESS_GROUP_INSTANCE",
+            "entityId": "PROCESS_GROUP_INSTANCE-A",
+            "environmentId": "a",
+            "name": "<process>",
+            "observedAt": 1791460800000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "unknown",
+            "qualification": "support_context",
+            "reason": "Version connue ; politique éditeur/édition/distribution à préciser",
+            "cycle": "1.24",
+            "reference": null,
+            "policySource": "https://nginx.org/en/download.html",
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Process",
+        "versions": [
+          "1.24.0"
+        ],
+        "end": null,
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Préciser la politique éditeur, édition ou distribution"
+      }
+    ],
+    "engine": "dynatrace-managed-mcp",
+    "provenance": "synthetic_contract_fixture",
+    "referenceVerifiedAt": "2026-10-08",
+    "limitations": []
+  },
+  "workbench-all-180": {
+    "version": 3,
+    "evaluatedAt": "2026-10-07T12:00:00.000Z",
+    "category": "all",
+    "anticipationDays": 180,
+    "rows": [
+      {
+        "product": "Ubuntu",
+        "rawVersion": "Ubuntu 22.04.5 LTS",
+        "version": "22.04.5",
+        "evidence": [],
+        "field": "osVersion",
+        "category": "os",
+        "auditGroup": "os",
+        "edition": null,
+        "entityType": "HOST",
+        "entityId": "HOST-ABC123",
+        "environmentId": "env",
+        "name": "Node A",
+        "observedAt": 1791374400000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "ok",
+        "cycle": "22.04",
+        "reference": {
+          "product": "Ubuntu",
+          "cycle": "22.04",
+          "end": "2027-05",
+          "source": "https://ubuntu.com/about/release-cycle",
+          "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+          "verifiedAt": "2026-10-08",
+          "precision": "month"
+        },
+        "qualification": null,
+        "reason": "Support de référence non échu",
+        "daysToEnd": 205,
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      }
+    ],
+    "entityProfiles": [
+      {
+        "environmentId": "env",
+        "entityId": "HOST-ABC123",
+        "entityType": "HOST",
+        "name": "Node A",
+        "url": "",
+        "primaryTechnology": "Runtime",
+        "relationships": [],
+        "technologies": [
+          {
+            "product": "Ubuntu",
+            "auditGroup": "os",
+            "version": "22.04.5",
+            "rawVersion": "Ubuntu 22.04.5 LTS",
+            "edition": null,
+            "category": "os",
+            "status": "ok",
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "field": "osVersion",
+            "observedAt": 1791374400000,
+            "evidence": []
+          }
+        ],
+        "assessment": {
+          "status": "ok",
+          "evaluated": 1,
+          "total": 1,
+          "unknown": 0,
+          "versionsKnown": 1,
+          "reason": "Technologies évaluées sous support de référence"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "environmentId": "env",
+        "type": "HOST",
+        "available": true,
+        "complete": true,
+        "inspected": 1,
+        "total": 1
+      }
+    ],
+    "assessment": {
+      "total": 1,
+      "contextual": 0,
+      "evaluated": 1,
+      "conforming": 1,
+      "unknown": 0,
+      "coverage": 100,
+      "assessedScore": 100,
+      "score": 100,
+      "inventoryComplete": true,
+      "clockSkew": 0,
+      "responseClockOffsetsMinutes": [],
+      "clockNotice": null,
+      "reason": null,
+      "policy": {
+        "id": "standard-support-v1",
+        "label": "Support standard / upstream actif",
+        "minimumCoverage": 60,
+        "observationHours": 24,
+        "referenceDays": 90
+      }
+    },
+    "campaigns": [
+      {
+        "id": "4852876c842674ca",
+        "environmentId": "env",
+        "product": "Ubuntu",
+        "cycle": "22.04",
+        "category": "os",
+        "auditGroup": "os",
+        "edition": null,
+        "status": "ok",
+        "qualification": null,
+        "rows": [
+          {
+            "product": "Ubuntu",
+            "rawVersion": "Ubuntu 22.04.5 LTS",
+            "version": "22.04.5",
+            "evidence": [],
+            "field": "osVersion",
+            "category": "os",
+            "auditGroup": "os",
+            "edition": null,
+            "entityType": "HOST",
+            "entityId": "HOST-ABC123",
+            "environmentId": "env",
+            "name": "Node A",
+            "observedAt": 1791374400000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "ok",
+            "cycle": "22.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 205,
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Hosts",
+        "versions": [
+          "22.04.5"
+        ],
+        "end": "2027-05",
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Conserver cette version sous surveillance"
+      }
+    ],
+    "engine": "dynatrace-managed-mcp",
+    "provenance": "synthetic_contract_fixture",
+    "referenceVerifiedAt": "2026-10-08",
+    "limitations": []
+  },
+  "workbench-all-365": {
+    "version": 3,
+    "evaluatedAt": "2026-10-07T12:00:00.000Z",
+    "category": "all",
+    "anticipationDays": 365,
+    "rows": [
+      {
+        "product": "Ubuntu",
+        "rawVersion": "Ubuntu 22.04.5 LTS",
+        "version": "22.04.5",
+        "evidence": [],
+        "field": "osVersion",
+        "category": "os",
+        "auditGroup": "os",
+        "edition": null,
+        "entityType": "HOST",
+        "entityId": "HOST-ABC123",
+        "environmentId": "env",
+        "name": "Node A",
+        "observedAt": 1791374400000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "watch",
+        "cycle": "22.04",
+        "reference": {
+          "product": "Ubuntu",
+          "cycle": "22.04",
+          "end": "2027-05",
+          "source": "https://ubuntu.com/about/release-cycle",
+          "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+          "verifiedAt": "2026-10-08",
+          "precision": "month"
+        },
+        "qualification": null,
+        "reason": "Échéance de support à préparer (365 jours), ou mois de transition",
+        "daysToEnd": 205,
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      }
+    ],
+    "entityProfiles": [
+      {
+        "environmentId": "env",
+        "entityId": "HOST-ABC123",
+        "entityType": "HOST",
+        "name": "Node A",
+        "url": "",
+        "primaryTechnology": "Runtime",
+        "relationships": [],
+        "technologies": [
+          {
+            "product": "Ubuntu",
+            "auditGroup": "os",
+            "version": "22.04.5",
+            "rawVersion": "Ubuntu 22.04.5 LTS",
+            "edition": null,
+            "category": "os",
+            "status": "watch",
+            "qualification": null,
+            "reason": "Échéance de support à préparer (365 jours), ou mois de transition",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "field": "osVersion",
+            "observedAt": 1791374400000,
+            "evidence": []
+          }
+        ],
+        "assessment": {
+          "status": "watch",
+          "evaluated": 1,
+          "total": 1,
+          "unknown": 0,
+          "versionsKnown": 1,
+          "reason": "Au moins une échéance à anticiper"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "environmentId": "env",
+        "type": "HOST",
+        "available": true,
+        "complete": true,
+        "inspected": 1,
+        "total": 1
+      }
+    ],
+    "assessment": {
+      "total": 1,
+      "contextual": 0,
+      "evaluated": 1,
+      "conforming": 1,
+      "unknown": 0,
+      "coverage": 100,
+      "assessedScore": 100,
+      "score": 100,
+      "inventoryComplete": true,
+      "clockSkew": 0,
+      "responseClockOffsetsMinutes": [],
+      "clockNotice": null,
+      "reason": null,
+      "policy": {
+        "id": "standard-support-v1",
+        "label": "Support standard / upstream actif",
+        "minimumCoverage": 60,
+        "observationHours": 24,
+        "referenceDays": 90
+      }
+    },
+    "campaigns": [
+      {
+        "id": "59e5a16e41ef31f6",
+        "environmentId": "env",
+        "product": "Ubuntu",
+        "cycle": "22.04",
+        "category": "os",
+        "auditGroup": "os",
+        "edition": null,
+        "status": "watch",
+        "qualification": null,
+        "rows": [
+          {
+            "product": "Ubuntu",
+            "rawVersion": "Ubuntu 22.04.5 LTS",
+            "version": "22.04.5",
+            "evidence": [],
+            "field": "osVersion",
+            "category": "os",
+            "auditGroup": "os",
+            "edition": null,
+            "entityType": "HOST",
+            "entityId": "HOST-ABC123",
+            "environmentId": "env",
+            "name": "Node A",
+            "observedAt": 1791374400000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "watch",
+            "cycle": "22.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (365 jours), ou mois de transition",
+            "daysToEnd": 205,
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Hosts",
+        "versions": [
+          "22.04.5"
+        ],
+        "end": "2027-05",
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Planifier la mise à niveau avant l’échéance"
+      }
+    ],
+    "engine": "dynatrace-managed-mcp",
+    "provenance": "synthetic_contract_fixture",
+    "referenceVerifiedAt": "2026-10-08",
+    "limitations": []
+  },
+  "workbench-os-180": {
+    "version": 3,
+    "evaluatedAt": "2026-10-07T12:00:00.000Z",
+    "category": "os",
+    "anticipationDays": 180,
+    "rows": [
+      {
+        "product": "Ubuntu",
+        "rawVersion": "Ubuntu 22.04.5 LTS",
+        "version": "22.04.5",
+        "evidence": [],
+        "field": "osVersion",
+        "category": "os",
+        "auditGroup": "os",
+        "edition": null,
+        "entityType": "HOST",
+        "entityId": "HOST-ABC123",
+        "environmentId": "env",
+        "name": "Node A",
+        "observedAt": 1791374400000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "ok",
+        "cycle": "22.04",
+        "reference": {
+          "product": "Ubuntu",
+          "cycle": "22.04",
+          "end": "2027-05",
+          "source": "https://ubuntu.com/about/release-cycle",
+          "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+          "verifiedAt": "2026-10-08",
+          "precision": "month"
+        },
+        "qualification": null,
+        "reason": "Support de référence non échu",
+        "daysToEnd": 205,
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      }
+    ],
+    "entityProfiles": [
+      {
+        "environmentId": "env",
+        "entityId": "HOST-ABC123",
+        "entityType": "HOST",
+        "name": "Node A",
+        "url": "",
+        "primaryTechnology": "Runtime",
+        "relationships": [],
+        "technologies": [
+          {
+            "product": "Ubuntu",
+            "auditGroup": "os",
+            "version": "22.04.5",
+            "rawVersion": "Ubuntu 22.04.5 LTS",
+            "edition": null,
+            "category": "os",
+            "status": "ok",
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "field": "osVersion",
+            "observedAt": 1791374400000,
+            "evidence": []
+          }
+        ],
+        "assessment": {
+          "status": "ok",
+          "evaluated": 1,
+          "total": 1,
+          "unknown": 0,
+          "versionsKnown": 1,
+          "reason": "Technologies évaluées sous support de référence"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "environmentId": "env",
+        "type": "HOST",
+        "available": true,
+        "complete": true,
+        "inspected": 1,
+        "total": 1
+      }
+    ],
+    "assessment": {
+      "total": 1,
+      "contextual": 0,
+      "evaluated": 1,
+      "conforming": 1,
+      "unknown": 0,
+      "coverage": 100,
+      "assessedScore": 100,
+      "score": 100,
+      "inventoryComplete": true,
+      "clockSkew": 0,
+      "responseClockOffsetsMinutes": [],
+      "clockNotice": null,
+      "reason": null,
+      "policy": {
+        "id": "standard-support-v1",
+        "label": "Support standard / upstream actif",
+        "minimumCoverage": 60,
+        "observationHours": 24,
+        "referenceDays": 90
+      }
+    },
+    "campaigns": [
+      {
+        "id": "4852876c842674ca",
+        "environmentId": "env",
+        "product": "Ubuntu",
+        "cycle": "22.04",
+        "category": "os",
+        "auditGroup": "os",
+        "edition": null,
+        "status": "ok",
+        "qualification": null,
+        "rows": [
+          {
+            "product": "Ubuntu",
+            "rawVersion": "Ubuntu 22.04.5 LTS",
+            "version": "22.04.5",
+            "evidence": [],
+            "field": "osVersion",
+            "category": "os",
+            "auditGroup": "os",
+            "edition": null,
+            "entityType": "HOST",
+            "entityId": "HOST-ABC123",
+            "environmentId": "env",
+            "name": "Node A",
+            "observedAt": 1791374400000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "ok",
+            "cycle": "22.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 205,
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Hosts",
+        "versions": [
+          "22.04.5"
+        ],
+        "end": "2027-05",
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Conserver cette version sous surveillance"
+      }
+    ],
+    "engine": "dynatrace-managed-mcp",
+    "provenance": "synthetic_contract_fixture",
+    "referenceVerifiedAt": "2026-10-08",
+    "limitations": []
+  },
+  "workbench-os-365": {
+    "version": 3,
+    "evaluatedAt": "2026-10-07T12:00:00.000Z",
+    "category": "os",
+    "anticipationDays": 365,
+    "rows": [
+      {
+        "product": "Ubuntu",
+        "rawVersion": "Ubuntu 22.04.5 LTS",
+        "version": "22.04.5",
+        "evidence": [],
+        "field": "osVersion",
+        "category": "os",
+        "auditGroup": "os",
+        "edition": null,
+        "entityType": "HOST",
+        "entityId": "HOST-ABC123",
+        "environmentId": "env",
+        "name": "Node A",
+        "observedAt": 1791374400000,
+        "observationClockOffsetMs": 0,
+        "observationResponseTiming": null,
+        "logsNotStored": false,
+        "status": "watch",
+        "cycle": "22.04",
+        "reference": {
+          "product": "Ubuntu",
+          "cycle": "22.04",
+          "end": "2027-05",
+          "source": "https://ubuntu.com/about/release-cycle",
+          "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+          "verifiedAt": "2026-10-08",
+          "precision": "month"
+        },
+        "qualification": null,
+        "reason": "Échéance de support à préparer (365 jours), ou mois de transition",
+        "daysToEnd": 205,
+        "url": "",
+        "relatedEvidence": [],
+        "modulesAvailable": 0
+      }
+    ],
+    "entityProfiles": [
+      {
+        "environmentId": "env",
+        "entityId": "HOST-ABC123",
+        "entityType": "HOST",
+        "name": "Node A",
+        "url": "",
+        "primaryTechnology": "Runtime",
+        "relationships": [],
+        "technologies": [
+          {
+            "product": "Ubuntu",
+            "auditGroup": "os",
+            "version": "22.04.5",
+            "rawVersion": "Ubuntu 22.04.5 LTS",
+            "edition": null,
+            "category": "os",
+            "status": "watch",
+            "qualification": null,
+            "reason": "Échéance de support à préparer (365 jours), ou mois de transition",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "field": "osVersion",
+            "observedAt": 1791374400000,
+            "evidence": []
+          }
+        ],
+        "assessment": {
+          "status": "watch",
+          "evaluated": 1,
+          "total": 1,
+          "unknown": 0,
+          "versionsKnown": 1,
+          "reason": "Au moins une échéance à anticiper"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "environmentId": "env",
+        "type": "HOST",
+        "available": true,
+        "complete": true,
+        "inspected": 1,
+        "total": 1
+      }
+    ],
+    "assessment": {
+      "total": 1,
+      "contextual": 0,
+      "evaluated": 1,
+      "conforming": 1,
+      "unknown": 0,
+      "coverage": 100,
+      "assessedScore": 100,
+      "score": 100,
+      "inventoryComplete": true,
+      "clockSkew": 0,
+      "responseClockOffsetsMinutes": [],
+      "clockNotice": null,
+      "reason": null,
+      "policy": {
+        "id": "standard-support-v1",
+        "label": "Support standard / upstream actif",
+        "minimumCoverage": 60,
+        "observationHours": 24,
+        "referenceDays": 90
+      }
+    },
+    "campaigns": [
+      {
+        "id": "59e5a16e41ef31f6",
+        "environmentId": "env",
+        "product": "Ubuntu",
+        "cycle": "22.04",
+        "category": "os",
+        "auditGroup": "os",
+        "edition": null,
+        "status": "watch",
+        "qualification": null,
+        "rows": [
+          {
+            "product": "Ubuntu",
+            "rawVersion": "Ubuntu 22.04.5 LTS",
+            "version": "22.04.5",
+            "evidence": [],
+            "field": "osVersion",
+            "category": "os",
+            "auditGroup": "os",
+            "edition": null,
+            "entityType": "HOST",
+            "entityId": "HOST-ABC123",
+            "environmentId": "env",
+            "name": "Node A",
+            "observedAt": 1791374400000,
+            "observationClockOffsetMs": 0,
+            "observationResponseTiming": null,
+            "logsNotStored": false,
+            "status": "watch",
+            "cycle": "22.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (365 jours), ou mois de transition",
+            "daysToEnd": 205,
+            "url": "",
+            "relatedEvidence": [],
+            "modulesAvailable": 0
+          }
+        ],
+        "assets": 1,
+        "entityLabel": "Hosts",
+        "versions": [
+          "22.04.5"
+        ],
+        "end": "2027-05",
+        "gainPoints": null,
+        "projectedScore": null,
+        "action": "Planifier la mise à niveau avant l’échéance"
+      }
+    ],
+    "engine": "dynatrace-managed-mcp",
+    "provenance": "synthetic_contract_fixture",
+    "referenceVerifiedAt": "2026-10-08",
+    "limitations": []
+  }
+}

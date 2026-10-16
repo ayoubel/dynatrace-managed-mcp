@@ -41,7 +41,7 @@
     "build": "tsc --build && node -e \"if(process.platform!=='win32')require('child_process').execSync('chmod u+x dist/index.js')\"",
     "prepare": "husky",
     "watch": "tsc --watch",
-    "test": "jest",
+    "test": "jest --selectProjects unit",
     "test:unit": "jest --selectProjects unit",
     "test:integration": "jest --selectProjects integration --runInBand --forceExit",
     "coverage": "jest --coverage",

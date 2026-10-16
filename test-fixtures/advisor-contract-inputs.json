@@ -1,0 +1,364 @@
+{
+  "ui-0-0": {
+    "entities": [
+      {
+        "entityId": "PROCESS_GROUP_INSTANCE-0123456789ABCDEF",
+        "type": "PROCESS_GROUP_INSTANCE",
+        "environmentId": "a",
+        "displayName": "Java process",
+        "url": "https://managed.example/e/a/ui/entity/PROCESS_GROUP_INSTANCE-0123456789ABCDEF",
+        "details": {
+          "lastSeenTms": 1791460800000,
+          "properties": {
+            "softwareTechnologies": [
+              {
+                "type": "JAVA",
+                "version": "21.0.10"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "type": "HOST",
+        "environmentId": "a",
+        "environmentName": "Managed A",
+        "inspected": 1,
+        "total": 1,
+        "available": true,
+        "complete": true
+      }
+    ],
+    "options": {
+      "now": 1791460800000,
+      "category": "runtime"
+    }
+  },
+  "ui-1-0": {
+    "entities": [
+      {
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "type": "PROCESS_GROUP_INSTANCE",
+        "environmentId": "a",
+        "displayName": "Java process",
+        "details": {
+          "lastSeenTms": 1791460800000,
+          "properties": {
+            "softwareTechnologies": [
+              {
+                "type": "JAVA",
+                "edition": "Eclipse Adoptium",
+                "version": "21.0.10"
+              },
+              {
+                "type": "JDK_HTTP_CLIENT"
+              },
+              {
+                "type": "ERLANG"
+              }
+            ],
+            "metadata": [
+              {
+                "key": "EXE_PATH",
+                "value": "/erts-14.2.5/bin/beam.smp"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "type": "HOST",
+        "environmentId": "a",
+        "environmentName": "Managed A",
+        "inspected": 1,
+        "total": 1,
+        "available": true,
+        "complete": true
+      }
+    ],
+    "options": {
+      "now": 1791460800000,
+      "category": "runtime"
+    }
+  },
+  "ui-3-0": {
+    "entities": [
+      {
+        "entityId": "node-a",
+        "environmentId": "a",
+        "environmentName": "a",
+        "type": "KUBERNETES_NODE",
+        "displayName": "node-a",
+        "traceId": "T2",
+        "collectedAt": "2026-10-08T12:00:00.000Z",
+        "details": {
+          "lastSeenTms": 1791460800000,
+          "properties": {
+            "osInfo": "Ubuntu 22.04.5 LTS",
+            "kubeletVersion": "v1.28.9"
+          }
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "type": "HOST",
+        "environmentId": "a",
+        "environmentName": "Managed A",
+        "inspected": 1,
+        "total": 1,
+        "available": true,
+        "complete": true
+      }
+    ],
+    "options": {
+      "now": 1791460800000,
+      "category": "os"
+    }
+  },
+  "ui-4-0": {
+    "entities": [
+      {
+        "entityId": "<img src=x onerror=alert(1)>",
+        "environmentId": "a",
+        "environmentName": "a",
+        "type": "HOST",
+        "displayName": "<img src=x onerror=alert(1)>",
+        "traceId": "T2",
+        "collectedAt": "2026-10-08T12:00:00.000Z",
+        "details": {
+          "lastSeenTms": 1791460800000,
+          "properties": {
+            "osVersion": "Ubuntu 20.04",
+            "installerVersion": "1.345"
+          }
+        },
+        "url": "javascript:alert(1)"
+      }
+    ],
+    "inventories": [
+      {
+        "type": "HOST",
+        "environmentId": "a",
+        "environmentName": "Managed A",
+        "inspected": 1,
+        "total": 1,
+        "available": true,
+        "complete": true
+      }
+    ],
+    "options": {
+      "now": 1791460800000
+    }
+  },
+  "ui-5-0": {
+    "entities": [
+      {
+        "type": "PROCESS_GROUP_INSTANCE",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "environmentId": "a",
+        "displayName": "A",
+        "details": {
+          "lastSeenTms": 1791460800000,
+          "properties": {
+            "softwareTechnologies": [
+              {
+                "type": "PYTHON"
+              },
+              {
+                "type": "CUSTOM",
+                "version": "1.2.3"
+              },
+              {
+                "type": "NGINX",
+                "version": "nginx/1.24.0"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "inventories": [],
+    "options": {
+      "now": 1791460800000,
+      "category": "runtime"
+    }
+  },
+  "ui-6-0": {
+    "entities": [
+      {
+        "type": "PROCESS_GROUP_INSTANCE",
+        "entityId": "PROCESS_GROUP_INSTANCE-A",
+        "environmentId": "a",
+        "displayName": "<process>",
+        "details": {
+          "lastSeenTms": 1791460800000,
+          "properties": {
+            "processType": "NGINX",
+            "softwareTechnologies": [
+              {
+                "type": "NGINX",
+                "version": "nginx/1.24.0"
+              },
+              {
+                "type": "LIBC",
+                "edition": "musl",
+                "version": "1.2.3"
+              },
+              {
+                "type": "CONTAINERD"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "type": "HOST",
+        "environmentId": "a",
+        "environmentName": "Managed A",
+        "inspected": 1,
+        "total": 1,
+        "available": true,
+        "complete": true
+      }
+    ],
+    "options": {
+      "now": 1791460800000,
+      "category": "runtime"
+    }
+  },
+  "workbench-all-180": {
+    "entities": [
+      {
+        "entityId": "HOST-ABC123",
+        "type": "HOST",
+        "displayName": "Node A",
+        "environmentId": "env",
+        "details": {
+          "lastSeenTms": 1791374400000,
+          "properties": {
+            "osVersion": "Ubuntu 22.04.5 LTS",
+            "installerVersion": "1.345"
+          }
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "environmentId": "env",
+        "type": "HOST",
+        "available": true,
+        "complete": true,
+        "inspected": 1,
+        "total": 1
+      }
+    ],
+    "options": {
+      "now": 1791374400000,
+      "category": "all",
+      "anticipationDays": 180
+    }
+  },
+  "workbench-all-365": {
+    "entities": [
+      {
+        "entityId": "HOST-ABC123",
+        "type": "HOST",
+        "displayName": "Node A",
+        "environmentId": "env",
+        "details": {
+          "lastSeenTms": 1791374400000,
+          "properties": {
+            "osVersion": "Ubuntu 22.04.5 LTS",
+            "installerVersion": "1.345"
+          }
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "environmentId": "env",
+        "type": "HOST",
+        "available": true,
+        "complete": true,
+        "inspected": 1,
+        "total": 1
+      }
+    ],
+    "options": {
+      "now": 1791374400000,
+      "category": "all",
+      "anticipationDays": 365
+    }
+  },
+  "workbench-os-180": {
+    "entities": [
+      {
+        "entityId": "HOST-ABC123",
+        "type": "HOST",
+        "displayName": "Node A",
+        "environmentId": "env",
+        "details": {
+          "lastSeenTms": 1791374400000,
+          "properties": {
+            "osVersion": "Ubuntu 22.04.5 LTS",
+            "installerVersion": "1.345"
+          }
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "environmentId": "env",
+        "type": "HOST",
+        "available": true,
+        "complete": true,
+        "inspected": 1,
+        "total": 1
+      }
+    ],
+    "options": {
+      "now": 1791374400000,
+      "category": "os",
+      "anticipationDays": 180
+    }
+  },
+  "workbench-os-365": {
+    "entities": [
+      {
+        "entityId": "HOST-ABC123",
+        "type": "HOST",
+        "displayName": "Node A",
+        "environmentId": "env",
+        "details": {
+          "lastSeenTms": 1791374400000,
+          "properties": {
+            "osVersion": "Ubuntu 22.04.5 LTS",
+            "installerVersion": "1.345"
+          }
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "environmentId": "env",
+        "type": "HOST",
+        "available": true,
+        "complete": true,
+        "inspected": 1,
+        "total": 1
+      }
+    ],
+    "options": {
+      "now": 1791374400000,
+      "category": "os",
+      "anticipationDays": 365
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": { "rootDir": ".", "types": ["node"], "sourceMap": false },
-  "include": ["examples/reference-client.ts"],
+  "include": ["examples/reference-client.ts", "examples/explain-demo-fixtures.ts"],
   "exclude": ["node_modules"],
 }

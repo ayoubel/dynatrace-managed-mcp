@@ -14,7 +14,7 @@ node scripts/explain-demo-runtime.mjs \
   --output /chemin/prive/recette
 ```
 
-Ouvrir l'URL `/workspace` affichée. Le lanceur crée un nouveau dossier `explain-demo-*`, compile hors de `dist/`, utilise un HOME/TMP et des données vierges, puis écoute sur un port loopback éphémère différent de 4318. Deux environnements fictifs `first` et `second` sont découverts. Le garde réseau empêche toute connexion sortante des enfants Gateway/MCP, même vers 4318. `managed.example` est une identité synthétique, jamais une destination contactée. Ne pas ouvrir les liens Managed du rapport pour une démonstration hors ligne.
+Ouvrir l'URL `/workspace` affichée. Le lanceur crée un nouveau dossier `explain-demo-*`, compile hors de `dist/`, utilise un HOME/TMP et des données vierges, puis écoute sur un port loopback éphémère différent de 4318. Deux environnements fictifs `first` et `second` sont découverts. Le lancement Explain fonctionne sans snapshot Morning Check ; la recette vérifie le nom exact de l'outil `dynatrace_managed_explain_problem`, et la fixture refuse l'ancien outil pour éviter une parité artificielle. Le garde réseau empêche toute connexion sortante des enfants Gateway/MCP, même vers 4318. `managed.example` est une identité synthétique, jamais une destination contactée. Ne pas ouvrir les liens Managed du rapport pour une démonstration hors ligne.
 
 Pour Chrome manuel, fournir `--extension-origin chrome-extension://<identifiant-du-profil-de-test>` et configurer `chrome.storage.local.gateway` vers l'URL affichée **avant la première ouverture du panneau**, dans un profil temporaire exclusivement. La recette automatisée le fait elle-même.
 

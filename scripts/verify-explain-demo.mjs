@@ -20,6 +20,7 @@ try{
  const blocked=[];await context.route('**/*',route=>{const url=new URL(route.request().url());if(['about:','chrome-extension:','data:','blob:'].includes(url.protocol)||url.origin===runtime.origin)return route.continue();blocked.push(url.origin);return route.abort();});
  const {validateInvestigationReport}=require(runtime.build+'/src/core/investigation-engine/index.js');
  const environments=(await runtime.get('/api/extension/context')).environments,first=environments.find(e=>e.url.endsWith('/first')),second=environments.find(e=>e.url.endsWith('/second'));assert.ok(first&&second);assert.equal((await runtime.get('/api/extension/context')).localLlmDisabled,true);check('I01 isolation, two environments and unavailable LLM',{networkGuard:true});
+ assert.equal((await runtime.get('/api/status')).hasSnapshot,false);check('I00 Explain starts without a Morning Check snapshot');
  const done=id=>until(async()=>{const job=await runtime.get('/api/workbench/'+id);return !['running','executing'].includes(job.status)&&job;});
  const start=async(env,id,extra={})=>{const response=await runtime.post('/api/workbench/start',{kind:'investigation',input:{layer:'services',environmentId:env,problemId:id,analysisMode:'explain',...extra}});assert.equal(response.status,202);return done((await response.json()).id);};
  const jobs={};
@@ -27,6 +28,7 @@ try{
   const job=await start(first.id,id);assert.equal(job.status,'completed');const report=validateInvestigationReport(job.result.problemInvestigations[0]);jobs[id]=job;
   assert.equal(report.problem.id,id);assert.equal(report.environment.url,first.url);assert.equal(report.llm.status,'disabled');assert.equal(report.explain.whyItHappened.mechanism.certainty,'unknown');
   const why=report.explain.whyItHappened;
+  const invocation=(await runtime.audit()).filter(e=>e.tool?.startsWith('dynatrace_managed_')).at(-1);assert.equal(invocation.tool,'dynatrace_managed_explain_problem');assert.equal(invocation.args.problemId,id);
   if(id==='RICH'){assert.equal(why.conclusion.certainty,'published');assert.ok(why.conclusion.evidenceRefs.length);assert.equal(report.diagnosis.rootCauseEvidence.length,1);assert.ok(why.comparisons.length);}
   else assert.equal(why.conclusion.certainty,'unknown');
   if(id==='AMBIGUOUS')assert.ok(why.hypotheses.length>=2);

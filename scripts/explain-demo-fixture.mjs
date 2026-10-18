@@ -15,10 +15,12 @@ const record=v=>fs.appendFile(audit,JSON.stringify({namespace:ns,...v})+'\n');
 server.registerTool('dynatrace_managed_get_environments_info',{annotations},async()=>text('- Environment Alias: prod\n- API URL: '+url+'\n- Valid Environment: Yes'));
 server.registerTool('dynatrace_managed_list_problems',{annotations,inputSchema:{environment_alias:z.literal('prod')}},async()=>{
  await record({tool:'list_problems'});
+ if(JSON.parse(await fs.readFile(control,'utf8')).catalogDisabled)return {...text('Synthetic startup catalog disabled'),isError:true};
  return text('Listing '+demoCases.length+' problems from environment prod.\n'+demoCases.map(id=>'problemId: '+id+'\ndisplayId: '+id+'\ntitle: SYNTHÉTIQUE Checkout '+id+'\nstatus: OPEN').join('\n'));
 });
 for(const name of ['dynatrace_managed_investigate_problem','dynatrace_managed_explain_problem'])server.registerTool(name,{annotations,inputSchema:{environment_alias:z.literal('prod'),problemId:z.string(),investigationId:z.string().optional()}},async args=>{
  const c=JSON.parse(await fs.readFile(control,'utf8'));await record({tool:name,args});
+ if(name!=='dynatrace_managed_explain_problem')return {...text('Explain demo requires the Explain tool, not a legacy investigation'),isError:true};
  if(c.fail)return {...text('Error: synthetic private upstream detail'),isError:true};
  if(c.malformed)return text('{bad-json');
  if(c.expire && args.investigationId)return {...text('Error: Investigation expired or unavailable in this environment; start a new investigation'),isError:true};

@@ -57,6 +57,9 @@ try {
     'POOR',
     'MISSING_REFERENCE',
     'REFERENCE_STALE',
+    'FUTURE_OBSERVATION',
+    'OBSERVATION_STALE',
+    'HTTP_CLOCK_SKEW',
     'PAGINATED',
     'PARTIAL',
     'API_FAILURE',
@@ -93,6 +96,32 @@ try {
       assert.equal(r.assessment.score, null);
       assert.ok(!r.rows.some((row) => row.status === 'ok'));
     }
+    const expectedAt = new Date(
+      Date.parse('2026-10-19T12:00:00Z') + (mode === 'REFERENCE_STALE' ? 110 * 86400000 : 0),
+    ).toISOString();
+    assert.equal(r.evaluatedAt, expectedAt);
+    assert.equal(r.referenceSnapshot.evaluatedAt, expectedAt);
+    assert.ok(r.trace.length);
+    assert.ok(r.trace.every((entry) => entry.at === expectedAt));
+    assert.ok(r.rows.every((row) => row.collectedAt === expectedAt));
+    if (['FUTURE_OBSERVATION', 'OBSERVATION_STALE'].includes(mode)) {
+      const qualified = r.rows.filter((row) => row.version && row.reference);
+      assert.ok(qualified.length);
+      assert.ok(
+        qualified.every(
+          (row) =>
+            row.status === 'unknown' &&
+            row.qualification === (mode === 'FUTURE_OBSERVATION' ? 'clock_skew' : 'observation_stale'),
+        ),
+      );
+      assert.equal(r.assessment.score, null);
+    }
+    if (mode === 'HTTP_CLOCK_SKEW') {
+      assert.deepEqual(r.assessment.responseClockOffsetsMinutes, [12]);
+      assert.equal(r.assessment.clockSkew, 0);
+      assert.equal(r.assessment.score, jobs.RICH.result.assessment.score);
+      assert.ok(r.rows.some((row) => row.observationClockOffsetMs === 12 * 60000));
+    }
     if (mode === 'PAGINATED') assert.ok(r.inventories.some((i) => i.pages > 1));
     if (['PARTIAL', 'API_FAILURE', 'TIMEOUT'].includes(mode)) {
       assert.equal(r.assessment.inventoryComplete, false);
@@ -109,6 +138,8 @@ try {
       assert.equal(response.status, 200);
       const content = await response.text();
       assert.ok(content.includes(r.referenceSnapshot.sha256));
+      if (format === 'json') assert.deepEqual(JSON.parse(content).result, r);
+      else assert.ok(content.includes(expectedAt), 'Export must preserve the Core evaluation timestamp');
       if (format !== 'json') assert.ok(content.includes('Disponibilité au moins'));
       await fs.writeFile(runtime.dir + '/exports/' + mode + '.' + format, content);
     }

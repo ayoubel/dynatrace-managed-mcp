@@ -127,7 +127,7 @@ async function auditManagedLifecycle(
           environmentId: environmentId(env),
           environment: env.alias,
           args: { type, pageSize: 100 },
-          at: new Date().toISOString(),
+          at: new Date(fixedNow ?? Date.now()).toISOString(),
           status: 'pending',
         };
         trace.push(entry);

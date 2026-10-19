@@ -31,7 +31,15 @@ function inventory(type, mode) {
       entityId: type + '-' + (ns === 'first' ? 'A' : 'B').repeat(15) + index,
       type,
       displayName: 'SYNTHÉTIQUE ' + ns + ' ' + type + ' ' + index,
-      lastSeenTms: clock,
+      lastSeenTms:
+        clock +
+        (mode === 'FUTURE_OBSERVATION'
+          ? 26 * 60000
+          : mode === 'OBSERVATION_STALE'
+            ? -25 * 3600000
+            : mode === 'HTTP_CLOCK_SKEW'
+              ? 12 * 60000
+              : 0),
       properties,
     });
   if (type === 'HOST')
@@ -92,7 +100,11 @@ const auth = {
           entities,
           totalCount: all.length,
           nextPageKey,
-          responseTiming: { requestedAt: clock - 1, receivedAt: clock, serverAt: clock },
+          responseTiming: {
+            requestedAt: clock - 1,
+            receivedAt: clock,
+            serverAt: clock + (mode === 'HTTP_CLOCK_SKEW' ? 12 * 60000 : 0),
+          },
         },
       ],
     ]);

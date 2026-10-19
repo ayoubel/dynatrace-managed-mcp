@@ -10,6 +10,46 @@ const instance = (properties: Record<string, unknown>, id = 'PROCESS_GROUP_INSTA
   details: { entityId: id, lastSeenTms: now, properties },
 });
 
+test.each(['injected', 'default'] as const)('collector timestamps follow the %s evaluation clock', async (mode) => {
+  const clock = Date.parse('2026-10-19T12:00:00Z');
+  const spy = jest.spyOn(Date, 'now').mockReturnValue(mode === 'injected' ? clock + 86400000 : clock);
+  const client = {
+    getRuntimeInventory: async (_alias: string, type: string) =>
+      new Map([
+        [
+          'prod',
+          {
+            entities:
+              type === 'PROCESS_GROUP_INSTANCE'
+                ? [
+                    {
+                      entityId: 'PROCESS_GROUP_INSTANCE-CLOCK',
+                      lastSeenTms: clock,
+                      properties: { softwareTechnologies: [{ type: 'NODE_JS', version: '22.14.0' }] },
+                    },
+                  ]
+                : [],
+            totalCount: type === 'PROCESS_GROUP_INSTANCE' ? 1 : 0,
+          },
+        ],
+      ]),
+  };
+  try {
+    const report = await auditManagedLifecycle(client, [env], {
+      category: 'runtime',
+      ...(mode === 'injected' ? { now: clock } : {}),
+    });
+    const at = new Date(clock).toISOString();
+    expect(report.evaluatedAt).toBe(at);
+    expect(report.referenceSnapshot.evaluatedAt).toBe(at);
+    expect(report.trace).toHaveLength(2);
+    expect(report.trace.every((entry: any) => entry.at === at)).toBe(true);
+    expect(report.rows[0]).toMatchObject({ collectedAt: at, observedAt: clock, status: 'ok' });
+  } finally {
+    spy.mockRestore();
+  }
+});
+
 test('entity profiles expose sibling technologies without attributing Nginx version to containerd or inflating assessment', () => {
   const entity = instance({
     processType: 'NGINX',

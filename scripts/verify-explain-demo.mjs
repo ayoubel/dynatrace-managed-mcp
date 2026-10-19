@@ -21,7 +21,7 @@ try{
  const {validateInvestigationReport}=require(runtime.build+'/src/core/investigation-engine/index.js');
  const environments=(await runtime.get('/api/extension/context')).environments,first=environments.find(e=>e.url.endsWith('/first')),second=environments.find(e=>e.url.endsWith('/second'));assert.ok(first&&second);assert.equal((await runtime.get('/api/extension/context')).localLlmDisabled,true);check('I01 isolation, two environments and unavailable LLM',{networkGuard:true});
  assert.equal((await runtime.get('/api/status')).hasSnapshot,false);check('I00 Explain starts without a Morning Check snapshot');
- const done=id=>until(async()=>{const job=await runtime.get('/api/workbench/'+id);return !['running','executing'].includes(job.status)&&job;});
+ const done=async id=>{const job=await until(async()=>{const current=await runtime.get('/api/workbench/'+id);return !['running','executing'].includes(current.status)&&current;});await until(async()=>!(await runtime.get('/api/workbench')).running);return job;};
  const start=async(env,id,extra={})=>{const response=await runtime.post('/api/workbench/start',{kind:'investigation',input:{layer:'services',environmentId:env,problemId:id,analysisMode:'explain',...extra}});assert.equal(response.status,202);return done((await response.json()).id);};
  const jobs={};
  for(const id of ['RICH','AMBIGUOUS','POOR','STALE','CONTRADICTORY','S02','S08','S08-timeout','S08-budget']){

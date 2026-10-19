@@ -50,3 +50,10 @@ On the tested environment: runtime inventory 252/252 instances and 106/106 group
 ### Familles de présentation (8 octobre 2026)
 
 `auditGroup` est fourni sur les observations, technologies des profils et campagnes. Les familles `runtimes`, `technologies`, `unclassified`, `os` et `platform` servent à naviguer dans une collecte commune. Elles ne changent ni les unités du score ni les types d’entités Dynatrace. Les technologies génériques non identifiées (`Runtime`) restent `unclassified`. Les profils recombinés et campagnes recombinées conservent cette classification. L’interface ne déduit aucun verdict à partir de ces familles.
+# Sprint 13 — bounded collection and reference provenance
+
+`auditManagedLifecycle` accepts an optional `limits` object for autonomous callers. Defaults: `maxApiCalls=200`, `maxPagesPerType=10`, `timeoutMs=12000`, `maxDurationMs=80000`. Positive safe integers only; ceilings respectively 200, 10, 30000 and 120000. Invalid requests fail before reading inventory. MCP tools retain these defaults without an incompatible schema change. After a timeout or global budget/deadline, no further reads start. Earlier evidence survives; cancellation of a request already in flight is not guaranteed.
+
+Reports add `collection` (status, limits, stop reason), per-inventory `stopReason`, and `referenceSnapshot`. The latter hashes the exact embedded policy array with SHA-256, preserves recorded verification dates, end kind/precision/scope/source, and indicates age and the 90-day review window. It explicitly states `liveVendorLookup=false`. No policy dates are refreshed by producing this snapshot. Combining reports regenerates reference identity and `referenceVerifiedAt` from the local catalog, rather than trusting caller metadata; collection sources remain caller-supplied provenance.
+
+The score, coverage threshold, evidence extraction, unknown qualification and campaign ordering remain the existing engine's responsibility. A minimum-availability boundary is not an EOL/EOS date. Reproducible synthetic client scenario and launch/cleanup: `examples/ADVISOR_DEMO_KIT.md`.

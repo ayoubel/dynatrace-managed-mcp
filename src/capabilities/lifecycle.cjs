@@ -424,6 +424,30 @@ const auditPolicy = Object.freeze({
   referenceDays: 90,
 });
 
+// Provenance of the embedded policy snapshot, not a claim of a fresh vendor lookup.
+function lifecycleReferenceSnapshot(now = Date.now()) {
+  const verified = lifecycleReferences.map((r) => r.verifiedAt).sort();
+  return {
+    provenance: 'embedded_reference_catalog',
+    sha256: crypto.createHash('sha256').update(JSON.stringify(lifecycleReferences)).digest('hex'),
+    oldestVerifiedAt: verified[0] || null,
+    evaluatedAt: new Date(now).toISOString(),
+    reviewAfterDays: auditPolicy.referenceDays,
+    liveVendorLookup: false,
+    entries: lifecycleReferences.map((r) => {
+      const ageDays = Math.floor((now - Date.parse(r.verifiedAt)) / 86400000);
+      return {
+        ...r,
+        ageDays,
+        reviewState:
+          Number.isFinite(ageDays) && ageDays >= 0 && ageDays <= auditPolicy.referenceDays
+            ? 'within_review_window'
+            : 'review_required',
+      };
+    }),
+  };
+}
+
 // Compare lastSeen to the clock of the response that carried it, not to a
 // tolerated magnitude of drift. HTTP Date may come from a reverse proxy:
 // it is evidence for freshness only; lifecycle calendar dates keep the audit clock.
@@ -438,9 +462,11 @@ function responseClockOffset(timing) {
     return 0;
   const duration = timing.receivedAt - timing.requestedAt;
   const offset = timing.serverAt - timing.receivedAt;
-  return duration >= 0 && duration <= 30000 &&
+  return duration >= 0 &&
+    duration <= 30000 &&
     [timing.requestedAt, timing.receivedAt, timing.serverAt].every((t) => Number.isFinite(new Date(t).getTime()))
-    ? offset : 0;
+    ? offset
+    : 0;
 }
 function observationNow(row, now) {
   const offset = row.observationClockOffsetMs;
@@ -449,9 +475,7 @@ function observationNow(row, now) {
     const verified = responseClockOffset(timing);
     // Calibration belongs to this collection. Reject replayed or inconsistent
     // provenance and a local clock jump since the response was received.
-    if (!Number.isFinite(offset) || offset !== verified ||
-      Math.abs(now - timing.receivedAt) > 300000)
-      return now;
+    if (!Number.isFinite(offset) || offset !== verified || Math.abs(now - timing.receivedAt) > 300000) return now;
     return now + verified;
   }
   // Historical reports did not carry response timing. Retain only their bounded
@@ -592,6 +616,7 @@ function buildLifecycleReport(
     inventories,
     assessment,
     campaigns,
+    referenceSnapshot: lifecycleReferenceSnapshot(now),
   };
 }
 
@@ -677,8 +702,17 @@ function combineLifecycleReports(reports, now = Date.now()) {
     assessment,
     entityProfiles: softwareProfiles(rows),
     campaigns: maintenanceCampaigns(rows, assessment),
-    referenceVerifiedAt: reports[0].referenceVerifiedAt,
+    referenceVerifiedAt: lifecycleReferenceSnapshot(now).oldestVerifiedAt,
+    referenceSnapshot: lifecycleReferenceSnapshot(now),
     limitations: [...new Set(reports.flatMap((r) => r.limitations || []))],
+    collection: {
+      status: inventories.length && inventories.every((i) => i.available && i.complete) ? 'completed' : 'partial',
+      sources: reports.map((r) => ({
+        evaluatedAt: r.evaluatedAt,
+        limits: r.collection?.limits || null,
+        stoppedBy: r.collection?.stoppedBy || null,
+      })),
+    },
     provenance: 'caller_supplied_audits',
   };
 }
@@ -875,3 +909,4 @@ exports.auditInventory = auditInventory;
 exports.lifecycleAssessment = lifecycleAssessment;
 exports.buildLifecycleReport = buildLifecycleReport;
 exports.combineLifecycleReports = combineLifecycleReports;
+exports.lifecycleReferenceSnapshot = lifecycleReferenceSnapshot;

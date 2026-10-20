@@ -1,0 +1,4709 @@
+{
+  "sourceCommit": "3936b01",
+  "cases": [
+    {
+      "reference": {
+        "product": "Java",
+        "cycle": "8",
+        "end": "2030-12",
+        "edition": "Eclipse Adoptium",
+        "endKind": "minimum_availability",
+        "source": "https://adoptium.net/support/",
+        "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "8",
+            "reference": {
+              "product": "Java",
+              "cycle": "8",
+              "end": "2030-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 1503
+          }
+        },
+        {
+          "now": 1922227200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "8",
+            "reference": {
+              "product": "Java",
+              "cycle": "8",
+              "end": "2030-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1922313600000,
+          "result": {
+            "status": "unknown",
+            "cycle": "8",
+            "reference": {
+              "product": "Java",
+              "cycle": "8",
+              "end": "2030-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Horizon minimum de disponibilité atteint ; support à revalider, fin de support non prouvée",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "8",
+            "reference": {
+              "product": "Java",
+              "cycle": "8",
+              "end": "2030-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 1425
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "8",
+            "reference": {
+              "product": "Java",
+              "cycle": "8",
+              "end": "2030-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1424
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Java",
+        "cycle": "11",
+        "end": "2027-10",
+        "edition": "Eclipse Adoptium",
+        "endKind": "minimum_availability",
+        "source": "https://adoptium.net/support/",
+        "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "11",
+            "reference": {
+              "product": "Java",
+              "cycle": "11",
+              "end": "2027-10",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 346
+          }
+        },
+        {
+          "now": 1822262400000,
+          "result": {
+            "status": "unknown",
+            "cycle": "11",
+            "reference": {
+              "product": "Java",
+              "cycle": "11",
+              "end": "2027-10",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1822348800000,
+          "result": {
+            "status": "unknown",
+            "cycle": "11",
+            "reference": {
+              "product": "Java",
+              "cycle": "11",
+              "end": "2027-10",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Horizon minimum de disponibilité atteint ; support à revalider, fin de support non prouvée",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "11",
+            "reference": {
+              "product": "Java",
+              "cycle": "11",
+              "end": "2027-10",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 268
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "11",
+            "reference": {
+              "product": "Java",
+              "cycle": "11",
+              "end": "2027-10",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 267
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Java",
+        "cycle": "17",
+        "end": "2027-10",
+        "edition": "Eclipse Adoptium",
+        "endKind": "minimum_availability",
+        "source": "https://adoptium.net/support/",
+        "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "17",
+            "reference": {
+              "product": "Java",
+              "cycle": "17",
+              "end": "2027-10",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 346
+          }
+        },
+        {
+          "now": 1822262400000,
+          "result": {
+            "status": "unknown",
+            "cycle": "17",
+            "reference": {
+              "product": "Java",
+              "cycle": "17",
+              "end": "2027-10",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1822348800000,
+          "result": {
+            "status": "unknown",
+            "cycle": "17",
+            "reference": {
+              "product": "Java",
+              "cycle": "17",
+              "end": "2027-10",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Horizon minimum de disponibilité atteint ; support à revalider, fin de support non prouvée",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "17",
+            "reference": {
+              "product": "Java",
+              "cycle": "17",
+              "end": "2027-10",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 268
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "17",
+            "reference": {
+              "product": "Java",
+              "cycle": "17",
+              "end": "2027-10",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 267
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Java",
+        "cycle": "21",
+        "end": "2029-12",
+        "edition": "Eclipse Adoptium",
+        "endKind": "minimum_availability",
+        "source": "https://adoptium.net/support/",
+        "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "21",
+            "reference": {
+              "product": "Java",
+              "cycle": "21",
+              "end": "2029-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 1138
+          }
+        },
+        {
+          "now": 1890691200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "21",
+            "reference": {
+              "product": "Java",
+              "cycle": "21",
+              "end": "2029-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1890777600000,
+          "result": {
+            "status": "unknown",
+            "cycle": "21",
+            "reference": {
+              "product": "Java",
+              "cycle": "21",
+              "end": "2029-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Horizon minimum de disponibilité atteint ; support à revalider, fin de support non prouvée",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "21",
+            "reference": {
+              "product": "Java",
+              "cycle": "21",
+              "end": "2029-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 1060
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "21",
+            "reference": {
+              "product": "Java",
+              "cycle": "21",
+              "end": "2029-12",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1059
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Java",
+        "cycle": "25",
+        "end": "2031-09",
+        "edition": "Eclipse Adoptium",
+        "endKind": "minimum_availability",
+        "source": "https://adoptium.net/support/",
+        "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "25",
+            "reference": {
+              "product": "Java",
+              "cycle": "25",
+              "end": "2031-09",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 1777
+          }
+        },
+        {
+          "now": 1945900800000,
+          "result": {
+            "status": "unknown",
+            "cycle": "25",
+            "reference": {
+              "product": "Java",
+              "cycle": "25",
+              "end": "2031-09",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1945987200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "25",
+            "reference": {
+              "product": "Java",
+              "cycle": "25",
+              "end": "2031-09",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Horizon minimum de disponibilité atteint ; support à revalider, fin de support non prouvée",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "25",
+            "reference": {
+              "product": "Java",
+              "cycle": "25",
+              "end": "2031-09",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 1699
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "25",
+            "reference": {
+              "product": "Java",
+              "cycle": "25",
+              "end": "2031-09",
+              "edition": "Eclipse Adoptium",
+              "endKind": "minimum_availability",
+              "source": "https://adoptium.net/support/",
+              "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1698
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "PHP",
+        "cycle": "7.4",
+        "end": "2022-11-28",
+        "source": "https://www.php.net/eol.php",
+        "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "7.4",
+            "reference": {
+              "product": "PHP",
+              "cycle": "7.4",
+              "end": "2022-11-28",
+              "source": "https://www.php.net/eol.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -1422
+          }
+        },
+        {
+          "now": 1669507200000,
+          "result": {
+            "status": "watch",
+            "cycle": "7.4",
+            "reference": {
+              "product": "PHP",
+              "cycle": "7.4",
+              "end": "2022-11-28",
+              "source": "https://www.php.net/eol.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1669593600000,
+          "result": {
+            "status": "watch",
+            "cycle": "7.4",
+            "reference": {
+              "product": "PHP",
+              "cycle": "7.4",
+              "end": "2022-11-28",
+              "source": "https://www.php.net/eol.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "7.4",
+            "reference": {
+              "product": "PHP",
+              "cycle": "7.4",
+              "end": "2022-11-28",
+              "source": "https://www.php.net/eol.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -1500
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "7.4",
+            "reference": {
+              "product": "PHP",
+              "cycle": "7.4",
+              "end": "2022-11-28",
+              "source": "https://www.php.net/eol.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -1501
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "PHP",
+        "cycle": "8.1",
+        "end": "2025-12-31",
+        "source": "https://www.php.net/eol.php",
+        "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "8.1",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.1",
+              "end": "2025-12-31",
+              "source": "https://www.php.net/eol.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -293
+          }
+        },
+        {
+          "now": 1767052800000,
+          "result": {
+            "status": "watch",
+            "cycle": "8.1",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.1",
+              "end": "2025-12-31",
+              "source": "https://www.php.net/eol.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1767139200000,
+          "result": {
+            "status": "watch",
+            "cycle": "8.1",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.1",
+              "end": "2025-12-31",
+              "source": "https://www.php.net/eol.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "8.1",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.1",
+              "end": "2025-12-31",
+              "source": "https://www.php.net/eol.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -371
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "8.1",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.1",
+              "end": "2025-12-31",
+              "source": "https://www.php.net/eol.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -372
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "PHP",
+        "cycle": "8.2",
+        "end": "2026-12-31",
+        "source": "https://www.php.net/supported-versions.php",
+        "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "watch",
+            "cycle": "8.2",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.2",
+              "end": "2026-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 72
+          }
+        },
+        {
+          "now": 1798588800000,
+          "result": {
+            "status": "watch",
+            "cycle": "8.2",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.2",
+              "end": "2026-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1798675200000,
+          "result": {
+            "status": "watch",
+            "cycle": "8.2",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.2",
+              "end": "2026-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "8.2",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.2",
+              "end": "2026-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -6
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "8.2",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.2",
+              "end": "2026-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -7
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "PHP",
+        "cycle": "8.3",
+        "end": "2027-12-31",
+        "source": "https://www.php.net/supported-versions.php",
+        "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "8.3",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.3",
+              "end": "2027-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 437
+          }
+        },
+        {
+          "now": 1830124800000,
+          "result": {
+            "status": "unknown",
+            "cycle": "8.3",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.3",
+              "end": "2027-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1830211200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "8.3",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.3",
+              "end": "2027-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "8.3",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.3",
+              "end": "2027-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 359
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "8.3",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.3",
+              "end": "2027-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 358
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "PHP",
+        "cycle": "8.4",
+        "end": "2028-12-31",
+        "source": "https://www.php.net/supported-versions.php",
+        "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "8.4",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.4",
+              "end": "2028-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 803
+          }
+        },
+        {
+          "now": 1861747200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "8.4",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.4",
+              "end": "2028-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1861833600000,
+          "result": {
+            "status": "unknown",
+            "cycle": "8.4",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.4",
+              "end": "2028-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "8.4",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.4",
+              "end": "2028-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 725
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "8.4",
+            "reference": {
+              "product": "PHP",
+              "cycle": "8.4",
+              "end": "2028-12-31",
+              "source": "https://www.php.net/supported-versions.php",
+              "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 724
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Go",
+        "cycle": "1.20",
+        "end": "2024-02-06",
+        "source": "https://go.dev/doc/devel/release",
+        "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "1.20",
+            "reference": {
+              "product": "Go",
+              "cycle": "1.20",
+              "end": "2024-02-06",
+              "source": "https://go.dev/doc/devel/release",
+              "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -987
+          }
+        },
+        {
+          "now": 1707091200000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.20",
+            "reference": {
+              "product": "Go",
+              "cycle": "1.20",
+              "end": "2024-02-06",
+              "source": "https://go.dev/doc/devel/release",
+              "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1707177600000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.20",
+            "reference": {
+              "product": "Go",
+              "cycle": "1.20",
+              "end": "2024-02-06",
+              "source": "https://go.dev/doc/devel/release",
+              "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "1.20",
+            "reference": {
+              "product": "Go",
+              "cycle": "1.20",
+              "end": "2024-02-06",
+              "source": "https://go.dev/doc/devel/release",
+              "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -1065
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.20",
+            "reference": {
+              "product": "Go",
+              "cycle": "1.20",
+              "end": "2024-02-06",
+              "source": "https://go.dev/doc/devel/release",
+              "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -1066
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Go",
+        "cycle": "1.23",
+        "end": "2025-08-12",
+        "source": "https://go.dev/doc/devel/release",
+        "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "1.23",
+            "reference": {
+              "product": "Go",
+              "cycle": "1.23",
+              "end": "2025-08-12",
+              "source": "https://go.dev/doc/devel/release",
+              "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -434
+          }
+        },
+        {
+          "now": 1754870400000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.23",
+            "reference": {
+              "product": "Go",
+              "cycle": "1.23",
+              "end": "2025-08-12",
+              "source": "https://go.dev/doc/devel/release",
+              "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1754956800000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.23",
+            "reference": {
+              "product": "Go",
+              "cycle": "1.23",
+              "end": "2025-08-12",
+              "source": "https://go.dev/doc/devel/release",
+              "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "1.23",
+            "reference": {
+              "product": "Go",
+              "cycle": "1.23",
+              "end": "2025-08-12",
+              "source": "https://go.dev/doc/devel/release",
+              "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -512
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.23",
+            "reference": {
+              "product": "Go",
+              "cycle": "1.23",
+              "end": "2025-08-12",
+              "source": "https://go.dev/doc/devel/release",
+              "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -513
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "containerd",
+        "cycle": "1.6",
+        "end": "2025-08-23",
+        "source": "https://containerd.io/releases/",
+        "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "1.6",
+            "reference": {
+              "product": "containerd",
+              "cycle": "1.6",
+              "end": "2025-08-23",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -423
+          }
+        },
+        {
+          "now": 1755820800000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.6",
+            "reference": {
+              "product": "containerd",
+              "cycle": "1.6",
+              "end": "2025-08-23",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1755907200000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.6",
+            "reference": {
+              "product": "containerd",
+              "cycle": "1.6",
+              "end": "2025-08-23",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "1.6",
+            "reference": {
+              "product": "containerd",
+              "cycle": "1.6",
+              "end": "2025-08-23",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -501
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.6",
+            "reference": {
+              "product": "containerd",
+              "cycle": "1.6",
+              "end": "2025-08-23",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -502
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "containerd",
+        "cycle": "1.7",
+        "end": "2026-09-30",
+        "source": "https://containerd.io/releases/",
+        "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "1.7",
+            "reference": {
+              "product": "containerd",
+              "cycle": "1.7",
+              "end": "2026-09-30",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -20
+          }
+        },
+        {
+          "now": 1790640000000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.7",
+            "reference": {
+              "product": "containerd",
+              "cycle": "1.7",
+              "end": "2026-09-30",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1790726400000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.7",
+            "reference": {
+              "product": "containerd",
+              "cycle": "1.7",
+              "end": "2026-09-30",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "1.7",
+            "reference": {
+              "product": "containerd",
+              "cycle": "1.7",
+              "end": "2026-09-30",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -98
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.7",
+            "reference": {
+              "product": "containerd",
+              "cycle": "1.7",
+              "end": "2026-09-30",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -99
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "containerd",
+        "cycle": "2.1",
+        "end": "2026-07-03",
+        "source": "https://containerd.io/releases/",
+        "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "2.1",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.1",
+              "end": "2026-07-03",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -109
+          }
+        },
+        {
+          "now": 1782950400000,
+          "result": {
+            "status": "watch",
+            "cycle": "2.1",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.1",
+              "end": "2026-07-03",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1783036800000,
+          "result": {
+            "status": "watch",
+            "cycle": "2.1",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.1",
+              "end": "2026-07-03",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "2.1",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.1",
+              "end": "2026-07-03",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -187
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "2.1",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.1",
+              "end": "2026-07-03",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -188
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "containerd",
+        "cycle": "2.2",
+        "end": "2026-11-06",
+        "source": "https://containerd.io/releases/",
+        "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "watch",
+            "cycle": "2.2",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.2",
+              "end": "2026-11-06",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 17
+          }
+        },
+        {
+          "now": 1793836800000,
+          "result": {
+            "status": "watch",
+            "cycle": "2.2",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.2",
+              "end": "2026-11-06",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1793923200000,
+          "result": {
+            "status": "watch",
+            "cycle": "2.2",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.2",
+              "end": "2026-11-06",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "2.2",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.2",
+              "end": "2026-11-06",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -61
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "2.2",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.2",
+              "end": "2026-11-06",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -62
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "containerd",
+        "cycle": "2.3",
+        "end": "2028-04-30",
+        "source": "https://containerd.io/releases/",
+        "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "2.3",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.3",
+              "end": "2028-04-30",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 558
+          }
+        },
+        {
+          "now": 1840579200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "2.3",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.3",
+              "end": "2028-04-30",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1840665600000,
+          "result": {
+            "status": "unknown",
+            "cycle": "2.3",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.3",
+              "end": "2028-04-30",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "2.3",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.3",
+              "end": "2028-04-30",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 480
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "2.3",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.3",
+              "end": "2028-04-30",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 479
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "containerd",
+        "cycle": "2.4",
+        "end": "2027-05-16",
+        "source": "https://containerd.io/releases/",
+        "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "2.4",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.4",
+              "end": "2027-05-16",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 208
+          }
+        },
+        {
+          "now": 1810339200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "2.4",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.4",
+              "end": "2027-05-16",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1810425600000,
+          "result": {
+            "status": "unknown",
+            "cycle": "2.4",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.4",
+              "end": "2027-05-16",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "watch",
+            "cycle": "2.4",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.4",
+              "end": "2027-05-16",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 130
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "2.4",
+            "reference": {
+              "product": "containerd",
+              "cycle": "2.4",
+              "end": "2027-05-16",
+              "source": "https://containerd.io/releases/",
+              "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 129
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Ubuntu",
+        "cycle": "18.04",
+        "end": "2023-05",
+        "source": "https://ubuntu.com/about/release-cycle",
+        "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "18.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "18.04",
+              "end": "2023-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -1268
+          }
+        },
+        {
+          "now": 1682812800000,
+          "result": {
+            "status": "watch",
+            "cycle": "18.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "18.04",
+              "end": "2023-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1682899200000,
+          "result": {
+            "status": "watch",
+            "cycle": "18.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "18.04",
+              "end": "2023-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "18.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "18.04",
+              "end": "2023-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -1346
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "18.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "18.04",
+              "end": "2023-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -1347
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Ubuntu",
+        "cycle": "26.04",
+        "end": "2031-05",
+        "source": "https://ubuntu.com/about/release-cycle",
+        "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "26.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "26.04",
+              "end": "2031-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 1654
+          }
+        },
+        {
+          "now": 1935273600000,
+          "result": {
+            "status": "unknown",
+            "cycle": "26.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "26.04",
+              "end": "2031-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1935360000000,
+          "result": {
+            "status": "unknown",
+            "cycle": "26.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "26.04",
+              "end": "2031-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "26.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "26.04",
+              "end": "2031-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 1576
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "26.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "26.04",
+              "end": "2031-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1575
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Ubuntu",
+        "cycle": "20.04",
+        "end": "2025-05",
+        "source": "https://ubuntu.com/about/release-cycle",
+        "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "20.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "20.04",
+              "end": "2025-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -537
+          }
+        },
+        {
+          "now": 1745971200000,
+          "result": {
+            "status": "watch",
+            "cycle": "20.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "20.04",
+              "end": "2025-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1746057600000,
+          "result": {
+            "status": "watch",
+            "cycle": "20.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "20.04",
+              "end": "2025-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "20.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "20.04",
+              "end": "2025-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -615
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "20.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "20.04",
+              "end": "2025-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -616
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Ubuntu",
+        "cycle": "22.04",
+        "end": "2027-05",
+        "source": "https://ubuntu.com/about/release-cycle",
+        "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "22.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 193
+          }
+        },
+        {
+          "now": 1809043200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "22.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1809129600000,
+          "result": {
+            "status": "unknown",
+            "cycle": "22.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "watch",
+            "cycle": "22.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 115
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "22.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "22.04",
+              "end": "2027-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 114
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Ubuntu",
+        "cycle": "24.04",
+        "end": "2029-05",
+        "source": "https://ubuntu.com/about/release-cycle",
+        "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "24.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "24.04",
+              "end": "2029-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 924
+          }
+        },
+        {
+          "now": 1872201600000,
+          "result": {
+            "status": "unknown",
+            "cycle": "24.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "24.04",
+              "end": "2029-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1872288000000,
+          "result": {
+            "status": "unknown",
+            "cycle": "24.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "24.04",
+              "end": "2029-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "24.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "24.04",
+              "end": "2029-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 846
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "24.04",
+            "reference": {
+              "product": "Ubuntu",
+              "cycle": "24.04",
+              "end": "2029-05",
+              "source": "https://ubuntu.com/about/release-cycle",
+              "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 845
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Kubernetes",
+        "cycle": "1.28",
+        "end": "2024-10-22",
+        "source": "https://kubernetes.io/releases/patch-releases/",
+        "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "1.28",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.28",
+              "end": "2024-10-22",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -728
+          }
+        },
+        {
+          "now": 1729468800000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.28",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.28",
+              "end": "2024-10-22",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1729555200000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.28",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.28",
+              "end": "2024-10-22",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "1.28",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.28",
+              "end": "2024-10-22",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -806
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.28",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.28",
+              "end": "2024-10-22",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -807
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Kubernetes",
+        "cycle": "1.29",
+        "end": "2025-02-28",
+        "source": "https://kubernetes.io/releases/patch-releases/",
+        "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "1.29",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.29",
+              "end": "2025-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -599
+          }
+        },
+        {
+          "now": 1740614400000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.29",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.29",
+              "end": "2025-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1740700800000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.29",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.29",
+              "end": "2025-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "1.29",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.29",
+              "end": "2025-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -677
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.29",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.29",
+              "end": "2025-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -678
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Kubernetes",
+        "cycle": "1.30",
+        "end": "2025-07-15",
+        "source": "https://kubernetes.io/releases/patch-releases/",
+        "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "1.30",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.30",
+              "end": "2025-07-15",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -462
+          }
+        },
+        {
+          "now": 1752451200000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.30",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.30",
+              "end": "2025-07-15",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1752537600000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.30",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.30",
+              "end": "2025-07-15",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "1.30",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.30",
+              "end": "2025-07-15",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -540
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.30",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.30",
+              "end": "2025-07-15",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -541
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Kubernetes",
+        "cycle": "1.31",
+        "end": "2025-11-11",
+        "source": "https://kubernetes.io/releases/patch-releases/",
+        "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "1.31",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.31",
+              "end": "2025-11-11",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -343
+          }
+        },
+        {
+          "now": 1762732800000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.31",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.31",
+              "end": "2025-11-11",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1762819200000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.31",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.31",
+              "end": "2025-11-11",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "1.31",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.31",
+              "end": "2025-11-11",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -421
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.31",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.31",
+              "end": "2025-11-11",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -422
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Kubernetes",
+        "cycle": "1.32",
+        "end": "2026-02-28",
+        "source": "https://kubernetes.io/releases/patch-releases/",
+        "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "1.32",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.32",
+              "end": "2026-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -234
+          }
+        },
+        {
+          "now": 1772150400000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.32",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.32",
+              "end": "2026-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1772236800000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.32",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.32",
+              "end": "2026-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "1.32",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.32",
+              "end": "2026-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -312
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.32",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.32",
+              "end": "2026-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -313
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Kubernetes",
+        "cycle": "1.33",
+        "end": "2026-06-28",
+        "source": "https://kubernetes.io/releases/patch-releases/",
+        "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "1.33",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.33",
+              "end": "2026-06-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -114
+          }
+        },
+        {
+          "now": 1782518400000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.33",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.33",
+              "end": "2026-06-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1782604800000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.33",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.33",
+              "end": "2026-06-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "1.33",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.33",
+              "end": "2026-06-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -192
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.33",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.33",
+              "end": "2026-06-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -193
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Kubernetes",
+        "cycle": "1.34",
+        "end": "2026-10-27",
+        "source": "https://kubernetes.io/releases/patch-releases/",
+        "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.34",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.34",
+              "end": "2026-10-27",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 7
+          }
+        },
+        {
+          "now": 1792972800000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.34",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.34",
+              "end": "2026-10-27",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1793059200000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.34",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.34",
+              "end": "2026-10-27",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "1.34",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.34",
+              "end": "2026-10-27",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -71
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.34",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.34",
+              "end": "2026-10-27",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -72
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Kubernetes",
+        "cycle": "1.35",
+        "end": "2027-02-28",
+        "source": "https://kubernetes.io/releases/patch-releases/",
+        "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.35",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.35",
+              "end": "2027-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 131
+          }
+        },
+        {
+          "now": 1803686400000,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.35",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.35",
+              "end": "2027-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1803772800000,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.35",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.35",
+              "end": "2027-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "watch",
+            "cycle": "1.35",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.35",
+              "end": "2027-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 53
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "1.35",
+            "reference": {
+              "product": "Kubernetes",
+              "cycle": "1.35",
+              "end": "2027-02-28",
+              "source": "https://kubernetes.io/releases/patch-releases/",
+              "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 52
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Node.js",
+        "cycle": "16",
+        "end": "2023-09-11",
+        "source": "https://github.com/nodejs/Release",
+        "scope": "Support upstream ; contrat étendu non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "16",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "16",
+              "end": "2023-09-11",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -1135
+          }
+        },
+        {
+          "now": 1694304000000,
+          "result": {
+            "status": "watch",
+            "cycle": "16",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "16",
+              "end": "2023-09-11",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1694390400000,
+          "result": {
+            "status": "watch",
+            "cycle": "16",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "16",
+              "end": "2023-09-11",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "16",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "16",
+              "end": "2023-09-11",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -1213
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "16",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "16",
+              "end": "2023-09-11",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -1214
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Node.js",
+        "cycle": "18",
+        "end": "2025-04-30",
+        "source": "https://github.com/nodejs/Release",
+        "scope": "Support upstream ; contrat étendu non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "18",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "18",
+              "end": "2025-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -538
+          }
+        },
+        {
+          "now": 1745884800000,
+          "result": {
+            "status": "watch",
+            "cycle": "18",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "18",
+              "end": "2025-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1745971200000,
+          "result": {
+            "status": "watch",
+            "cycle": "18",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "18",
+              "end": "2025-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "18",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "18",
+              "end": "2025-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -616
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "18",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "18",
+              "end": "2025-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -617
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Node.js",
+        "cycle": "20",
+        "end": "2026-04-30",
+        "source": "https://github.com/nodejs/Release",
+        "scope": "Support upstream ; contrat étendu non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "20",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "20",
+              "end": "2026-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -173
+          }
+        },
+        {
+          "now": 1777420800000,
+          "result": {
+            "status": "watch",
+            "cycle": "20",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "20",
+              "end": "2026-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1777507200000,
+          "result": {
+            "status": "watch",
+            "cycle": "20",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "20",
+              "end": "2026-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "20",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "20",
+              "end": "2026-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -251
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "20",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "20",
+              "end": "2026-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -252
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Node.js",
+        "cycle": "22",
+        "end": "2027-04-30",
+        "source": "https://github.com/nodejs/Release",
+        "scope": "Support upstream ; contrat étendu non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "22",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "22",
+              "end": "2027-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 192
+          }
+        },
+        {
+          "now": 1808956800000,
+          "result": {
+            "status": "unknown",
+            "cycle": "22",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "22",
+              "end": "2027-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1809043200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "22",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "22",
+              "end": "2027-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "watch",
+            "cycle": "22",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "22",
+              "end": "2027-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 114
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "22",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "22",
+              "end": "2027-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 113
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Node.js",
+        "cycle": "24",
+        "end": "2028-04-30",
+        "source": "https://github.com/nodejs/Release",
+        "scope": "Support upstream ; contrat étendu non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "24",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "24",
+              "end": "2028-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 558
+          }
+        },
+        {
+          "now": 1840579200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "24",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "24",
+              "end": "2028-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1840665600000,
+          "result": {
+            "status": "unknown",
+            "cycle": "24",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "24",
+              "end": "2028-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "24",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "24",
+              "end": "2028-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 480
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "24",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "24",
+              "end": "2028-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 479
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Node.js",
+        "cycle": "26",
+        "end": "2029-04-30",
+        "source": "https://github.com/nodejs/Release",
+        "scope": "Support upstream ; contrat étendu non vérifié",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "26",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "26",
+              "end": "2029-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 923
+          }
+        },
+        {
+          "now": 1872115200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "26",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "26",
+              "end": "2029-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1872201600000,
+          "result": {
+            "status": "unknown",
+            "cycle": "26",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "26",
+              "end": "2029-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "26",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "26",
+              "end": "2029-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 845
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "26",
+            "reference": {
+              "product": "Node.js",
+              "cycle": "26",
+              "end": "2029-04-30",
+              "source": "https://github.com/nodejs/Release",
+              "scope": "Support upstream ; contrat étendu non vérifié",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 844
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Python",
+        "cycle": "3.9",
+        "end": "2025-10-31",
+        "source": "https://devguide.python.org/versions/",
+        "scope": "Support upstream ; backports de la distribution non vérifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "3.9",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.9",
+              "end": "2025-10-31",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -354
+          }
+        },
+        {
+          "now": 1761782400000,
+          "result": {
+            "status": "watch",
+            "cycle": "3.9",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.9",
+              "end": "2025-10-31",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1761868800000,
+          "result": {
+            "status": "watch",
+            "cycle": "3.9",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.9",
+              "end": "2025-10-31",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "3.9",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.9",
+              "end": "2025-10-31",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -432
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.9",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.9",
+              "end": "2025-10-31",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -433
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Python",
+        "cycle": "3.10",
+        "end": "2026-10-01",
+        "source": "https://devguide.python.org/versions/",
+        "scope": "Support upstream ; backports de la distribution non vérifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "day"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "action",
+            "cycle": "3.10",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.10",
+              "end": "2026-10-01",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -19
+          }
+        },
+        {
+          "now": 1790726400000,
+          "result": {
+            "status": "watch",
+            "cycle": "3.10",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.10",
+              "end": "2026-10-01",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1790812800000,
+          "result": {
+            "status": "watch",
+            "cycle": "3.10",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.10",
+              "end": "2026-10-01",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Échéance de support à préparer (180 jours), ou mois de transition",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "action",
+            "cycle": "3.10",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.10",
+              "end": "2026-10-01",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": null,
+            "reason": "Fin du support de référence dépassée ; contrat/distribution à confirmer",
+            "daysToEnd": -97
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.10",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.10",
+              "end": "2026-10-01",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "day"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": -98
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Python",
+        "cycle": "3.11",
+        "end": "2027-10",
+        "source": "https://devguide.python.org/versions/",
+        "scope": "Support upstream ; backports de la distribution non vérifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "3.11",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.11",
+              "end": "2027-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 346
+          }
+        },
+        {
+          "now": 1822262400000,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.11",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.11",
+              "end": "2027-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1822348800000,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.11",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.11",
+              "end": "2027-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "3.11",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.11",
+              "end": "2027-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 268
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.11",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.11",
+              "end": "2027-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 267
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Python",
+        "cycle": "3.12",
+        "end": "2028-10",
+        "source": "https://devguide.python.org/versions/",
+        "scope": "Support upstream ; backports de la distribution non vérifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "3.12",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.12",
+              "end": "2028-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 712
+          }
+        },
+        {
+          "now": 1853884800000,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.12",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.12",
+              "end": "2028-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1853971200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.12",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.12",
+              "end": "2028-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "3.12",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.12",
+              "end": "2028-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 634
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.12",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.12",
+              "end": "2028-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 633
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Python",
+        "cycle": "3.13",
+        "end": "2029-10",
+        "source": "https://devguide.python.org/versions/",
+        "scope": "Support upstream ; backports de la distribution non vérifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "3.13",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.13",
+              "end": "2029-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 1077
+          }
+        },
+        {
+          "now": 1885420800000,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.13",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.13",
+              "end": "2029-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1885507200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.13",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.13",
+              "end": "2029-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "3.13",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.13",
+              "end": "2029-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 999
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.13",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.13",
+              "end": "2029-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 998
+          }
+        }
+      ]
+    },
+    {
+      "reference": {
+        "product": "Python",
+        "cycle": "3.14",
+        "end": "2030-10",
+        "source": "https://devguide.python.org/versions/",
+        "scope": "Support upstream ; backports de la distribution non vérifiés",
+        "verifiedAt": "2026-10-08",
+        "precision": "month"
+      },
+      "checks": [
+        {
+          "now": 1792411200000,
+          "result": {
+            "status": "ok",
+            "cycle": "3.14",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.14",
+              "end": "2030-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 1442
+          }
+        },
+        {
+          "now": 1916956800000,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.14",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.14",
+              "end": "2030-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1
+          }
+        },
+        {
+          "now": 1917043200000,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.14",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.14",
+              "end": "2030-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 0
+          }
+        },
+        {
+          "now": 1799193600000,
+          "result": {
+            "status": "ok",
+            "cycle": "3.14",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.14",
+              "end": "2030-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": null,
+            "reason": "Support de référence non échu",
+            "daysToEnd": 1364
+          }
+        },
+        {
+          "now": 1799193600001,
+          "result": {
+            "status": "unknown",
+            "cycle": "3.14",
+            "reference": {
+              "product": "Python",
+              "cycle": "3.14",
+              "end": "2030-10",
+              "source": "https://devguide.python.org/versions/",
+              "scope": "Support upstream ; backports de la distribution non vérifiés",
+              "verifiedAt": "2026-10-08",
+              "precision": "month"
+            },
+            "qualification": "support_context",
+            "reason": "Référence de support ancienne ; revalidation requise",
+            "daysToEnd": 1363
+          }
+        }
+      ]
+    }
+  ]
+}

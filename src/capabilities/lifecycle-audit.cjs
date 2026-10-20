@@ -1,5 +1,5 @@
 const { performance } = require('node:perf_hooks');
-const { buildLifecycleReport, lifecycleReferences } = require('./lifecycle.cjs');
+const { buildLifecycleReport } = require('./lifecycle.cjs');
 const auditCollectionDefaults = Object.freeze({
   maxApiCalls: 200,
   maxPagesPerType: 10,
@@ -212,7 +212,7 @@ async function auditManagedLifecycle(
     version: 3,
     engine: 'dynatrace-managed-mcp',
     provenance: 'live_managed_entities',
-    referenceVerifiedAt: lifecycleReferences[0].verifiedAt,
+    referenceVerifiedAt: report.referenceSnapshot.oldestVerifiedAt,
     collection: {
       status: inventories.length && inventories.every((i) => i.complete) ? 'completed' : 'partial',
       limits,

@@ -1,0 +1,2064 @@
+{
+  "schemaVersion": "1.0",
+  "catalogueVersion": "1.0.0",
+  "publishedAt": "2026-10-19T12:00:00.000Z",
+  "review": {
+    "state": "approved",
+    "reviewedBy": "Daybreak baseline compatibility migration",
+    "reviewedAt": "2026-10-19T12:00:00.000Z",
+    "changeSummary": "Lossless migration of 43 embedded references; vendor provenance remains legacy/unverified, with original asserted verification dates."
+  },
+  "sources": [
+    {
+      "id": "source-0",
+      "url": "https://adoptium.net/support/",
+      "publisher": "Java",
+      "authority": "official",
+      "evidenceState": "legacy_unverified",
+      "retrievedAt": null,
+      "contentSha256": null,
+      "repositoryRevision": null,
+      "parserRevision": "embedded-reference-migration-v1",
+      "localEvidencePath": null
+    },
+    {
+      "id": "source-1",
+      "url": "https://www.php.net/eol.php",
+      "publisher": "PHP",
+      "authority": "official",
+      "evidenceState": "legacy_unverified",
+      "retrievedAt": null,
+      "contentSha256": null,
+      "repositoryRevision": null,
+      "parserRevision": "embedded-reference-migration-v1",
+      "localEvidencePath": null
+    },
+    {
+      "id": "source-2",
+      "url": "https://www.php.net/supported-versions.php",
+      "publisher": "PHP",
+      "authority": "official",
+      "evidenceState": "legacy_unverified",
+      "retrievedAt": null,
+      "contentSha256": null,
+      "repositoryRevision": null,
+      "parserRevision": "embedded-reference-migration-v1",
+      "localEvidencePath": null
+    },
+    {
+      "id": "source-3",
+      "url": "https://go.dev/doc/devel/release",
+      "publisher": "Go",
+      "authority": "official",
+      "evidenceState": "legacy_unverified",
+      "retrievedAt": null,
+      "contentSha256": null,
+      "repositoryRevision": null,
+      "parserRevision": "embedded-reference-migration-v1",
+      "localEvidencePath": null
+    },
+    {
+      "id": "source-4",
+      "url": "https://containerd.io/releases/",
+      "publisher": "containerd",
+      "authority": "official",
+      "evidenceState": "legacy_unverified",
+      "retrievedAt": null,
+      "contentSha256": null,
+      "repositoryRevision": null,
+      "parserRevision": "embedded-reference-migration-v1",
+      "localEvidencePath": null
+    },
+    {
+      "id": "source-5",
+      "url": "https://ubuntu.com/about/release-cycle",
+      "publisher": "Ubuntu",
+      "authority": "official",
+      "evidenceState": "legacy_unverified",
+      "retrievedAt": null,
+      "contentSha256": null,
+      "repositoryRevision": null,
+      "parserRevision": "embedded-reference-migration-v1",
+      "localEvidencePath": null
+    },
+    {
+      "id": "source-6",
+      "url": "https://kubernetes.io/releases/patch-releases/",
+      "publisher": "Kubernetes",
+      "authority": "official",
+      "evidenceState": "legacy_unverified",
+      "retrievedAt": null,
+      "contentSha256": null,
+      "repositoryRevision": null,
+      "parserRevision": "embedded-reference-migration-v1",
+      "localEvidencePath": null
+    },
+    {
+      "id": "source-7",
+      "url": "https://github.com/nodejs/Release",
+      "publisher": "Node.js",
+      "authority": "official",
+      "evidenceState": "legacy_unverified",
+      "retrievedAt": null,
+      "contentSha256": null,
+      "repositoryRevision": null,
+      "parserRevision": "embedded-reference-migration-v1",
+      "localEvidencePath": null
+    },
+    {
+      "id": "source-8",
+      "url": "https://devguide.python.org/versions/",
+      "publisher": "Python",
+      "authority": "official",
+      "evidenceState": "legacy_unverified",
+      "retrievedAt": null,
+      "contentSha256": null,
+      "repositoryRevision": null,
+      "parserRevision": "embedded-reference-migration-v1",
+      "localEvidencePath": null
+    }
+  ],
+  "entries": [
+    {
+      "id": "adoptium:8",
+      "vendorId": "adoptium",
+      "productId": "Java",
+      "aliases": [],
+      "scope": {
+        "edition": "Eclipse Adoptium",
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "required",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "java",
+        "kind": "major",
+        "expression": "8"
+      },
+      "evaluationMilestone": "end_of_availability",
+      "milestones": [
+        {
+          "kind": "end_of_availability",
+          "meaning": "minimum_bound",
+          "date": {
+            "precision": "month",
+            "value": "2030-12"
+          },
+          "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+          "sourceIds": ["source-0"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "minimum_bound",
+            "explanation": "Minimum availability; not an EOS promise"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-0"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "adoptium:11",
+      "vendorId": "adoptium",
+      "productId": "Java",
+      "aliases": [],
+      "scope": {
+        "edition": "Eclipse Adoptium",
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "required",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "java",
+        "kind": "major",
+        "expression": "11"
+      },
+      "evaluationMilestone": "end_of_availability",
+      "milestones": [
+        {
+          "kind": "end_of_availability",
+          "meaning": "minimum_bound",
+          "date": {
+            "precision": "month",
+            "value": "2027-10"
+          },
+          "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+          "sourceIds": ["source-0"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "minimum_bound",
+            "explanation": "Minimum availability; not an EOS promise"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-0"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "adoptium:17",
+      "vendorId": "adoptium",
+      "productId": "Java",
+      "aliases": [],
+      "scope": {
+        "edition": "Eclipse Adoptium",
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "required",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "java",
+        "kind": "major",
+        "expression": "17"
+      },
+      "evaluationMilestone": "end_of_availability",
+      "milestones": [
+        {
+          "kind": "end_of_availability",
+          "meaning": "minimum_bound",
+          "date": {
+            "precision": "month",
+            "value": "2027-10"
+          },
+          "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+          "sourceIds": ["source-0"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "minimum_bound",
+            "explanation": "Minimum availability; not an EOS promise"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-0"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "adoptium:21",
+      "vendorId": "adoptium",
+      "productId": "Java",
+      "aliases": [],
+      "scope": {
+        "edition": "Eclipse Adoptium",
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "required",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "java",
+        "kind": "major",
+        "expression": "21"
+      },
+      "evaluationMilestone": "end_of_availability",
+      "milestones": [
+        {
+          "kind": "end_of_availability",
+          "meaning": "minimum_bound",
+          "date": {
+            "precision": "month",
+            "value": "2029-12"
+          },
+          "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+          "sourceIds": ["source-0"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "minimum_bound",
+            "explanation": "Minimum availability; not an EOS promise"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-0"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "adoptium:25",
+      "vendorId": "adoptium",
+      "productId": "Java",
+      "aliases": [],
+      "scope": {
+        "edition": "Eclipse Adoptium",
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "required",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "java",
+        "kind": "major",
+        "expression": "25"
+      },
+      "evaluationMilestone": "end_of_availability",
+      "milestones": [
+        {
+          "kind": "end_of_availability",
+          "meaning": "minimum_bound",
+          "date": {
+            "precision": "month",
+            "value": "2031-09"
+          },
+          "scope": "Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés",
+          "sourceIds": ["source-0"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "minimum_bound",
+            "explanation": "Minimum availability; not an EOS promise"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-0"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "php:7.4",
+      "vendorId": "php",
+      "productId": "PHP",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "7.4"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2022-11-28"
+          },
+          "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+          "sourceIds": ["source-1"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-1"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "php:8.1",
+      "vendorId": "php",
+      "productId": "PHP",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "8.1"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2025-12-31"
+          },
+          "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+          "sourceIds": ["source-1"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-1"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "php:8.2",
+      "vendorId": "php",
+      "productId": "PHP",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "8.2"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2026-12-31"
+          },
+          "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+          "sourceIds": ["source-2"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-2"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "php:8.3",
+      "vendorId": "php",
+      "productId": "PHP",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "8.3"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2027-12-31"
+          },
+          "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+          "sourceIds": ["source-2"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-2"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "php:8.4",
+      "vendorId": "php",
+      "productId": "PHP",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "8.4"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2028-12-31"
+          },
+          "scope": "Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés",
+          "sourceIds": ["source-2"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-2"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "golang:1.20",
+      "vendorId": "golang",
+      "productId": "Go",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "1.20"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "derived",
+          "date": {
+            "precision": "day",
+            "value": "2024-02-06"
+          },
+          "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+          "sourceIds": ["source-3"],
+          "derivation": {
+            "ruleId": "upstream-two-releases-legacy-assertion",
+            "inputSourceIds": ["source-3"]
+          },
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-3"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "golang:1.23",
+      "vendorId": "golang",
+      "productId": "Go",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "1.23"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "derived",
+          "date": {
+            "precision": "day",
+            "value": "2025-08-12"
+          },
+          "scope": "Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2",
+          "sourceIds": ["source-3"],
+          "derivation": {
+            "ruleId": "upstream-two-releases-legacy-assertion",
+            "inputSourceIds": ["source-3"]
+          },
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-3"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "containerd:1.6",
+      "vendorId": "containerd",
+      "productId": "containerd",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "1.6"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2025-08-23"
+          },
+          "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+          "sourceIds": ["source-4"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-4"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "containerd:1.7",
+      "vendorId": "containerd",
+      "productId": "containerd",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "1.7"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2026-09-30"
+          },
+          "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+          "sourceIds": ["source-4"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-4"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "containerd:2.1",
+      "vendorId": "containerd",
+      "productId": "containerd",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "2.1"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2026-07-03"
+          },
+          "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+          "sourceIds": ["source-4"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-4"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "containerd:2.2",
+      "vendorId": "containerd",
+      "productId": "containerd",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "2.2"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2026-11-06"
+          },
+          "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+          "sourceIds": ["source-4"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-4"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "containerd:2.3",
+      "vendorId": "containerd",
+      "productId": "containerd",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "2.3"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2028-04-30"
+          },
+          "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+          "sourceIds": ["source-4"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-4"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "containerd:2.4",
+      "vendorId": "containerd",
+      "productId": "containerd",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "2.4"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2027-05-16"
+          },
+          "scope": "Support upstream containerd ; support fournisseur/distribution non vérifié",
+          "sourceIds": ["source-4"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-4"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "canonical:18.04",
+      "vendorId": "canonical",
+      "productId": "Ubuntu",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "distro",
+        "kind": "majorMinor",
+        "expression": "18.04"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "month",
+            "value": "2023-05"
+          },
+          "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+          "sourceIds": ["source-5"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-5"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "canonical:26.04",
+      "vendorId": "canonical",
+      "productId": "Ubuntu",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "distro",
+        "kind": "majorMinor",
+        "expression": "26.04"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "month",
+            "value": "2031-05"
+          },
+          "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+          "sourceIds": ["source-5"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-5"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "canonical:20.04",
+      "vendorId": "canonical",
+      "productId": "Ubuntu",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "distro",
+        "kind": "majorMinor",
+        "expression": "20.04"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "month",
+            "value": "2025-05"
+          },
+          "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+          "sourceIds": ["source-5"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-5"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "canonical:22.04",
+      "vendorId": "canonical",
+      "productId": "Ubuntu",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "distro",
+        "kind": "majorMinor",
+        "expression": "22.04"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "month",
+            "value": "2027-05"
+          },
+          "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+          "sourceIds": ["source-5"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-5"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "canonical:24.04",
+      "vendorId": "canonical",
+      "productId": "Ubuntu",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "distro",
+        "kind": "majorMinor",
+        "expression": "24.04"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "month",
+            "value": "2029-05"
+          },
+          "scope": "Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié",
+          "sourceIds": ["source-5"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-5"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "kubernetes:1.28",
+      "vendorId": "kubernetes",
+      "productId": "Kubernetes",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "1.28"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2024-10-22"
+          },
+          "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+          "sourceIds": ["source-6"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-6"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "kubernetes:1.29",
+      "vendorId": "kubernetes",
+      "productId": "Kubernetes",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "1.29"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2025-02-28"
+          },
+          "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+          "sourceIds": ["source-6"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-6"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "kubernetes:1.30",
+      "vendorId": "kubernetes",
+      "productId": "Kubernetes",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "1.30"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2025-07-15"
+          },
+          "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+          "sourceIds": ["source-6"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-6"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "kubernetes:1.31",
+      "vendorId": "kubernetes",
+      "productId": "Kubernetes",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "1.31"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2025-11-11"
+          },
+          "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+          "sourceIds": ["source-6"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-6"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "kubernetes:1.32",
+      "vendorId": "kubernetes",
+      "productId": "Kubernetes",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "1.32"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2026-02-28"
+          },
+          "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+          "sourceIds": ["source-6"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-6"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "kubernetes:1.33",
+      "vendorId": "kubernetes",
+      "productId": "Kubernetes",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "1.33"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2026-06-28"
+          },
+          "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+          "sourceIds": ["source-6"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-6"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "kubernetes:1.34",
+      "vendorId": "kubernetes",
+      "productId": "Kubernetes",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "1.34"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2026-10-27"
+          },
+          "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+          "sourceIds": ["source-6"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-6"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "kubernetes:1.35",
+      "vendorId": "kubernetes",
+      "productId": "Kubernetes",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "1.35"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2027-02-28"
+          },
+          "scope": "Support upstream ; support de la distribution et du fournisseur à vérifier",
+          "sourceIds": ["source-6"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-6"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "nodejs:16",
+      "vendorId": "nodejs",
+      "productId": "Node.js",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "major",
+        "expression": "16"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2023-09-11"
+          },
+          "scope": "Support upstream ; contrat étendu non vérifié",
+          "sourceIds": ["source-7"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-7"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "nodejs:18",
+      "vendorId": "nodejs",
+      "productId": "Node.js",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "major",
+        "expression": "18"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2025-04-30"
+          },
+          "scope": "Support upstream ; contrat étendu non vérifié",
+          "sourceIds": ["source-7"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-7"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "nodejs:20",
+      "vendorId": "nodejs",
+      "productId": "Node.js",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "major",
+        "expression": "20"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2026-04-30"
+          },
+          "scope": "Support upstream ; contrat étendu non vérifié",
+          "sourceIds": ["source-7"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-7"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "nodejs:22",
+      "vendorId": "nodejs",
+      "productId": "Node.js",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "major",
+        "expression": "22"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2027-04-30"
+          },
+          "scope": "Support upstream ; contrat étendu non vérifié",
+          "sourceIds": ["source-7"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-7"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "nodejs:24",
+      "vendorId": "nodejs",
+      "productId": "Node.js",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "major",
+        "expression": "24"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2028-04-30"
+          },
+          "scope": "Support upstream ; contrat étendu non vérifié",
+          "sourceIds": ["source-7"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-7"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "nodejs:26",
+      "vendorId": "nodejs",
+      "productId": "Node.js",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "major",
+        "expression": "26"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2029-04-30"
+          },
+          "scope": "Support upstream ; contrat étendu non vérifié",
+          "sourceIds": ["source-7"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-7"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "python:3.9",
+      "vendorId": "python",
+      "productId": "Python",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "3.9"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2025-10-31"
+          },
+          "scope": "Support upstream ; backports de la distribution non vérifiés",
+          "sourceIds": ["source-8"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-8"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "python:3.10",
+      "vendorId": "python",
+      "productId": "Python",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "3.10"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "day",
+            "value": "2026-10-01"
+          },
+          "scope": "Support upstream ; backports de la distribution non vérifiés",
+          "sourceIds": ["source-8"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-8"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "python:3.11",
+      "vendorId": "python",
+      "productId": "Python",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "3.11"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "month",
+            "value": "2027-10"
+          },
+          "scope": "Support upstream ; backports de la distribution non vérifiés",
+          "sourceIds": ["source-8"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-8"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "python:3.12",
+      "vendorId": "python",
+      "productId": "Python",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "3.12"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "month",
+            "value": "2028-10"
+          },
+          "scope": "Support upstream ; backports de la distribution non vérifiés",
+          "sourceIds": ["source-8"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-8"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "python:3.13",
+      "vendorId": "python",
+      "productId": "Python",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "3.13"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "month",
+            "value": "2029-10"
+          },
+          "scope": "Support upstream ; backports de la distribution non vérifiés",
+          "sourceIds": ["source-8"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-8"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    },
+    {
+      "id": "python:3.14",
+      "vendorId": "python",
+      "productId": "Python",
+      "aliases": [],
+      "scope": {
+        "edition": null,
+        "distribution": null,
+        "os": null,
+        "architecture": null,
+        "editionRequirement": "not_applicable",
+        "supportChannel": "standard_upstream",
+        "entitlement": "not_required"
+      },
+      "version": {
+        "scheme": "semver",
+        "kind": "majorMinor",
+        "expression": "3.14"
+      },
+      "evaluationMilestone": "security_support_end",
+      "milestones": [
+        {
+          "kind": "security_support_end",
+          "meaning": "announced",
+          "date": {
+            "precision": "month",
+            "value": "2030-10"
+          },
+          "scope": "Support upstream ; backports de la distribution non vérifiés",
+          "sourceIds": ["source-8"],
+          "derivation": null,
+          "uncertainty": {
+            "state": "none",
+            "explanation": "Existing embedded reference; not reverified in this migration"
+          }
+        }
+      ],
+      "verifiedAt": "2026-10-08T00:00:00.000Z",
+      "verificationState": "legacy_record",
+      "sourceIds": ["source-8"],
+      "uncertainty": {
+        "state": "legacy_provenance",
+        "explanation": "Original verification assertion retained; official source content was not archived"
+      }
+    }
+  ]
+}

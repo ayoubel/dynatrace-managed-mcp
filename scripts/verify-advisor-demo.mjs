@@ -75,6 +75,9 @@ try {
     assert.ok(r.rows.every((row) => row.environmentId === first.id));
     assert.match(r.referenceSnapshot.sha256, /^[a-f0-9]{64}$/);
     assert.equal(r.referenceSnapshot.liveVendorLookup, false);
+    assert.equal(r.referenceSnapshot.catalogue.version, '1.0.0');
+    assert.equal(r.referenceSnapshot.catalogue.schemaVersion, '1.0');
+    assert.match(r.referenceSnapshot.catalogue.sha256, /^[a-f0-9]{64}$/);
     if (mode !== 'TIMEOUT') assert.ok(r.rows.some((row) => row.status === 'unknown'));
     if (mode === 'RICH') {
       assert.ok(r.rows.some((row) => row.status === 'action'));
@@ -138,6 +141,7 @@ try {
       assert.equal(response.status, 200);
       const content = await response.text();
       assert.ok(content.includes(r.referenceSnapshot.sha256));
+      assert.ok(content.includes(r.referenceSnapshot.catalogue.sha256));
       if (format === 'json') assert.deepEqual(JSON.parse(content).result, r);
       else assert.ok(content.includes(expectedAt), 'Export must preserve the Core evaluation timestamp');
       if (format !== 'json') assert.ok(content.includes('Disponibilité au moins'));

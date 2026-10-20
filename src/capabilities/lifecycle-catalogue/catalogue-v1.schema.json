@@ -1,0 +1,423 @@
+{
+  "$ref": "#/$defs/LifecycleCatalogueV1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "LifecycleCatalogueV1": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0"
+        },
+        "catalogueVersion": {
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "review": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": ["pending", "approved"]
+            },
+            "reviewedBy": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "reviewedAt": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/LifecycleCatalogueV1/properties/publishedAt"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "changeSummary": {
+              "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+            }
+          },
+          "required": ["state", "reviewedBy", "reviewedAt", "changeSummary"],
+          "additionalProperties": false
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "publisher": {
+                "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+              },
+              "authority": {
+                "type": "string",
+                "const": "official"
+              },
+              "evidenceState": {
+                "type": "string",
+                "enum": ["archived", "legacy_unverified"]
+              },
+              "retrievedAt": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/LifecycleCatalogueV1/properties/publishedAt"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "contentSha256": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "repositoryRevision": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "parserRevision": {
+                "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+              },
+              "localEvidencePath": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "url",
+              "publisher",
+              "authority",
+              "evidenceState",
+              "retrievedAt",
+              "contentSha256",
+              "repositoryRevision",
+              "parserRevision",
+              "localEvidencePath"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 1000
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+              },
+              "vendorId": {
+                "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+              },
+              "productId": {
+                "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+              },
+              "aliases": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                },
+                "maxItems": 50
+              },
+              "scope": {
+                "type": "object",
+                "properties": {
+                  "edition": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "distribution": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "os": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "architecture": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "editionRequirement": {
+                    "type": "string",
+                    "enum": ["required", "not_applicable"]
+                  },
+                  "supportChannel": {
+                    "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                  },
+                  "entitlement": {
+                    "type": "string",
+                    "enum": ["not_required", "required_unverified", "explicit_evidence_required"]
+                  }
+                },
+                "required": [
+                  "edition",
+                  "distribution",
+                  "os",
+                  "architecture",
+                  "editionRequirement",
+                  "supportChannel",
+                  "entitlement"
+                ],
+                "additionalProperties": false
+              },
+              "version": {
+                "type": "object",
+                "properties": {
+                  "scheme": {
+                    "type": "string",
+                    "enum": ["semver", "java", "distro"]
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": ["major", "majorMinor", "exact", "range"]
+                  },
+                  "expression": {
+                    "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                  }
+                },
+                "required": ["scheme", "kind", "expression"],
+                "additionalProperties": false
+              },
+              "evaluationMilestone": {
+                "type": "string",
+                "enum": ["security_support_end", "end_of_availability"]
+              },
+              "milestones": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "release",
+                        "active_support_end",
+                        "security_support_end",
+                        "extended_support_end",
+                        "end_of_availability"
+                      ]
+                    },
+                    "meaning": {
+                      "type": "string",
+                      "enum": ["announced", "derived", "minimum_bound", "unknown"]
+                    },
+                    "date": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "precision": {
+                              "type": "string",
+                              "const": "day"
+                            },
+                            "value": {
+                              "type": "string",
+                              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                            }
+                          },
+                          "required": ["precision", "value"],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "precision": {
+                              "type": "string",
+                              "const": "month"
+                            },
+                            "value": {
+                              "type": "string",
+                              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+                            }
+                          },
+                          "required": ["precision", "value"],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "precision": {
+                              "type": "string",
+                              "const": "unknown"
+                            },
+                            "value": {
+                              "type": "null"
+                            }
+                          },
+                          "required": ["precision", "value"],
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    "scope": {
+                      "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                    },
+                    "sourceIds": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                      },
+                      "minItems": 1,
+                      "maxItems": 100
+                    },
+                    "derivation": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "ruleId": {
+                              "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                            },
+                            "inputSourceIds": {
+                              "$ref": "#/$defs/LifecycleCatalogueV1/properties/entries/items/properties/milestones/items/properties/sourceIds"
+                            }
+                          },
+                          "required": ["ruleId", "inputSourceIds"],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "uncertainty": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "type": "string",
+                          "enum": [
+                            "none",
+                            "missing_policy",
+                            "ambiguous_identity",
+                            "conditional_entitlement",
+                            "missing_milestone",
+                            "disputed",
+                            "minimum_bound",
+                            "legacy_provenance"
+                          ]
+                        },
+                        "explanation": {
+                          "$ref": "#/$defs/LifecycleCatalogueV1/properties/review/properties/reviewedBy/anyOf/0"
+                        }
+                      },
+                      "required": ["state", "explanation"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": ["kind", "meaning", "date", "scope", "sourceIds", "derivation", "uncertainty"],
+                  "additionalProperties": false
+                },
+                "minItems": 1,
+                "maxItems": 10
+              },
+              "verifiedAt": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/LifecycleCatalogueV1/properties/publishedAt"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "verificationState": {
+                "type": "string",
+                "enum": ["legacy_record", "pending", "verified"]
+              },
+              "sourceIds": {
+                "$ref": "#/$defs/LifecycleCatalogueV1/properties/entries/items/properties/milestones/items/properties/sourceIds"
+              },
+              "uncertainty": {
+                "$ref": "#/$defs/LifecycleCatalogueV1/properties/entries/items/properties/milestones/items/properties/uncertainty"
+              }
+            },
+            "required": [
+              "id",
+              "vendorId",
+              "productId",
+              "aliases",
+              "scope",
+              "version",
+              "evaluationMilestone",
+              "milestones",
+              "verifiedAt",
+              "verificationState",
+              "sourceIds",
+              "uncertainty"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        }
+      },
+      "required": ["schemaVersion", "catalogueVersion", "publishedAt", "review", "sources", "entries"],
+      "additionalProperties": false
+    }
+  }
+}

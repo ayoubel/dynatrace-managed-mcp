@@ -1,155 +1,15 @@
 const crypto = require('node:crypto');
-// Curated primary-source release policies, not a vulnerability or entitlement database.
-const lifecycleReferences = [
-  ...[
-    ['8', '2030-12'],
-    ['11', '2027-10'],
-    ['17', '2027-10'],
-    ['21', '2029-12'],
-    ['25', '2031-09'],
-  ].map(([cycle, end]) => ({
-    product: 'Java',
-    cycle,
-    end,
-    edition: 'Eclipse Adoptium',
-    endKind: 'minimum_availability',
-    source: 'https://adoptium.net/support/',
-    scope:
-      'Disponibilité de builds Temurin annoncée au moins jusqu’à cette date ; SLA commercial et niveau de patch non certifiés',
-  })),
-  ...[
-    ['7.4', '2022-11-28'],
-    ['8.1', '2025-12-31'],
-    ['8.2', '2026-12-31'],
-    ['8.3', '2027-12-31'],
-    ['8.4', '2028-12-31'],
-  ].map(([cycle, end]) => ({
-    product: 'PHP',
-    cycle,
-    end,
-    source: ['7.4', '8.1'].includes(cycle)
-      ? 'https://www.php.net/eol.php'
-      : 'https://www.php.net/supported-versions.php',
-    scope: 'Support sécurité upstream PHP ; backports/contrat de distribution non vérifiés',
-  })),
-  ...[
-    ['1.20', '2024-02-06'],
-    ['1.23', '2025-08-12'],
-  ].map(([cycle, end]) => ({
-    product: 'Go',
-    cycle,
-    end,
-    source: 'https://go.dev/doc/devel/release',
-    scope: 'Politique upstream : deux branches Go récentes ; échéance déduite de la sortie de N+2',
-  })),
-  ...[
-    ['1.6', '2025-08-23'],
-    ['1.7', '2026-09-30'],
-    ['2.1', '2026-07-03'],
-    ['2.2', '2026-11-06'],
-    ['2.3', '2028-04-30'],
-    ['2.4', '2027-05-16'],
-  ].map(([cycle, end]) => ({
-    product: 'containerd',
-    cycle,
-    end,
-    source: 'https://containerd.io/releases/',
-    scope: 'Support upstream containerd ; support fournisseur/distribution non vérifié',
-  })),
-  {
-    product: 'Ubuntu',
-    cycle: '18.04',
-    end: '2023-05',
-    source: 'https://ubuntu.com/about/release-cycle',
-    scope: 'Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié',
-  },
-  {
-    product: 'Ubuntu',
-    cycle: '26.04',
-    end: '2031-05',
-    source: 'https://ubuntu.com/about/release-cycle',
-    scope: 'Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié',
-  },
-  {
-    product: 'Ubuntu',
-    cycle: '20.04',
-    end: '2025-05',
-    source: 'https://ubuntu.com/about/release-cycle',
-    scope: 'Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié',
-  },
-  {
-    product: 'Ubuntu',
-    cycle: '22.04',
-    end: '2027-05',
-    source: 'https://ubuntu.com/about/release-cycle',
-    scope: 'Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié',
-  },
-  {
-    product: 'Ubuntu',
-    cycle: '24.04',
-    end: '2029-05',
-    source: 'https://ubuntu.com/about/release-cycle',
-    scope: 'Maintenance de sécurité standard ; Ubuntu Pro/ESM non vérifié',
-  },
-  ...[
-    ['1.28', '2024-10-22'],
-    ['1.29', '2025-02-28'],
-    ['1.30', '2025-07-15'],
-    ['1.31', '2025-11-11'],
-    ['1.32', '2026-02-28'],
-    ['1.33', '2026-06-28'],
-    ['1.34', '2026-10-27'],
-    ['1.35', '2027-02-28'],
-  ].map(([cycle, end]) => ({
-    product: 'Kubernetes',
-    cycle,
-    end,
-    source: 'https://kubernetes.io/releases/patch-releases/',
-    scope: 'Support upstream ; support de la distribution et du fournisseur à vérifier',
-  })),
-  ...[
-    ['16', '2023-09-11'],
-    ['18', '2025-04-30'],
-    ['20', '2026-04-30'],
-    ['22', '2027-04-30'],
-    ['24', '2028-04-30'],
-    ['26', '2029-04-30'],
-  ].map(([cycle, end]) => ({
-    product: 'Node.js',
-    cycle,
-    end,
-    source: 'https://github.com/nodejs/Release',
-    scope: 'Support upstream ; contrat étendu non vérifié',
-  })),
-  ...[
-    ['3.9', '2025-10-31'],
-    ['3.10', '2026-10-01'],
-    ['3.11', '2027-10'],
-    ['3.12', '2028-10'],
-    ['3.13', '2029-10'],
-    ['3.14', '2030-10'],
-  ].map(([cycle, end]) => ({
-    product: 'Python',
-    cycle,
-    end,
-    source: 'https://devguide.python.org/versions/',
-    scope: 'Support upstream ; backports de la distribution non vérifiés',
-  })),
-].map((r) => ({
-  ...r,
-  verifiedAt: '2026-10-08',
-  precision: r.end.length === 7 ? 'month' : 'day',
-}));
-function classifyLifecycle(product, version, now = Date.now(), anticipationDays = 180, edition = null) {
+const { loadCatalogue, findReference } = require('./lifecycle-catalogue/catalogue.cjs');
+// Compatibility export; each audit pins its own immutable catalogue snapshot.
+const lifecycleReferences = loadCatalogue().references;
+function classifyLifecycle(product, version, now = Date.now(), anticipationDays = 180, edition = null, catalogue = loadCatalogue()) {
   const cycle =
     product === 'Java'
       ? String(version).match(/^1\.(\d+)/)?.[1] || String(version).match(/\d+/)?.[0]
       : product === 'Node.js'
         ? String(version).match(/\d+/)?.[0]
         : String(version).match(/\d+\.\d+/)?.[0];
-  const reference = lifecycleReferences.find(
-    (r) => r.product === product && r.cycle === cycle && (!r.edition || r.edition === edition),
-  );
+  const reference = findReference(catalogue, product, version, edition);
   if (!reference)
     return {
       status: 'unknown',
@@ -343,7 +203,7 @@ function softwareInventory(entity) {
         ),
   );
 }
-function auditInventory(entities, now = Date.now(), anticipationDays = 180) {
+function auditInventory(entities, now = Date.now(), anticipationDays = 180, catalogue = loadCatalogue()) {
   const observedEntities = new Map(entities.map((e) => [e.environmentId + '\0' + e.entityId, e]));
   const inventoryRows = entities.flatMap(softwareInventory);
   const rows = inventoryRows.map((r) => {
@@ -360,7 +220,7 @@ function auditInventory(entities, now = Date.now(), anticipationDays = 180) {
           rawVersion: j.rawVersion,
           edition: j.edition,
           field: j.field,
-          ...classifyLifecycle('Java', j.version, now, anticipationDays, j.edition),
+          ...classifyLifecycle('Java', j.version, now, anticipationDays, j.edition, catalogue),
           supportDependency: 'Java',
           versionKind: 'inherited',
           reason: 'Support lié au JDK Java de ce Process ; aucune version indépendante attribuée',
@@ -390,7 +250,7 @@ function auditInventory(entities, now = Date.now(), anticipationDays = 180) {
     return {
       ...r,
       ...(r.version
-        ? classifyLifecycle(r.product, r.version, now, anticipationDays, r.edition)
+        ? classifyLifecycle(r.product, r.version, now, anticipationDays, r.edition, catalogue)
         : {
             status: 'unknown',
             qualification: observedEntities.get(r.environmentId + '\0' + r.entityId)?.details
@@ -425,10 +285,12 @@ const auditPolicy = Object.freeze({
 });
 
 // Provenance of the embedded policy snapshot, not a claim of a fresh vendor lookup.
-function lifecycleReferenceSnapshot(now = Date.now()) {
-  const verified = lifecycleReferences.map((r) => r.verifiedAt).sort();
+function lifecycleReferenceSnapshot(now = Date.now(), catalogue = loadCatalogue()) {
+  const lifecycleReferences = catalogue.references;
+  const verified = catalogue.catalogue.entries.map((entry) => entry.verifiedAt.slice(0, 10)).sort();
   return {
-    provenance: 'embedded_reference_catalog',
+    provenance: process.env.DT_MCP_LIFECYCLE_CATALOGUE_DIR ? 'versioned_reference_catalog' : 'embedded_reference_catalog',
+    catalogue: { schemaVersion: catalogue.catalogue.schemaVersion, version: catalogue.catalogue.catalogueVersion, sha256: catalogue.sha256 },
     sha256: crypto.createHash('sha256').update(JSON.stringify(lifecycleReferences)).digest('hex'),
     oldestVerifiedAt: verified[0] || null,
     evaluatedAt: new Date(now).toISOString(),
@@ -536,9 +398,10 @@ function buildLifecycleReport(
   inventories,
   { now = Date.now(), category = 'all', anticipationDays = 180, scopeComplete = true } = {},
 ) {
+  const catalogue = loadCatalogue();
   const seen = new Set();
   const entityLookup = new Map(entities.map((e) => [e.environmentId + '\0' + e.entityId, e]));
-  const softwareRows = auditInventory(entities, now, anticipationDays)
+  const softwareRows = auditInventory(entities, now, anticipationDays, catalogue)
     .filter((r) => {
       if (r.category === 'monitoring') return false;
       const key = JSON.stringify([r.environmentId, r.entityId, r.product, r.version, r.edition]);
@@ -616,11 +479,16 @@ function buildLifecycleReport(
     inventories,
     assessment,
     campaigns,
-    referenceSnapshot: lifecycleReferenceSnapshot(now),
+    referenceSnapshot: lifecycleReferenceSnapshot(now, catalogue),
   };
 }
 
 function combineLifecycleReports(reports, now = Date.now()) {
+  const catalogue = loadCatalogue();
+  const bundledHash = require('./lifecycle-catalogue/manifest-v1.json').sha256;
+  if (reports.some(r => r.referenceSnapshot?.catalogue
+    ? r.referenceSnapshot.catalogue.sha256 !== catalogue.sha256 || r.referenceSnapshot.catalogue.version !== catalogue.catalogue.catalogueVersion || r.referenceSnapshot.catalogue.schemaVersion !== catalogue.catalogue.schemaVersion
+    : catalogue.sha256 !== bundledHash)) throw Error('Audit catalogue versions must match; run a new audit');
   if (
     !reports.length ||
     reports.some((r) => r.category !== reports[0].category || r.anticipationDays !== reports[0].anticipationDays)
@@ -673,6 +541,7 @@ function combineLifecycleReports(reports, now = Date.now()) {
         now,
         reports[0].anticipationDays,
         r.edition,
+        catalogue,
       );
       if (verdict.reference?.precision === 'month' && verdict.status === 'watch' && verdict.daysToEnd <= 0)
         return {
@@ -702,8 +571,8 @@ function combineLifecycleReports(reports, now = Date.now()) {
     assessment,
     entityProfiles: softwareProfiles(rows),
     campaigns: maintenanceCampaigns(rows, assessment),
-    referenceVerifiedAt: lifecycleReferenceSnapshot(now).oldestVerifiedAt,
-    referenceSnapshot: lifecycleReferenceSnapshot(now),
+    referenceVerifiedAt: lifecycleReferenceSnapshot(now, catalogue).oldestVerifiedAt,
+    referenceSnapshot: lifecycleReferenceSnapshot(now, catalogue),
     limitations: [...new Set(reports.flatMap((r) => r.limitations || []))],
     collection: {
       status: inventories.length && inventories.every((i) => i.available && i.complete) ? 'completed' : 'partial',

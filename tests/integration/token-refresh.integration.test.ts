@@ -56,7 +56,7 @@ describe('Local token rotation over MCP', () => {
     );
     transport = new StdioClientTransport({
       command: process.execPath,
-      args: ['--env-file=' + join(dir, '.env'), resolve('dist/index.js')],
+      args: ['--env-file=' + join(dir, '.env'), resolve(process.env.DT_MCP_TEST_SERVER_ENTRY || 'dist/index.js')],
       env: {
         ...env,
         DT_CONFIG_FILE: join(dir, 'config.json'),
@@ -85,6 +85,7 @@ describe('Local token rotation over MCP', () => {
     const names = async () => (await client.listTools()).tools.map((tool) => tool.name);
     expect(await names()).toContain('dynatrace_managed_list_problems');
     expect(await names()).not.toContain('dynatrace_managed_update_dashboard');
+    expect((await client.listPrompts()).prompts.map((prompt) => prompt.name)).toEqual(['continue_investigation']);
     expect(lookups).toBe(1);
     expect(versionRequests).toBe(0);
     writeFileSync(join(dir, '.env'), 'ROTATING_TOKEN=writer\n');
@@ -94,7 +95,17 @@ describe('Local token rotation over MCP', () => {
     expect(dashboardTokens).toEqual(['writer']);
     expect(lookups).toBe(2);
     expect(client.getServerCapabilities()?.prompts).toBeDefined();
-    expect((await client.listPrompts()).prompts.map(prompt => prompt.name)).toContain('continue_investigation');
+    const writerPrompts = (await client.listPrompts()).prompts.map((prompt) => prompt.name);
+    expect(writerPrompts).toContain('continue_investigation');
+    expect(writerPrompts).toContain('service-health');
+    expect(writerPrompts).toContain('dashboard-update');
+    expect(writerPrompts).not.toContain('incident-investigation');
+    const design = await client.getPrompt({
+      name: 'service-health',
+      arguments: { environment_alias: 'test', target: 'synthetic', owner: 'operations' },
+    });
+    expect(JSON.stringify(design)).toContain('design');
+    expect(dashboardTokens).toEqual(['writer']);
     writeFileSync(join(dir, '.env'), 'ROTATING_TOKEN=invalid\n');
     const rejected = await client.callTool({
       name: 'dynatrace_managed_list_dashboards',
@@ -103,12 +114,23 @@ describe('Local token rotation over MCP', () => {
     expect(rejected.isError).toBe(true);
     expect(dashboardTokens).toHaveLength(1);
     expect(await names()).toHaveLength(0);
+    expect((await client.listPrompts()).prompts.map((prompt) => prompt.name)).toEqual(['continue_investigation']);
     writeFileSync(join(dir, '.env'), 'ROTATING_TOKEN=writer\n');
     expect(await names()).toContain('dynatrace_managed_update_dashboard');
     writeScopes = false;
     await new Promise<void>((done) => setTimeout(done, 1100));
     expect(await names()).not.toContain('dynatrace_managed_update_dashboard');
     expect(await names()).toContain('dynatrace_managed_list_dashboards');
+    const readOnlyPrompts = (await client.listPrompts()).prompts.map((prompt) => prompt.name);
+    // Existing scope policy requires WriteConfig even for non-persisting dashboard validation.
+    expect(readOnlyPrompts).not.toContain('service-health');
+    expect(readOnlyPrompts).not.toContain('dashboard-update');
+    await expect(
+      client.getPrompt({
+        name: 'service-health',
+        arguments: { environment_alias: 'test', target: 'synthetic', owner: 'operations', mode: 'create' },
+      }),
+    ).rejects.toThrow();
     expect(notifications).toBeGreaterThan(0);
   });
   test('idle poll sends a tool-list change without a discovery request', async () => {

@@ -38,6 +38,7 @@ import { SloApiClient } from './capabilities/slo-api';
 
 import { RateLimiter } from './utils/rate-limit';
 import { buildServerInstructions } from './server-instructions';
+import { registerDashboardWorkflows } from './dashboard-workflows';
 import { patchToolsListSchema } from './utils/mcp-compat';
 import { registerAllTools, ToolContext } from './tools';
 
@@ -439,6 +440,13 @@ const main = async () => {
       }),
     );
 
+    const refreshDashboardWorkflows = registerDashboardWorkflows(server, {
+      profile,
+      environmentAllowed: alias => envAliasValidate(alias),
+      toolAvailable: name => conversationCatalog.some(tool => tool.name === name && (!tokenPolicy || tokenPolicy.permitted(name, tool.annotations.readOnlyHint))),
+      refreshPermissions: async () => { await tokenPolicy?.refresh(); },
+    });
+
     tokenPolicy?.onChange(() => {
       for (const { name, readOnly, handle } of registeredTools) {
         const enabled = permitsTool(profile, name, readOnly) && tokenPolicy!.permitted(name, readOnly);
@@ -447,6 +455,7 @@ const main = async () => {
           else handle.disable();
         }
       }
+      refreshDashboardWorkflows();
     });
 
     // Strip schema properties that break some MCP clients (e.g. Copilot CLI). See helper for details.

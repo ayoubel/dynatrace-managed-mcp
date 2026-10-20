@@ -47,7 +47,7 @@ describe('Incident Intelligence over the existing MCP adapter', () => {
     );
     transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve('dist/index.js')],
+      args: [resolve(process.env.DT_MCP_TEST_SERVER_ENTRY || 'dist/index.js')],
       env: {
         ...env,
         DT_ENVIRONMENT_CONFIGS: JSON.stringify([
@@ -76,6 +76,7 @@ describe('Incident Intelligence over the existing MCP adapter', () => {
   });
   test('strict discovery and execution block writes and confirmation with a write-capable token', async () => {
     const tools = (await client.listTools()).tools;
+    expect((await client.listPrompts()).prompts.map((prompt) => prompt.name)).toEqual(['continue_investigation']);
     expect(tools.some((t) => t.name === 'dynatrace_managed_explain_problem')).toBe(true);
     expect(tools.some((t) => t.name === 'dynatrace_managed_get_environments_info')).toBe(true);
     const catalog = await client.callTool({ name: 'dynatrace_managed_get_environments_info', arguments: {} });
@@ -110,24 +111,28 @@ describe('Incident Intelligence over the existing MCP adapter', () => {
     await new Promise<void>((done) => reserve.listen(0, '127.0.0.1', done));
     const port = (reserve.address() as AddressInfo).port;
     await new Promise<void>((done) => reserve.close(() => done()));
-    const child = spawn(process.execPath, [resolve('dist/index.js'), '--http', '--port', String(port)], {
-      env: {
-        ...process.env,
-        DT_MCP_PROFILE: 'incident-intelligence',
-        DT_MCP_FILTER_TOKEN_TOOLS: 'false',
-        DT_MCP_OLLAMA_ENABLED: 'true',
-        DT_MCP_ENABLE_TELEMETRY: 'false',
-        LOG_OUTPUT: 'disabled',
-        DT_ENVIRONMENT_CONFIGS: JSON.stringify([
-          {
-            apiEndpointUrl: `http://127.0.0.1:${(api.address() as AddressInfo).port}`,
-            environmentId: 'env',
-            alias: 'test',
-          },
-        ]),
+    const child = spawn(
+      process.execPath,
+      [resolve(process.env.DT_MCP_TEST_SERVER_ENTRY || 'dist/index.js'), '--http', '--port', String(port)],
+      {
+        env: {
+          ...process.env,
+          DT_MCP_PROFILE: 'incident-intelligence',
+          DT_MCP_FILTER_TOKEN_TOOLS: 'false',
+          DT_MCP_OLLAMA_ENABLED: 'true',
+          DT_MCP_ENABLE_TELEMETRY: 'false',
+          LOG_OUTPUT: 'disabled',
+          DT_ENVIRONMENT_CONFIGS: JSON.stringify([
+            {
+              apiEndpointUrl: `http://127.0.0.1:${(api.address() as AddressInfo).port}`,
+              environmentId: 'env',
+              alias: 'test',
+            },
+          ]),
+        },
+        stdio: ['ignore', 'pipe', 'pipe'],
       },
-      stdio: ['ignore', 'pipe', 'pipe'],
-    });
+    );
     const httpTransport = new StreamableHTTPClientTransport(new URL(`http://127.0.0.1:${port}/mcp`), {
       requestInit: { headers: { 'X-Dynatrace-Tokens': 'test=fake-reader' } },
     });
@@ -147,6 +152,7 @@ describe('Incident Intelligence over the existing MCP adapter', () => {
       if (!ready) throw Error('HTTP server startup timeout');
       await httpClient.connect(httpTransport);
       const tools = (await httpClient.listTools()).tools;
+      expect((await httpClient.listPrompts()).prompts.map((prompt) => prompt.name)).toEqual(['continue_investigation']);
       expect(tools.some((t) => t.name === 'dynatrace_managed_explain_problem')).toBe(true);
       expect(
         tools.every((t) => t.annotations?.readOnlyHint === true && !/confirm|create|update|converse/.test(t.name)),

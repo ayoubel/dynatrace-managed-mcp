@@ -18,7 +18,14 @@
     "mcp-server-dynatrace": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "examples/dashboards",
+    "docs/dashboard-workflows.md",
+    ".github/prompts/service-health.prompt.md",
+    ".github/prompts/infrastructure-health.prompt.md",
+    ".github/prompts/incident-investigation.prompt.md",
+    ".github/prompts/dashboard-update.prompt.md",
+    "docs/dashboard-tools.md"
   ],
   "exports": {
     "./package.json": "./package.json",

@@ -8,7 +8,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 export const pause=ms=>new Promise(r=>setTimeout(r,ms));
 export async function until(fn,ms=30000){const end=Date.now()+ms;let last;while(Date.now()<end){try{const value=await fn();if(value)return value;}catch(e){last=e;}await pause(100);}throw Error('Demo wait timed out: '+(last?.message || fn.toString().slice(0,140)));}
-export async function launchDemo({gatewayRoot,output=os.tmpdir(),extensionOrigin='chrome-extension://'+'a'.repeat(32)}){
+export async function launchDemo({gatewayRoot,output=os.tmpdir(),initialJobs,initialHistory,extensionOrigin='chrome-extension://'+'a'.repeat(32)}){
  if(!gatewayRoot)throw Error('--gateway-root is required');
  if(!/^chrome-extension:\/\/[a-p]{32}$/.test(extensionOrigin))throw Error('Invalid isolated extension origin');
  await fs.access(path.join(gatewayRoot,'src/server.mjs'));
@@ -22,6 +22,8 @@ export async function launchDemo({gatewayRoot,output=os.tmpdir(),extensionOrigin
  const network=spawnSync(process.execPath,['--input-type=module','-e',"import net from 'node:net';for(const f of [()=>fetch('https://managed.example'),()=>net.connect(4318,'127.0.0.1')]){try{f();process.exit(2)}catch(e){if(!e.message.includes('network isolation'))throw e}}"],{env,encoding:'utf8'});
  if(network.status!==0)throw Error('Network isolation self-test failed');
  const config=path.join(dir,'mcp.json');await fs.writeFile(config,JSON.stringify({servers:Object.fromEntries(['first','second'].map(ns=>[ns,{command:process.execPath,args:[path.join(root,'scripts/explain-demo-fixture.mjs')],env:{...env,EXPLAIN_DEMO_NAMESPACE:ns}}]))}),{mode:0o600});
+ if(initialHistory) {const history=initialHistory({config});if(!Array.isArray(history))throw Error('Synthetic history must be an array');await fs.writeFile(path.join(runtime,'data/history.json'),JSON.stringify(history));}
+ if(initialJobs) {const jobs=initialJobs({config});if(!Array.isArray(jobs))throw Error('Synthetic jobs must be an array');await fs.writeFile(path.join(runtime,'data/workbench.json'),JSON.stringify(jobs));}
  for(const name of ['src','public'])await fs.symlink(path.join(gatewayRoot,name),path.join(runtime,name));
  await fs.writeFile(path.join(runtime,'.local-config.json'),JSON.stringify({mcpConfig:config}),{mode:0o600});
  const lease=net.createServer();await new Promise((resolve,reject)=>{lease.once('error',reject);lease.listen(0,'127.0.0.1',resolve);});const port=lease.address().port;await new Promise(r=>lease.close(r));if(port===4318)throw Error('Professional port refused');
